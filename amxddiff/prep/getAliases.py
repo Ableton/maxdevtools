@@ -18,17 +18,18 @@ def main(argv):
 
 def getAliases(path):
     print('Parsing ', path)
-    fileObj = open(path, "r", encoding="utf-8")
-    lines = fileObj.readlines()
-    aliases = {}
-    for line in lines:
-        if line == "\n" or line == "":
-            continue
-        tokens = line.split()
-        alias = tokens[2]
-        reference = tokens[len(tokens) - 1][0: -1]
-        aliases[alias] = reference
-    return aliases
+    with open(path, "r", encoding="utf-8") as fileObj:
+        lines = fileObj.readlines()
+        aliases = {}
+        for line in lines:
+            if line == "\n" or line == "":
+                continue
+            tokens = line.split()
+            alias = tokens[2]
+            reference = tokens[len(tokens) - 1][0: -1]
+            aliases[alias] = reference
+        return aliases
+    return {}
 
 if __name__ == "__main__":
    main(sys.argv[1:])

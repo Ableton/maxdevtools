@@ -14,23 +14,22 @@ def main(argv):
     expectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.txt"))
     testFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.amxd"))
 
-    toCompare = open(expectedFile, mode='r')
-    expected = toCompare.read()
-    toCompare.close()
+    with open(expectedFile, mode='r') as toCompare:
+        expected = toCompare.read()
 
-    old_stdout = sys.stdout
-    sys.stdout = actualStringIo = StringIO()
-    amxdTextconv.parseAmxd(testFile)
-    sys.stdout = old_stdout
-    actual = actualStringIo.getvalue()
+        old_stdout = sys.stdout
+        sys.stdout = actualStringIo = StringIO()
+        amxdTextconv.parseAmxd(testFile)
+        sys.stdout = old_stdout
+        actual = actualStringIo.getvalue()
 
-    if actual == expected:
-        print('\033[1m' + '\033[32m' + "Test successful" + '\033[0m')
-    else:
-        print('\033[1m' + '\033[31m' + "Test failed" + '\033[0m')
-        print("Expected: " + str(len(expected)) + " characters, got " + str(len(actual)))
-        print("--- How the actual result differs from the expected result: ---")
-        print(diffString(expected, actual))
+        if actual == expected:
+            print('\033[1m' + '\033[32m' + "Test successful" + '\033[0m')
+        else:
+            print('\033[1m' + '\033[31m' + "Test failed" + '\033[0m')
+            print("Expected: " + str(len(expected)) + " characters, got " + str(len(actual)))
+            print("--- How the actual result differs from the expected result: ---")
+            print(diffString(expected, actual))
 
 def diffString(a, b):
     output = []
