@@ -2,14 +2,6 @@ from knownObjects import knownObjects
 from defaultPatcher import defaultPatcher
 from objectAliases import objectAliases
 
-knownObjectsMap = {}
-
-def makeKnownObjectsMap():
-    for boxObj in knownObjects['boxes']:
-        box = boxObj["box"]
-        name = getBoxText(box)
-        knownObjectsMap[name] = box
-
 def printPatcher(patcherDict, summarize = True):
     '''
     Prints a summary of a patcher dict.
@@ -17,12 +9,18 @@ def printPatcher(patcherDict, summarize = True):
     Unknown or unexpected data should always be printed as raw json, so that the summary never discards valuable information.
     '''
     if summarize: 
-        return printPatcherSummaryRecursive(patcherDict)
+        knownObjectsMap = {}
+        for boxObj in knownObjects['boxes']:
+            box = boxObj["box"]
+            name = getBoxText(box)
+            knownObjectsMap[name] = box
+
+        return printPatcherSummaryRecursive(patcherDict, knownObjectsMap)
     else: 
         import json
         return json.dumps(patcherDict, indent=4, sort_keys=True)
 
-def printPatcherSummaryRecursive(patcherDict, indent = 0):
+def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
     if not "patcher" in patcherDict:
         return ""
 
@@ -124,7 +122,7 @@ def printPatcherSummaryRecursive(patcherDict, indent = 0):
         summaryString += ("\t")*indent + "[" + boxtext + "] " + displayText + "\n"
 
         if ("patcher" in box):
-            summaryString += printPatcherSummaryRecursive(box, indent+1)
+            summaryString += printPatcherSummaryRecursive(box, knownObjectsMap, indent+1)
 
     #### patch cords ####
 
@@ -382,5 +380,3 @@ colorProperties = [
 "inactivetextoncolor",
 "activebgoncolor"
 ]
-
-makeKnownObjectsMap();
