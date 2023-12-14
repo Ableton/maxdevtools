@@ -208,9 +208,7 @@ def getPropertyString(value):
             if s != "":
                 s += ", "
 
-            if isinstance(item, int):
-                s += str(item)
-            elif isinstance(item, float):
+            if isinstance(item, float):
                 if item.is_integer():
                     s += "{:.0f}".format(item)
                 else:
