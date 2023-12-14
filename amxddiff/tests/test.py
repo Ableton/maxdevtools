@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 import amxdTextconv
 
-def main(argv):
+def main():
     expectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.txt"))
     testFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.amxd"))
     encryptedExpectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "EncryptedTest.txt"))
@@ -55,4 +55,4 @@ def diffString(a, b):
     return "".join(output)    
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
