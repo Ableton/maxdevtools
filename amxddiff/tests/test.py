@@ -13,20 +13,28 @@ import amxdTextconv
 def main(argv):
     expectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.txt"))
     testFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.amxd"))
+    encryptedExpectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "EncryptedTest.txt"))
+    encryptedTestFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "EncryptedTest.amxd"))
 
     with open(expectedFile, mode='r') as toCompare:
         expected = toCompare.read()
-
         actual = amxdTextconv.parseAmxd(testFile)
+        printResult(expected, actual, "Parse device")
 
-        if actual == expected:
-            print('\033[1m' + '\033[32m' + "Test successful" + '\033[0m')
-        else:
-            print('\033[1m' + '\033[31m' + "Test failed" + '\033[0m')
-            print("Expected: " + str(len(expected)) + " characters, got " + str(len(actual)))
-            print("--- How the actual result differs from the expected result: ---")
-            print(diffString(expected, actual))
+    with open(encryptedExpectedFile, mode='r') as toCompare:
+        expected = toCompare.read()
+        actual = amxdTextconv.parseAmxd(encryptedTestFile)
+        printResult(expected, actual, "Parse encrypted device")
 
+def printResult(expected, actual, testName):
+    if actual == expected:
+        print('\033[1m' + '\033[32m' + "Test successful: " + testName + '\033[0m')
+    else:
+        print('\033[1m' + '\033[31m' + "Test failed: " + testName + '\033[0m')
+        print("Expected: " + str(len(expected)) + " characters, got " + str(len(actual)))
+        print("--- How the actual result differs from the expected result: ---")
+        print(diffString(expected, actual))
+    
 def diffString(a, b):
     output = []
     matcher = difflib.SequenceMatcher(None, a, b)
