@@ -19,6 +19,7 @@ project:
 [button] hidden: 1
 [button] background: 1
 [coll] 
+[coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [comment A comment] 
 [fpic] pic: fpic.png
 [live.banks] 
@@ -30,6 +31,10 @@ project:
 [message read collContent.txt] 
 [midiin] fontname: Arial Bold | fontsize: 10.0
 [midiout] fontname: Arial Bold | fontsize: 10.0
+[p MySubpatcher] 
+	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480]
+	----------- objects -----------
+	[t b b] 
 ----------- patch cords -----------
 [loadbang] (0) => (0) [message read collContent.txt]
 [message read collContent.txt] (0) => (0) [coll]
