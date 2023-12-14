@@ -17,11 +17,7 @@ def main(argv):
     with open(expectedFile, mode='r') as toCompare:
         expected = toCompare.read()
 
-        old_stdout = sys.stdout
-        sys.stdout = actualStringIo = StringIO()
-        amxdTextconv.parseAmxd(testFile)
-        sys.stdout = old_stdout
-        actual = actualStringIo.getvalue()
+        actual = amxdTextconv.parseAmxd(testFile)
 
         if actual == expected:
             print('\033[1m' + '\033[32m' + "Test successful" + '\033[0m')

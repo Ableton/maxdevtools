@@ -17,20 +17,22 @@ def printPatcher(patcherDict, summarize = True):
     Unknown or unexpected data should always be printed as raw json, so that the summary never discards valuable information.
     '''
     if summarize: 
-        printPatcherSummaryRecursive(patcherDict)
+        return printPatcherSummaryRecursive(patcherDict)
     else: 
         import json
-        print(json.dumps(patcherDict, indent=4, sort_keys=True))
+        return json.dumps(patcherDict, indent=4, sort_keys=True)
 
 def printPatcherSummaryRecursive(patcherDict, indent = 0):
     if not "patcher" in patcherDict:
-        return
+        return ""
 
     if not "boxes" in patcherDict["patcher"]:
-        return
+        return ""
 
     if not "lines" in patcherDict["patcher"]:
-        return
+        return ""
+
+    summaryString = ""
 
     patcher = patcherDict["patcher"]
 
@@ -68,14 +70,14 @@ def printPatcherSummaryRecursive(patcherDict, indent = 0):
         displayText += getStylesStringBlock(patcher["styles"], indent)
 
     if displayText != "":
-        print (("\t")*indent + displayText)
+        summaryString += ("\t")*indent + displayText + "\n"
 
     #### objects ####
 
     if len(patcher["boxes"]) == 0:
         return
 
-    print (("\t")*indent + "----------- objects -----------")
+    summaryString += ("\t")*indent + "----------- objects -----------" + "\n"
 
     boxes = []
     for val in patcher["boxes"]:
@@ -119,17 +121,17 @@ def printPatcherSummaryRecursive(patcherDict, indent = 0):
         for key, value in properties.items():
             displayText = concat(displayText, key + ": " + getPropertyString(value))
 
-        print(("\t")*indent + "[" + boxtext + "] " + displayText)
+        summaryString += ("\t")*indent + "[" + boxtext + "] " + displayText + "\n"
 
         if ("patcher" in box):
-            printPatcherSummaryRecursive(box, indent+1)
+            summaryString += printPatcherSummaryRecursive(box, indent+1)
 
     #### patch cords ####
 
     if len(patcher["lines"]) == 0:
-        return
+        return summaryString
 
-    print (("\t")*indent + "----------- patch cords -----------")
+    summaryString += ("\t")*indent + "----------- patch cords -----------" + "\n"
 
     lines = []
     for val in patcherDict["patcher"]["lines"]:
@@ -151,7 +153,9 @@ def printPatcherSummaryRecursive(patcherDict, indent = 0):
         toInlet = "(" + str(line["destination"][1]) + ")"
 
         displayText = fromName + " " + fromOutlet + " => " + toInlet + " " + toName
-        print(("\t")*indent + displayText)
+        summaryString += ("\t")*indent + displayText + "\n"
+
+    return summaryString
 
 def getBoxText(box):
     objecttype = box["maxclass"]
