@@ -42,6 +42,10 @@ def parseField(field, datasize, data) :
             result += "MIDI Effect Device\n"
         elif devicetype == "iiii":
             result += "Instrument Device\n"
+        elif devicetype == "nagg":
+            result += "MIDI Tool Generator\n"
+        elif devicetype == "natt":
+            result += "MIDI Tool Transformation\n"
         else:
             result += "Unknown device type\n"
         result += "-------------------\n"
