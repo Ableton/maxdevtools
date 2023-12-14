@@ -1,6 +1,4 @@
 import sys, json
-import collections
-from patchPrinter import printPatcher
 
 def main(argv):
     inputfile = ''
