@@ -33,49 +33,53 @@ def parseAmxd(path):
 
 
 def parseField(field, datasize, data):
-    result = ""
-    if field == "ampf":
-        if datasize != 4:
-            print("Incorrect device type argument")
-            sys.exit(2)
-        devicetype = data.decode("ascii")
-        if devicetype == "aaaa":
-            result += "Audio Effect Device\n"
-        elif devicetype == "mmmm":
-            result += "MIDI Effect Device\n"
-        elif devicetype == "iiii":
-            result += "Instrument Device\n"
-        elif devicetype == "nagg":
-            result += "MIDI Tool Generator\n"
-        elif devicetype == "natt":
-            result += "MIDI Tool Transformation\n"
-        else:
-            result += "Unknown device type\n"
-        result += "-------------------\n"
-    elif field == "meta":
-        result += ""  # unused
-    elif field == "ciph":
-        result += "----- Cipher -----\n"
-        result += (
-            "..." + data[datasize - 8 : datasize].hex() + "\n"
-        )  # print last part of cipher to show if there is a difference
-    elif field == "ptch":
-        # only called if the device is not encrypted
-        if data[:4].decode("ascii") == "mx@c":
-            result += "Device is frozen"
-        else:
-            if data[datasize - 1] == 0:
-                # json.loads doesn't like if there is a value of 0
-                # at the end of the string which Max appears to add
-                patcherDict = json.loads(data[: datasize - 1].decode("utf-8"))
-            else:
-                # but we also want to support if the JSON is written by JS.
-                patcherDict = json.loads(data.decode("utf-8"))
-            result += printPatcher(patcherDict)
+    deviceTypes = {
+        "aaaa": "Audio Effect Device",
+        "mmmm": "MIDI Effect Device",
+        "iiii": "Instrument Device",
+        "nagg": "MIDI Tool Generator",
+        "natt": "MIDI Tool Transformation",
+    }
+
+    fieldHandlers = {
+        "ampf": handleAmpf,
+        "meta": handleMeta,
+        "ciph": handleCiph,
+        "ptch": handlePtch,
+    }
+
+    if field in fieldHandlers:
+        return fieldHandlers[field](datasize, data, deviceTypes)
     else:
-        print("Unknown field", field)
+        print(f"Unknown field {field}")
         sys.exit(2)
-    return result
+
+
+def handleAmpf(datasize, data, device_types):
+    if datasize != 4:
+        print("Incorrect device type argument")
+        sys.exit(2)
+    devicetype = data.decode("ascii")
+    return f"{device_types.get(devicetype, 'Unknown device type')}\n-------------------\n"
+
+
+def handleMeta(datasize, data, device_types):
+    return ""
+
+
+def handleCiph(datasize, data, device_types):
+    return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
+
+
+def handlePtch(datasize, data, device_types):
+    if data[:4].decode("ascii") == "mx@c":
+        return "Device is frozen"
+    else:
+        if data[datasize - 1] == 0:
+            patcherDict = json.loads(data[: datasize - 1].decode("utf-8"))
+        else:
+            patcherDict = json.loads(data.decode("utf-8"))
+        return printPatcher(patcherDict)
 
 
 if __name__ == "__main__":
