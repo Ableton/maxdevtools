@@ -70,6 +70,8 @@ This tool is an on-going work in progress. If you have a Max patch or device tha
 
 Contributions are welcome. Feel free to fork this repo and submit a Pull request.
 
+All scripts are Python 3.
+
 ## Testing
 
 Whenever making a change, we test that the previous functionality still works as before. For more info, see the [tests](tests/) folder.
