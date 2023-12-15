@@ -6,10 +6,10 @@ def main(argv):
     if len(argv) != 1:
         print("Requires the file to convert as an argument")
         sys.exit(2)
-    print(parseAmxd(argv[0]))
+    print(parse(argv[0]))
 
 
-def parseAmxd(path):
+def parse(path):
     result = ""
     with open(path, "rb") as fileObj:
         encrypted = False

@@ -10,27 +10,27 @@ import os.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import amxdTextconv
+import maxpatTextconv
 
 
 def main():
-    expectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.txt"))
-    testFile = os.path.abspath(os.path.join(os.path.dirname(__file__), "Test.amxd"))
-    encryptedExpectedFile = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "EncryptedTest.txt")
-    )
-    encryptedTestFile = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "EncryptedTest.amxd")
-    )
+    performTest("Test.amxd.txt", "Test.amxd", "Parse device")
+    performTest("EncryptedTest.amxd.txt", "EncryptedTest.amxd", "Parse encrypted device")
+    performTest("Test.maxpat.txt", "Test.maxpat", "Parse Max patch")
+
+
+def performTest(expectedPath, testPath, testName):
+    expectedFile = os.path.abspath(os.path.join(os.path.dirname(__file__), expectedPath))
+    testFile = os.path.abspath(os.path.join(os.path.dirname(__file__), testPath))
 
     with open(expectedFile, mode="r") as toCompare:
         expected = toCompare.read()
-        actual = amxdTextconv.parseAmxd(testFile)
-        printResult(expected, actual, "Parse device")
-
-    with open(encryptedExpectedFile, mode="r") as toCompare:
-        expected = toCompare.read()
-        actual = amxdTextconv.parseAmxd(encryptedTestFile)
-        printResult(expected, actual, "Parse encrypted device")
+        actual = (
+            maxpatTextconv.parse(testFile)
+            if testPath.endswith(".maxpat")
+            else amxdTextconv.parse(testFile)
+        )
+        printResult(expected, actual, testName)
 
 
 def printResult(expected, actual, testName):
