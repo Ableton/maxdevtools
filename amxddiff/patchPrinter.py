@@ -210,19 +210,19 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
 
 def getPropertyString(value):
     if isinstance(value, list):
-        s = ""
+        propertyString = ""
         for item in value:
-            if s != "":
-                s += ", "
+            if propertyString != "":
+                propertyString += ", "
 
             if isinstance(item, float):
                 if item.is_integer():
-                    s += "{:.0f}".format(item)
+                    propertyString += "{:.0f}".format(item)
                 else:
-                    s += "{:.2f}".format(item)
+                    propertyString += "{:.2f}".format(item)
             else:
-                s += str(item)
-        return "[" + s + "]"
+                propertyString += str(item)
+        return "[" + propertyString + "]"
 
     return str(value)
 
@@ -262,7 +262,7 @@ def getSavedObjectAttributes(value):
 
 
 def getParametersStringBlock(parameters):
-    s = ""
+    parametersString = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
@@ -271,7 +271,7 @@ def getParametersStringBlock(parameters):
             "parameter_overrides" in parameters
             and key in parameters["parameter_overrides"]
         ):
-            s += "\t" + key + " " + str(value)
+            parametersString += "\t" + key + " " + str(value)
 
             override = parameters["parameter_overrides"][key]
             overridePrint = []
@@ -300,12 +300,12 @@ def getParametersStringBlock(parameters):
                     continue
                 overridePrint.append("" + key2 + ": " + str(value2))
 
-            s += " > override > " + str(overridePrint) + "\n"
+            parametersString += " > override > " + str(overridePrint) + "\n"
 
     if "parameterbanks" in parameters:
-        s += "banks:\n"
+        parametersString += "banks:\n"
         for key, value in parameters["parameterbanks"].items():
-            s += (
+            parametersString += (
                 "\t"
                 + str(value["index"])
                 + ((" (" + value["name"] + ")") if value["name"] != "" else "")
@@ -313,18 +313,22 @@ def getParametersStringBlock(parameters):
                 + str(value["parameters"])
             )
 
-    return "\nparameters:\n" + s
+    return "\nparameters:\n" + parametersString
 
 
 def getDependencyCacheStringBlock(dependencyCache):
     if len(dependencyCache) > 0:
         return ""
 
-    s = ""
+    dependencyCacheString = ""
     for dependency in dependencyCache:
-        s += "\t" + str(dependency) + "\n"
+        dependencyCacheString += "\t" + str(dependency) + "\n"
 
-    return "\ndependency_cache:\n" + s if s != "" else ""
+    return (
+        "\ndependency_cache:\n" + dependencyCacheString
+        if dependencyCacheString != ""
+        else ""
+    )
 
 
 def getAppversionStringShort(appversion):
