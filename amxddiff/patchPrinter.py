@@ -24,13 +24,11 @@ def printPatcher(patcherDict, summarize=True):
 
 
 def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
-    if not "patcher" in patcherDict:
-        return ""
-
-    if not "boxes" in patcherDict["patcher"]:
-        return ""
-
-    if not "lines" in patcherDict["patcher"]:
+    if (
+        "patcher" not in patcherDict
+        or "boxes" not in patcherDict["patcher"]
+        or "lines" not in patcherDict["patcher"]
+    ):
         return ""
 
     summaryString = ""
@@ -75,15 +73,15 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
 
     #### objects ####
 
-    if len(patcher["boxes"]) == 0:
+    if not patcher["boxes"]:
         return
 
     summaryString += ("\t") * indent + "----------- objects -----------" + "\n"
 
-    boxes = []
-    for val in patcher["boxes"]:
-        boxes.append(val["box"])
+    # every entry of "boxes" has a single item "box"
+    boxes = list(map(lambda val: val["box"], patcher["boxes"]))
 
+    # we sort the boxes to make the same patches look equal
     boxes.sort(key=getBoxText)
 
     skipBoxProperties = [
@@ -103,12 +101,12 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
 
     idsToNames = {}
     for box in boxes:
-        boxtext = getBoxText(box)
+        boxText = getBoxText(box)
 
-        idsToNames[box["id"]] = boxtext
+        idsToNames[box["id"]] = boxText
 
         displayText = ""
-        objectName = boxtext.split()[0]
+        objectName = boxText.split()[0]
 
         if objectName not in knownObjectsMap and objectName in objectAliases:
             objectName = objectAliases[objectName]
@@ -122,7 +120,7 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
         for key, value in properties.items():
             displayText = concat(displayText, key + ": " + getPropertyString(value))
 
-        summaryString += ("\t") * indent + "[" + boxtext + "] " + displayText + "\n"
+        summaryString += ("\t") * indent + "[" + boxText + "] " + displayText + "\n"
 
         if "patcher" in box:
             summaryString += printPatcherSummaryRecursive(
@@ -333,32 +331,26 @@ def getDependencyCacheStringBlock(dependencyCache):
 
 
 def getAppversionStringShort(appversion):
-    return "appversion: {}.{}.{}-{}-{}".format(
-        appversion["major"],
-        appversion["minor"],
-        appversion["revision"],
-        appversion["architecture"],
-        appversion["modernui"],
-    )
+    return f"appversion: {appversion['major']}.{appversion['minor']}.{appversion['revision']}-{appversion['architecture']}-{appversion['modernui']}"
 
 
 def getProjectStringBlock(project):
-    s = ""
+    projectString = ""
     for key, value in project.items():
         if key != "contents":
-            s = concat(s, key + ": " + getPropertyString(value))
+            projectString = concat(projectString, key + ": " + getPropertyString(value))
     if "contents" in project:
-        s2 = ""
+        contentsString = ""
         for key2, value2 in project["contents"].items():
-            s3 = ""
+            key3String = ""
             for key3 in value2:
-                s3 += "\n\t\t\t" + key3
-            if s3 != "":
-                s2 += "\n\t\t" + key2 + ":" + s3
-        if s2 != "":
-            s += "\n\tcontents:" + s2
+                key3String += "\n\t\t\t" + key3
+            if key3String != "":
+                contentsString += "\n\t\t" + key2 + ":" + key3String
+        if contentsString != "":
+            projectString += "\n\tcontents:" + contentsString
 
-    return "\nproject:\n\t" + s
+    return "\nproject:\n\t" + projectString
 
 
 def getStylesStringBlock(styles, indent):
@@ -366,19 +358,19 @@ def getStylesStringBlock(styles, indent):
 
 
 def getObjectParameterString(parameter):
-    s = ""
+    parameterString = ""
     for key, value in parameter.items():
         keyText = key[len("parameter_") :] if key.startswith("parameter_") else key
-        s = concat(s, keyText + ": " + getPropertyString(value))
+        parameterString = concat(
+            parameterString, keyText + ": " + getPropertyString(value)
+        )
 
-    return s
-
-
-sep = " | "
+    return parameterString
 
 
 def concat(a, b):
-    return a + (sep if a != "" else "") + b
+    sep = " | "
+    return sep.join(filter(None, [a, b]))
 
 
 colorProperties = [
