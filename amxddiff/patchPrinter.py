@@ -81,9 +81,6 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
     # every entry of "boxes" has a single item "box"
     boxes = list(map(lambda val: val["box"], patcher["boxes"]))
 
-    # we sort the boxes to make the same patches look equal
-    boxes.sort(key=getBoxText)
-
     skipBoxProperties = [
         "maxclass",  # used in box name
         "text",  # shown in box name
