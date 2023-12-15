@@ -2,25 +2,28 @@ from knownObjects import knownObjects
 from defaultPatcher import defaultPatcher
 from objectAliases import objectAliases
 
-def printPatcher(patcherDict, summarize = True):
-    '''
+
+def printPatcher(patcherDict, summarize=True):
+    """
     Prints a summary of a patcher dict.
     Note that the script should only format properties it knows about or is actively set to skip.
     Unknown or unexpected data should always be printed as raw json, so that the summary never discards valuable information.
-    '''
-    if summarize: 
+    """
+    if summarize:
         knownObjectsMap = {}
-        for boxObj in knownObjects['boxes']:
+        for boxObj in knownObjects["boxes"]:
             box = boxObj["box"]
             name = getBoxText(box)
             knownObjectsMap[name] = box
 
         return printPatcherSummaryRecursive(patcherDict, knownObjectsMap)
-    else: 
+    else:
         import json
+
         return json.dumps(patcherDict, indent=4, sort_keys=True)
 
-def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
+
+def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
     if not "patcher" in patcherDict:
         return ""
 
@@ -37,12 +40,12 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
     #### patcher ####
 
     skipPatcherProperties = [
-    "boxes", # iterated over later
-    "lines", # iterated over later
-    "parameters", # treated separately
-    "dependency_cache", # treated separately
-    "project", # treated separately
-    "styles" # treated separately
+        "boxes",  # iterated over later
+        "lines",  # iterated over later
+        "parameters",  # treated separately
+        "dependency_cache",  # treated separately
+        "project",  # treated separately
+        "styles",  # treated separately
     ]
 
     properties = getPropertiesToPrint(patcher, defaultPatcher, skipPatcherProperties)
@@ -68,14 +71,14 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
         displayText += getStylesStringBlock(patcher["styles"], indent)
 
     if displayText != "":
-        summaryString += ("\t")*indent + displayText + "\n"
+        summaryString += ("\t") * indent + displayText + "\n"
 
     #### objects ####
 
     if len(patcher["boxes"]) == 0:
         return
 
-    summaryString += ("\t")*indent + "----------- objects -----------" + "\n"
+    summaryString += ("\t") * indent + "----------- objects -----------" + "\n"
 
     boxes = []
     for val in patcher["boxes"]:
@@ -84,18 +87,18 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
     boxes.sort(key=getBoxText)
 
     skipBoxProperties = [
-    "maxclass", # used in box name
-    "text", # shown in box name
-    "id", # used only for lines
-    "name", # shown in box name
-    "patching_rect", # different every time
-    "numinlets", # cached from inlet objects
-    "numoutlets", # cached from outlet objects
-    "outlettype", # cached from outlet objects
-    "patcher", # treated separately
-    "locked_bgcolor", # duplicate from patcher properties
-    "editing_bgcolor",  # duplicate from patcher properties
-    "color" # duplicate from patcher properties
+        "maxclass",  # used in box name
+        "text",  # shown in box name
+        "id",  # used only for lines
+        "name",  # shown in box name
+        "patching_rect",  # different every time
+        "numinlets",  # cached from inlet objects
+        "numoutlets",  # cached from outlet objects
+        "outlettype",  # cached from outlet objects
+        "patcher",  # treated separately
+        "locked_bgcolor",  # duplicate from patcher properties
+        "editing_bgcolor",  # duplicate from patcher properties
+        "color",  # duplicate from patcher properties
     ]
 
     idsToNames = {}
@@ -112,24 +115,26 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
 
         defaultBox = {}
         if objectName in knownObjectsMap:
-            defaultBox = knownObjectsMap[objectName];
+            defaultBox = knownObjectsMap[objectName]
 
         properties = getPropertiesToPrint(box, defaultBox, skipBoxProperties)
 
         for key, value in properties.items():
             displayText = concat(displayText, key + ": " + getPropertyString(value))
 
-        summaryString += ("\t")*indent + "[" + boxtext + "] " + displayText + "\n"
+        summaryString += ("\t") * indent + "[" + boxtext + "] " + displayText + "\n"
 
-        if ("patcher" in box):
-            summaryString += printPatcherSummaryRecursive(box, knownObjectsMap, indent+1)
+        if "patcher" in box:
+            summaryString += printPatcherSummaryRecursive(
+                box, knownObjectsMap, indent + 1
+            )
 
     #### patch cords ####
 
     if len(patcher["lines"]) == 0:
         return summaryString
 
-    summaryString += ("\t")*indent + "----------- patch cords -----------" + "\n"
+    summaryString += ("\t") * indent + "----------- patch cords -----------" + "\n"
 
     lines = []
     for val in patcherDict["patcher"]["lines"]:
@@ -140,8 +145,8 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
 
     lines.sort(key=lineSort)
 
-    # We don't try to vertically align the sources and destinations of the lines,    
-    # even though that might make this more readable; a change in the maximum    
+    # We don't try to vertically align the sources and destinations of the lines,
+    # even though that might make this more readable; a change in the maximum
     # source object length would affect all other printed lines
 
     for line in lines:
@@ -151,22 +156,24 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent = 0):
         toInlet = "(" + str(line["destination"][1]) + ")"
 
         displayText = fromName + " " + fromOutlet + " => " + toInlet + " " + toName
-        summaryString += ("\t")*indent + displayText + "\n"
+        summaryString += ("\t") * indent + displayText + "\n"
 
     return summaryString
+
 
 def getBoxText(box):
     objecttype = box["maxclass"]
     boxtext = objecttype
-    if (objecttype == "newobj"):
+    if objecttype == "newobj":
         boxtext = box["text"]
-    elif ("text" in box):
+    elif "text" in box:
         boxtext = objecttype + " " + box["text"]
 
-    if (objecttype == "bpatcher" and "name" in box):
+    if objecttype == "bpatcher" and "name" in box:
         boxtext = boxtext + " " + box["name"]
 
-    return boxtext;
+    return boxtext
+
 
 def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
     properties = {}
@@ -186,7 +193,9 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
             attributes = getSavedAttributeAttributes(value)
             attributesToPrint = getPropertiesToPrint(attributes, default, skipProperties)
             for newKey, newValue in attributesToPrint.items():
-                properties[newKey] = newValue # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
+                properties[
+                    newKey
+                ] = newValue  # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
             continue
 
         if key == "saved_object_attributes":
@@ -202,6 +211,7 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
             properties[key] = value
 
     return properties
+
 
 def getPropertyString(value):
     if isinstance(value, list):
@@ -221,10 +231,11 @@ def getPropertyString(value):
 
     return str(value)
 
+
 def getSavedAttributeAttributes(value):
     result = {}
     for attrkey, attrvalue in value.items():
-        if attrvalue == "" :
+        if attrvalue == "":
             continue
 
         if attrkey == "valueof":
@@ -233,25 +244,27 @@ def getSavedAttributeAttributes(value):
             continue
 
         # Handle dynamic colors
-        if 'expression' in attrvalue:
-            if attrvalue['expression'] == '':
+        if "expression" in attrvalue:
+            if attrvalue["expression"] == "":
                 continue
 
-            if attrvalue['expression'].startswith("themecolor."):
-                result[attrkey] = attrvalue['expression'].split(".")[1]
-                continue;
+            if attrvalue["expression"].startswith("themecolor."):
+                result[attrkey] = attrvalue["expression"].split(".")[1]
+                continue
 
         result[attrkey] = attrvalue
-    return result;
+    return result
+
 
 def getSavedObjectAttributes(value):
     result = {}
     for attrkey, attrvalue in value.items():
-        if attrvalue == "" :
+        if attrvalue == "":
             continue
 
         result[attrkey] = attrvalue
-    return result;
+    return result
+
 
 def getParametersStringBlock(parameters):
     s = ""
@@ -259,17 +272,36 @@ def getParametersStringBlock(parameters):
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
 
-        if "parameter_overrides" in parameters and key in parameters["parameter_overrides"]:
+        if (
+            "parameter_overrides" in parameters
+            and key in parameters["parameter_overrides"]
+        ):
             s += "\t" + key + " " + str(value)
 
-            override = parameters["parameter_overrides"][key];
-            overridePrint = []            
-            overridePrint.append(override["parameter_longname"] if ("parameter_longname" in override) else "-")
-            overridePrint.append(override["parameter_shortname"] if ("parameter_shortname" in override) else "-")
-            overridePrint.append(str(override["parameter_linknames"]) if ("parameter_linknames" in override) else "-")
+            override = parameters["parameter_overrides"][key]
+            overridePrint = []
+            overridePrint.append(
+                override["parameter_longname"]
+                if ("parameter_longname" in override)
+                else "-"
+            )
+            overridePrint.append(
+                override["parameter_shortname"]
+                if ("parameter_shortname" in override)
+                else "-"
+            )
+            overridePrint.append(
+                str(override["parameter_linknames"])
+                if ("parameter_linknames" in override)
+                else "-"
+            )
 
             for key2, value2 in override.items():
-                if key2 in ["parameter_longname", "parameter_shortname", "parameter_linknames"]:
+                if key2 in [
+                    "parameter_longname",
+                    "parameter_shortname",
+                    "parameter_linknames",
+                ]:
                     continue
                 overridePrint.append("" + key2 + ": " + str(value2))
 
@@ -278,9 +310,16 @@ def getParametersStringBlock(parameters):
     if "parameterbanks" in parameters:
         s += "banks:\n"
         for key, value in parameters["parameterbanks"].items():
-            s += "\t" + str(value["index"]) + ((" (" + value["name"] + ")") if value["name"] != "" else "") + ": " + str(value["parameters"])
+            s += (
+                "\t"
+                + str(value["index"])
+                + ((" (" + value["name"] + ")") if value["name"] != "" else "")
+                + ": "
+                + str(value["parameters"])
+            )
 
-    return "\nparameters:\n" + s;
+    return "\nparameters:\n" + s
+
 
 def getDependencyCacheStringBlock(dependencyCache):
     if len(dependencyCache) > 0:
@@ -290,10 +329,18 @@ def getDependencyCacheStringBlock(dependencyCache):
     for dependency in dependencyCache:
         s += "\t" + str(dependency) + "\n"
 
-    return "\ndependency_cache:\n" + s if s != "" else "";
+    return "\ndependency_cache:\n" + s if s != "" else ""
+
 
 def getAppversionStringShort(appversion):
-    return "appversion: {}.{}.{}-{}-{}".format(appversion["major"], appversion["minor"], appversion["revision"], appversion["architecture"], appversion["modernui"])
+    return "appversion: {}.{}.{}-{}-{}".format(
+        appversion["major"],
+        appversion["minor"],
+        appversion["revision"],
+        appversion["architecture"],
+        appversion["modernui"],
+    )
+
 
 def getProjectStringBlock(project):
     s = ""
@@ -311,72 +358,78 @@ def getProjectStringBlock(project):
         if s2 != "":
             s += "\n\tcontents:" + s2
 
-    return "\nproject:\n\t" + s;
-    
+    return "\nproject:\n\t" + s
+
+
 def getStylesStringBlock(styles, indent):
-    return "\n" + ("\t")*indent + "styles: " + str(styles)
+    return "\n" + ("\t") * indent + "styles: " + str(styles)
+
 
 def getObjectParameterString(parameter):
     s = ""
     for key, value in parameter.items():
-        keyText = key[len("parameter_"):] if key.startswith("parameter_") else key
+        keyText = key[len("parameter_") :] if key.startswith("parameter_") else key
         s = concat(s, keyText + ": " + getPropertyString(value))
 
-    return s;
+    return s
+
 
 sep = " | "
+
+
 def concat(a, b):
     return a + (sep if a != "" else "") + b
 
+
 colorProperties = [
-"slidercolor",
-"bgcolor",
-"bordercolor",
-"bordercolor2",
-"bgstepcolor",
-"tricolor",
-"tribordercolor",
-"panelcolor",
-"hltcolor",
-"needlecolor",
-"activeneedlecolor",
-"circlecolor",
-"activetricolor",
-"tricolor2",
-"activebgcolor",
-"bgrulercolor",
-"bgfillcolor",
-"blinkcolor",
-"bgoncolor",
-"stepcolor",
-"modulationcolor",
-"circleoncolor",
-"fgdialcolor",
-"activefgdialcolor",
-"dialcolor",
-"focusbordercolor",
-"locked_bgcolor",
-"editing_bgcolor",
-"bgstepcolor2",
-"bgunitcolor",
-"lcdbgcolor",
-"lcdcolor",
-"inactivelcdcolor",
-"linecolor",
-"activetricolor2",
-"activeslidercolor",
-"directioncolor",
-"textcolor",
-"activetextcolor",
-"textovercolor",
-"inactivetextoffcolor",
-"textoffcolor",
-"trioncolor",
-"arrowcolor",
-"textoncolor",
-"activetextoncolor",
-"hlttextcolor",
-"labeltextcolor",
-"inactivetextoncolor",
-"activebgoncolor"
+    "slidercolor",
+    "bgcolor",
+    "bordercolor",
+    "bordercolor2",
+    "bgstepcolor",
+    "tricolor",
+    "tribordercolor",
+    "panelcolor",
+    "hltcolor",
+    "needlecolor",
+    "activeneedlecolor",
+    "circlecolor",
+    "activetricolor",
+    "tricolor2",
+    "activebgcolor",
+    "bgrulercolor",
+    "bgfillcolor",
+    "blinkcolor",
+    "bgoncolor",
+    "stepcolor",
+    "modulationcolor",
+    "circleoncolor",
+    "fgdialcolor",
+    "activefgdialcolor",
+    "dialcolor",
+    "focusbordercolor",
+    "locked_bgcolor",
+    "editing_bgcolor",
+    "bgstepcolor2",
+    "bgunitcolor",
+    "lcdbgcolor",
+    "lcdcolor",
+    "inactivelcdcolor",
+    "linecolor",
+    "activetricolor2",
+    "activeslidercolor",
+    "directioncolor",
+    "textcolor",
+    "activetextcolor",
+    "textovercolor",
+    "inactivetextoffcolor",
+    "textoffcolor",
+    "trioncolor",
+    "arrowcolor",
+    "textoncolor",
+    "activetextoncolor",
+    "hlttextcolor",
+    "labeltextcolor",
+    "inactivetextoncolor",
+    "activebgoncolor",
 ]
