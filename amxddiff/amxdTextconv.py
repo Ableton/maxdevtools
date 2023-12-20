@@ -62,7 +62,7 @@ def handleAmpf(datasize, data, device_types):
     if datasize != 4:
         raise RuntimeError("Incorrect device type argument")
     devicetype = data.decode("ascii")
-    return f"{device_types.get(devicetype, 'Unknown device type')}\n-------------------\n"
+    return f"{device_types.get(devicetype, f'Unknown device type {devicetype}')}\n-------------------\n"
 
 
 def handleMeta(datasize, data, device_types):
