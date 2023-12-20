@@ -11,6 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 import amxdTextconv
 import maxpatTextconv
+import alsTextconv
 
 
 class TestStringMethods(unittest.TestCase):
@@ -47,13 +48,39 @@ class TestStringMethods(unittest.TestCase):
             actual = parse(testFilePath)
             self.assertEqual(expected, actual)
 
+    def test_parse_als_zipped(self):
+        self.maxDiff = None
+
+        expectedFilePath = getTestPathFile("Test.als.txt")
+        testFilePath = getTestPathFile("Test Project/Test.als")
+
+        with open(expectedFilePath, mode="r") as expectedFile:
+            expected = expectedFile.read()
+            actual = parse(testFilePath)
+            self.assertEqual(expected, actual)
+
+    def test_parse_als_unzipped(self):
+        self.maxDiff = None
+
+        expectedFilePath = getTestPathFile(
+            "Test.als.txt"
+        )  # result of an unzipped set should be same as a zipped set
+        testFilePath = getTestPathFile("Test Project/Test-NoZip.als")
+
+        with open(expectedFilePath, mode="r") as expectedFile:
+            expected = expectedFile.read()
+            actual = parse(testFilePath)
+            self.assertEqual(expected, actual)
+
 
 def parse(path):
-    result = (
-        maxpatTextconv.parse(path)
-        if path.endswith(".maxpat")
-        else amxdTextconv.parse(path)
-    )
+    result = ""
+    if path.endswith(".amxd"):
+        result = amxdTextconv.parse(path)
+    if path.endswith(".maxpat"):
+        result = maxpatTextconv.parse(path)
+    if path.endswith(".als"):
+        result = alsTextconv.parse(path)
     return result
 
 

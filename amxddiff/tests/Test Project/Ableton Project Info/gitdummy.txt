@@ -1,0 +1,1 @@
+We put a file here to make sure git picks up this folder. This folder is required for Live to recognize the parent folder as a Live project.
