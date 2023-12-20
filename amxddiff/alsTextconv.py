@@ -2,22 +2,22 @@ import sys, gzip
 
 
 def main(argv):
-    inputfile = ""
     if len(argv) != 1:
         print("Requires the file to convert as an argument")
         sys.exit(2)
-    printAls(argv[0])
+    result = parse(argv[0])
+    print(result)
 
 
-def printAls(path):
+def parse(path):
     if isGzipped(path):
         with gzip.open(path, "rb") as fileObj:
             data = fileObj.read()
-            print(data.decode("ascii"))
+            return data.decode("ascii")
     else:
         with open(path, "rb") as fileObj:
             data = fileObj.read()
-            print(data.decode("ascii"))
+            return data.decode("ascii")
 
 
 def isGzipped(path):
