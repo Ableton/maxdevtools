@@ -18,8 +18,8 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_device(self):
         self.maxDiff = None
 
-        expectedFilePath = getTestPathFile("EncryptedTest.amxd.txt")
-        testFilePath = getTestPathFile("EncryptedTest.amxd")
+        expectedFilePath = getTestPathFile("testBaselines/EncryptedTest.amxd.txt")
+        testFilePath = getTestPathFile("testFiles/EncryptedTest.amxd")
 
         with open(expectedFilePath, mode="r") as expectedFile:
             expected = expectedFile.read()
@@ -29,8 +29,8 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_encrypted_device(self):
         self.maxDiff = None
 
-        expectedFilePath = getTestPathFile("Test.amxd.txt")
-        testFilePath = getTestPathFile("Test.amxd")
+        expectedFilePath = getTestPathFile("testBaselines/Test.amxd.txt")
+        testFilePath = getTestPathFile("testFiles/Test.amxd")
 
         with open(expectedFilePath, mode="r") as expectedFile:
             expected = expectedFile.read()
@@ -40,8 +40,8 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_maxpat(self):
         self.maxDiff = None
 
-        expectedFilePath = getTestPathFile("Test.maxpat.txt")
-        testFilePath = getTestPathFile("Test.maxpat")
+        expectedFilePath = getTestPathFile("testBaselines/Test.maxpat.txt")
+        testFilePath = getTestPathFile("testFiles/Test.maxpat")
 
         with open(expectedFilePath, mode="r") as expectedFile:
             expected = expectedFile.read()
@@ -51,8 +51,8 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_als_zipped(self):
         self.maxDiff = None
 
-        expectedFilePath = getTestPathFile("Test.als.txt")
-        testFilePath = getTestPathFile("Test Project/Test.als")
+        expectedFilePath = getTestPathFile("testBaselines/Test.als.txt")
+        testFilePath = getTestPathFile("testFiles/Test Project/Test.als")
 
         with open(expectedFilePath, mode="r") as expectedFile:
             expected = expectedFile.read()
@@ -62,10 +62,9 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_als_unzipped(self):
         self.maxDiff = None
 
-        expectedFilePath = getTestPathFile(
-            "Test.als.txt"
-        )  # result of an unzipped set should be same as a zipped set
-        testFilePath = getTestPathFile("Test Project/Test-NoZip.als")
+        # result of an unzipped set should be same as a zipped set
+        expectedFilePath = getTestPathFile("testBaselines/Test.als.txt")
+        testFilePath = getTestPathFile("testFiles/Test Project/Test-NoZip.als")
 
         with open(expectedFilePath, mode="r") as expectedFile:
             expected = expectedFile.read()
