@@ -6,7 +6,11 @@ def main(argv):
     if len(argv) != 1:
         print("Requires the file to convert as an argument")
         sys.exit(2)
-    print(parse(argv[0]))
+    try:
+        result = parse(argv[0])
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
 
 
 def parse(path):
@@ -51,14 +55,12 @@ def parseField(field, datasize, data):
     if field in fieldHandlers:
         return fieldHandlers[field](datasize, data, deviceTypes)
     else:
-        print(f"Unknown field {field}")
-        sys.exit(2)
+        raise RuntimeError(f"Unknown field {field}")
 
 
 def handleAmpf(datasize, data, device_types):
     if datasize != 4:
-        print("Incorrect device type argument")
-        sys.exit(2)
+        raise RuntimeError("Incorrect device type argument")
     devicetype = data.decode("ascii")
     return f"{device_types.get(devicetype, 'Unknown device type')}\n-------------------\n"
 
