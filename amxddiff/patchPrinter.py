@@ -115,6 +115,10 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
         properties = getPropertiesToPrint(box, defaultBox, skipBoxProperties)
 
         for key, value in properties.items():
+            if key == "code":
+                displayText += getCodeStringBlock(value, indent + 1)
+                continue
+
             displayText = concat(displayText, key + ": " + getPropertyString(value))
 
         summaryString += ("\t") * indent + "[" + boxText + "] " + displayText + "\n"
@@ -225,6 +229,10 @@ def getPropertyString(value):
         return "[" + propertyString + "]"
 
     return str(value)
+
+
+def getCodeStringBlock(value, indentAmount):
+    return "\n" + indent(value, indentAmount)
 
 
 def getSavedAttributeAttributes(value):
@@ -426,3 +434,8 @@ colorProperties = [
     "inactivetextoncolor",
     "activebgoncolor",
 ]
+
+
+def indent(text, amount, ch="\t"):
+    padding = amount * ch
+    return "".join(padding + line for line in text.splitlines(True))

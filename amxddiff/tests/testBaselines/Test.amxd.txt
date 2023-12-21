@@ -11,6 +11,47 @@ project:
 		data:
 			collContent.txt
 ----------- objects -----------
+[gen @t exponent] 
+	appversion: 8.5.5-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	----------- objects -----------
+	[codebox] 
+		//============================================================
+		// Generate exponential curve.
+		//============================================================
+		
+		
+		exponent(x, amount)
+		{
+		    y = 0;
+		    
+		    if (amount != 0)
+		    {
+		        a = abs(amount);
+		        
+		        if (amount > 0)
+		        {
+		            y = exp(ln(x) * (1 / (1 - a)));
+		        }
+		        else
+		        {
+		            y = 1 - (exp(ln(1 - x) * (1 / (1 - a))));
+		        }
+		    
+		        return y;
+		    }
+		    else {
+		        return x;
+		    }
+		}
+		
+		out1 = exponent(in1, in2 * 0.0095); | fontface: 0 | fontname: <Monospaced> | fontsize: 12.0
+	[in 1] 
+	[in 2] 
+	[out 1] 
+	----------- patch cords -----------
+	[codebox] (0) => (0) [out 1]
+	[in 1] (0) => (0) [codebox]
+	[in 2] (0) => (1) [codebox]
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
 	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480]
