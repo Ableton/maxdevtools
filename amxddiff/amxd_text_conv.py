@@ -1,0 +1,158 @@
+import sys, json
+from patch_printer import print_patcher
+
+
+def main(argv):
+    if len(argv) != 1:
+        print("Requires the file to convert as an argument")
+        sys.exit(2)
+    try:
+        result = parse(argv[0])
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
+
+
+import sys, json
+from patch_printer import print_patcher
+
+
+def main(argv):
+    if len(argv) != 1:
+        print("Requires the file to convert as an argument")
+        sys.exit(2)
+    try:
+        result = parse(argv[0])
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
+
+
+def parse(path):
+    result = ""
+    with open(path, "rb") as file_obj:
+        encrypted = False
+        while True:
+            chunk = file_obj.read(4)
+            if len(chunk) < 4:
+                break
+
+            field = chunk.decode("ascii")
+            datasize = int.from_bytes(file_obj.read(4), byteorder="little")
+            data = file_obj.read(datasize)
+
+            if field == "ciph":
+                encrypted = True
+
+            if field == "ptch" and encrypted:
+                result += "<Patch is encrypted>\n"
+            else:
+                result += parse_field(field, datasize, data)
+    return result
+
+
+def parse_field(field, datasize, data):
+    device_types = {
+        "aaaa": "Audio Effect Device",
+        "mmmm": "MIDI Effect Device",
+        "iiii": "Instrument Device",
+        "nagg": "MIDI Tool Generator",
+        "natt": "MIDI Tool Transformation",
+    }
+
+    field_handlers = {
+        "ampf": handle_ampf,
+        "meta": handle_meta,
+        "ciph": handle_ciph,
+        "ptch": handle_ptch,
+    }
+
+    if field in field_handlers:
+        return field_handlers[field](datasize, data, device_types)
+    else:
+        raise RuntimeError(f"Unknown field {field}")
+
+
+
+def handle_ampf(datasize, data, device_types):
+    if datasize != 4:
+        raise RuntimeError("Incorrect device type argument")
+    devicetype = data.decode("ascii")
+    return f"{device_types.get(devicetype, f'Unknown device type {devicetype}')}\n-------------------\n"
+
+
+def handle_meta(datasize, data, device_types):
+    return ""
+
+
+def handle_ciph(datasize, data, device_types):
+    return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
+
+
+def handle_ptch(datasize, data, device_types):
+    if data[:4].decode("ascii") == "mx@c":
+        return "Device is frozen"
+    else:
+        if data[datasize - 1] == 0:
+            patcher_dict = json.loads(data[: datasize - 1].decode("utf-8"))
+        else:
+            patcher_dict = json.loads(data.decode("utf-8"))
+        return print_patcher(patcher_dict)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+
+
+
+def parse_field(field, datasize, data):
+    device_types = {
+        "aaaa": "Audio Effect Device",
+        "mmmm": "MIDI Effect Device",
+        "iiii": "Instrument Device",
+        "nagg": "MIDI Tool Generator",
+        "natt": "MIDI Tool Transformation",
+    }
+
+    field_handlers = {
+        "ampf": handle_ampf,
+        "meta": handle_meta,
+        "ciph": handle_ciph,
+        "ptch": handle_ptch,
+    }
+
+    if field in field_handlers:
+        return field_handlers[field](datasize, data, device_types)
+    else:
+        raise RuntimeError(f"Unknown field {field}")
+
+
+
+def handle_ampf(datasize, data, device_types):
+    if datasize != 4:
+        raise RuntimeError("Incorrect device type argument")
+    devicetype = data.decode("ascii")
+    return f"{device_types.get(devicetype, f'Unknown device type {devicetype}')}\n-------------------\n"
+
+
+def handle_meta(datasize, data, device_types):
+    return ""
+
+
+def handle_ciph(datasize, data, device_types):
+    return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
+
+
+def handle_ptch(datasize, data, device_types):
+    if data[:4].decode("ascii") == "mx@c":
+        return "Device is frozen"
+    else:
+        if data[datasize - 1] == 0:
+            patcher_dict = json.loads(data[: datasize - 1].decode("utf-8"))
+        else:
+            patcher_dict = json.loads(data.decode("utf-8"))
+        return print_patcher(patcher_dict)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

@@ -10,19 +10,19 @@ def main(argv):
 
 
 def parse(path):
-    if isGzipped(path):
-        with gzip.open(path, "rb") as fileObj:
-            data = fileObj.read()
+    if is_gzipped(path):
+        with gzip.open(path, "rb") as file_obj:
+            data = file_obj.read()
             return data.decode("ascii")
     else:
-        with open(path, "rb") as fileObj:
-            data = fileObj.read()
+        with open(path, "rb") as file_obj:
+            data = file_obj.read()
             return data.decode("ascii")
 
 
-def isGzipped(path):
-    with open(path, "rb") as fileObj:
-        return fileObj.read(2) == b"\x1f\x8b"
+def is_gzipped(path):
+    with open(path, "rb") as file_obj:
+        return file_obj.read(2) == b"\x1f\x8b"
 
 
 if __name__ == "__main__":

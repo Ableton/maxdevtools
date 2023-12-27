@@ -1,5 +1,4 @@
-# fmt: off
-defaultPatcher = {
+default_patcher = {
     "fileversion": 1,
     "appversion": {
         "major": 8,

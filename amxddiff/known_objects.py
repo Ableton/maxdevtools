@@ -1,5 +1,4 @@
-# fmt: off
-knownObjects = {
+known_objects = {
     "boxes": [
         {
             "box": {
