@@ -1,3 +1,5 @@
+"""Exposes a dictionary representation of known objects that exist in Max."""
+
 known_objects = {
     "boxes": [
         {

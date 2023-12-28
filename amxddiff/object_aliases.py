@@ -1,3 +1,5 @@
+"""Represents object aliases in Max 8."""
+
 object_aliases = {
     "*~": "times~",
     ">~": "greaterthan~",
