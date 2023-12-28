@@ -289,22 +289,11 @@ def get_parameters_string_block(parameters):
             parameters_string += f"\t{key} {value}"
 
             override = parameters["parameter_overrides"][key]
-            override_print = []
-            override_print.append(
-                override["parameter_longname"]
-                if ("parameter_longname" in override)
-                else "-"
-            )
-            override_print.append(
-                override["parameter_shortname"]
-                if ("parameter_shortname" in override)
-                else "-"
-            )
-            override_print.append(
-                str(override["parameter_linknames"])
-                if ("parameter_linknames" in override)
-                else "-"
-            )
+            override_print = [
+                override.get("parameter_longname", "-"),
+                override.get("parameter_shortname", "-"),
+                str(override.get("parameter_linknames", "-")),
+            ]
 
             for key2, value2 in override.items():
                 if key2 in [
