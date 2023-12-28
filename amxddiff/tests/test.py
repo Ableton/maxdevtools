@@ -75,14 +75,16 @@ class TestStringMethods(unittest.TestCase):
 
 
 def parse(path):
-    result = ""
-    if path.endswith(".amxd"):
-        result = amxd_text_conv.parse(path)
-    if path.endswith(".maxpat"):
-        result = maxpat_text_conv.parse(path)
-    if path.endswith(".als"):
-        result = als_text_conv.parse(path)
-    return result
+    parsers = {
+        ".amxd": amxd_text_conv.parse,
+        ".maxpat": maxpat_text_conv.parse,
+        ".als": als_text_conv.parse
+    }
+
+    file_extension = os.path.splitext(path)[1]
+    if file_extension in parsers:
+        return parsers[file_extension](path)
+    return ""
 
 
 def get_test_path_file(file_name):
