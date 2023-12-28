@@ -1,19 +1,5 @@
-import sys, json
-from patch_printer import print_patcher
-
-
-def main(argv):
-    if len(argv) != 1:
-        print("Requires the file to convert as an argument")
-        sys.exit(2)
-    try:
-        result = parse(argv[0])
-        print(result)
-    except RuntimeError:
-        sys.exit(2)
-
-
-import sys, json
+import sys 
+import json
 from patch_printer import print_patcher
 import argparse
 

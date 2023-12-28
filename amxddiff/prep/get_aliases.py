@@ -1,4 +1,5 @@
-import sys, json
+import sys
+import json
 
 
 def main(argv):
