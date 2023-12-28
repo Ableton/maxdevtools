@@ -1,3 +1,5 @@
+"""Exposes a dictionary representation of a default patcher."""
+
 # fmt: off
 default_patcher = {
     "fileversion": 1,

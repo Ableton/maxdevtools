@@ -1,10 +1,12 @@
+"""Module to convert an AMXD file to a textual representation that can then be diffed."""
 import sys
 import json
 import argparse
 from patch_printer import print_patcher
 
 
-def parse(path):
+def parse(path: str) -> str:
+    """Parse a file and returns a textual representation of it."""
     result = ""
     with open(path, "rb") as file_obj:
         encrypted = False
@@ -27,7 +29,8 @@ def parse(path):
     return result
 
 
-def parse_field(field, datasize, data):
+def parse_field(field: str, datasize: int, data: bytes) -> str:
+    """Select the correct handler for the field and device type."""
     device_types = {
         "aaaa": "Audio Effect Device",
         "mmmm": "MIDI Effect Device",
@@ -49,22 +52,26 @@ def parse_field(field, datasize, data):
         raise RuntimeError(f"Unknown field {field}")
 
 
-def handle_ampf(datasize, data, device_types):
+def handle_ampf(datasize: int, data: bytes, device_types: dict) -> str:
+    """Handle the ampf field."""
     if datasize != 4:
         raise RuntimeError("Incorrect device type argument")
     devicetype = data.decode("ascii")
     return f"{device_types.get(devicetype, f'Unknown device type {devicetype}')}\n-------------------\n"
 
 
-def handle_meta(datasize, data, device_types):
+def handle_meta(datasize: int, data: bytes, device_types: dict):
+    """Handle the meta field."""
     return ""
 
 
-def handle_ciph(datasize, data, device_types):
+def handle_ciph(datasize: int, data: bytes, device_types: dict) -> str:
+    """Handle the ciph field. This is used when a device is encrypted."""
     return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
 
 
-def handle_ptch(datasize, data, device_types):
+def handle_ptch(datasize: int, data: bytes, device_types: dict) -> dict | str:
+    """Handle the ptch field."""
     if data[:4].decode("ascii") == "mx@c":
         return "Device is frozen"
     else:
@@ -76,6 +83,7 @@ def handle_ptch(datasize, data, device_types):
 
 
 def main():
+    """Entry point of the program."""
     parser = argparse.ArgumentParser(
         description="Convert AMXD file to a textual representation."
     )
