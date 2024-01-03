@@ -18,7 +18,7 @@ import als_text_conv
 
 class TestStringMethods(unittest.TestCase):
     def test_parse_device(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         expected_file_path = get_test_path_file("test_baselines/EncryptedTest.amxd.txt")
         test_file_path = get_test_path_file("test_files/EncryptedTest.amxd")
@@ -29,7 +29,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_parse_encrypted_device(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         expected_file_path = get_test_path_file("test_baselines/Test.amxd.txt")
         test_file_path = get_test_path_file("test_files/Test.amxd")
@@ -40,7 +40,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_parse_maxpat(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         expected_file_path = get_test_path_file("test_baselines/Test.maxpat.txt")
         test_file_path = get_test_path_file("test_files/Test.maxpat")
@@ -51,7 +51,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_parse_als_zipped(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
         test_file_path = get_test_path_file("test_files/Test Project/Test.als")
@@ -62,7 +62,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_parse_als_unzipped(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         # result of an unzipped set should be same as a zipped set
         expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
