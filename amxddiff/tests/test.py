@@ -1,4 +1,4 @@
-# Tests if the content of Test.txt is equal to the result of amxd_text_conv.
+# Tests if the content of Test.txt is equal to the result of amxd_textconv.
 # If not, displays the diff between the two.
 
 import sys
@@ -9,9 +9,9 @@ sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 )
 
-import amxd_text_conv
-import maxpat_text_conv
-import als_text_conv
+import amxd_textconv
+import maxpat_textconv
+import als_textconv
 
 
 class TestStringMethods(unittest.TestCase):
@@ -74,9 +74,9 @@ class TestStringMethods(unittest.TestCase):
 
 def parse(path):
     parsers = {
-        ".amxd": amxd_text_conv.parse,
-        ".maxpat": maxpat_text_conv.parse,
-        ".als": als_text_conv.parse
+        ".amxd": amxd_textconv.parse,
+        ".maxpat": maxpat_textconv.parse,
+        ".als": als_textconv.parse
     }
 
     file_extension = os.path.splitext(path)[1]
