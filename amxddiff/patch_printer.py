@@ -56,7 +56,7 @@ def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
             display_text += get_appversion_string_short(value)
             continue
 
-        display_text = concat(display_text, key + ": " + get_property_string(value))
+        display_text = concat(display_text, f"{key}: {get_property_string(value)}")
 
     if "parameters" in patcher:
         display_text += get_parameters_string_block(patcher["parameters"])
@@ -71,14 +71,14 @@ def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
         display_text += get_styles_string_block(patcher["styles"], indent)
 
     if display_text != "":
-        summary_string += ("\t") * indent + display_text + "\n"
+        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     #### objects ####
 
     if not patcher["boxes"]:
         return
 
-    summary_string += ("\t") * indent + "----------- objects -----------" + "\n"
+    summary_string += create_indented_text("----------- objects -----------\n", indent)
 
     # every entry of "boxes" has a single item "box"
     boxes = list(map(lambda val: val["box"], patcher["boxes"]))
@@ -121,10 +121,9 @@ def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
                 display_text += get_code_string_block(value, indent + 1)
                 continue
 
-            display_text = concat(display_text, key + ": " + get_property_string(value))
+            display_text = concat(display_text, f"{key}: {get_property_string(value)}")
 
-        summary_string += ("\t") * indent + "[" + box_text + "] " + display_text + "\n"
-
+        summary_string += create_indented_text(f"[{box_text}] {display_text}\n", indent)
         if "patcher" in box:
             summary_string += print_patcher_summary_recursive(
                 box, known_objects_map, indent + 1
@@ -135,7 +134,9 @@ def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
     if len(patcher["lines"]) == 0:
         return summary_string
 
-    summary_string += ("\t") * indent + "----------- patch cords -----------" + "\n"
+    summary_string += create_indented_text(
+        "----------- patch cords -----------\n", indent
+    )
 
     lines = []
     for val in patcher_dict["patcher"]["lines"]:
@@ -151,13 +152,13 @@ def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
     # source object length would affect all other printed lines
 
     for line in lines:
-        from_name = "[" + ids_to_names[line["source"][0]] + "]"
-        from_outlet = "(" + str(line["source"][1]) + ")"
-        to_name = "[" + ids_to_names[line["destination"][0]] + "]"
-        to_inlet = "(" + str(line["destination"][1]) + ")"
+        from_name = f"[{ids_to_names[line['source'][0]]}]"
+        from_outlet = f"({line['source'][1]})"
+        to_name = f"[{ids_to_names[line['destination'][0]]}]"
+        to_inlet = f"({line['destination'][1]})"
 
-        display_text = from_name + " " + from_outlet + " => " + to_inlet + " " + to_name
-        summary_string += ("\t") * indent + display_text + "\n"
+        display_text = f"{from_name} {from_outlet} => {to_inlet} {to_name}"
+        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     return summary_string
 
@@ -168,10 +169,10 @@ def get_box_text(box):
     if objecttype == "newobj":
         boxtext = box["text"]
     elif "text" in box:
-        boxtext = objecttype + " " + box["text"]
+        boxtext = f"{objecttype} {box['text']}"
 
     if objecttype == "bpatcher" and "name" in box:
-        boxtext = boxtext + " " + box["name"]
+        boxtext = f"{boxtext} {box['name']}"
 
     return boxtext
 
@@ -227,18 +228,18 @@ def get_property_string(value):
 
             if isinstance(item, float):
                 if item.is_integer():
-                    property_string += "{:.0f}".format(item)
+                    property_string += f"{item:.0f}"
                 else:
-                    property_string += "{:.2f}".format(item)
+                    property_string += f"{item:.2f}"
             else:
                 property_string += str(item)
-        return "[" + property_string + "]"
+        return f"[{property_string}]"
 
     return str(value)
 
 
 def get_code_string_block(value, indent_amount):
-    return "\n" + indent(value, indent_amount)
+    return f"\n{indent(value, indent_amount)}"
 
 
 def get_saved_attribute_attributes(value):
@@ -249,7 +250,7 @@ def get_saved_attribute_attributes(value):
 
         if attrkey == "valueof":
             # Handle parameter info. TODO: are there usages of valueof other than for parameter info?
-            result["parameter"] = "<" + get_object_parameter_string(attrvalue) + ">"
+            result["parameter"] = f"<{get_object_parameter_string(attrvalue)}>"
             continue
 
         # Handle dynamic colors
@@ -285,7 +286,7 @@ def get_parameters_string_block(parameters):
             "parameter_overrides" in parameters
             and key in parameters["parameter_overrides"]
         ):
-            parameters_string += "\t" + key + " " + str(value)
+            parameters_string += f"\t{key} {value}"
 
             override = parameters["parameter_overrides"][key]
             override_print = []
@@ -312,22 +313,20 @@ def get_parameters_string_block(parameters):
                     "parameter_linknames",
                 ]:
                     continue
-                override_print.append("" + key2 + ": " + str(value2))
+                override_print.append(f"{key2}: {value2}")
 
-            parameters_string += " > override > " + str(override_print) + "\n"
+            parameters_string += f" > override > {str(override_print)}\n"
 
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
         for key, value in parameters["parameterbanks"].items():
             parameters_string += (
-                "\t"
-                + str(value["index"])
-                + ((" (" + value["name"] + ")") if value["name"] != "" else "")
-                + ": "
-                + str(value["parameters"])
+                f"\t{value['index']}"
+                + (f" ({value['name']})" if value["name"] != "" else "")
+                + f": {value['parameters']}"
             )
 
-    return "\nparameters:\n" + parameters_string
+    return f"\nparameters:\n{parameters_string}"
 
 
 def get_dependency_cache_string_block(dependency_cache):
@@ -336,10 +335,10 @@ def get_dependency_cache_string_block(dependency_cache):
 
     dependency_cache_string = ""
     for dependency in dependency_cache:
-        dependency_cache_string += "\t" + str(dependency) + "\n"
+        dependency_cache_string += f"\t{dependency}\n"
 
     return (
-        "\ndependency_cache:\n" + dependency_cache_string
+        f"\ndependency_cache:\n{dependency_cache_string}"
         if dependency_cache_string != ""
         else ""
     )
@@ -354,20 +353,20 @@ def get_project_string_block(project):
     for key, value in project.items():
         if key != "contents":
             project_string = concat(
-                project_string, key + ": " + get_property_string(value)
+                project_string, f"{key}: {get_property_string(value)}"
             )
     if "contents" in project:
         contents_string = ""
         for key2, value2 in project["contents"].items():
             key3_string = ""
             for key3 in value2:
-                key3_string += "\n\t\t\t" + key3
+                key3_string += f"\n\t\t\t{key3}"
             if key3_string != "":
-                contents_string += "\n\t\t" + key2 + ":" + key3_string
+                contents_string += f"\n\t\t{key2}:{key3_string}"
         if contents_string != "":
-            project_string += "\n\tcontents:" + contents_string
+            project_string += f"\n\tcontents:{contents_string}"
 
-    return "\nproject:\n\t" + project_string
+    return f"\nproject:\n\t{project_string}"
 
 
 def get_styles_string_block(styles, indent):
@@ -379,7 +378,7 @@ def get_object_parameter_string(parameter):
     for key, value in parameter.items():
         key_text = key[len("parameter_") :] if key.startswith("parameter_") else key
         parameter_string = concat(
-            parameter_string, key_text + ": " + get_property_string(value)
+            parameter_string, f"{key_text}: {get_property_string(value)}"
         )
 
     return parameter_string
@@ -442,6 +441,11 @@ color_properties = [
     "inactivetextoncolor",
     "activebgoncolor",
 ]
+
+
+def create_indented_text(text: str, indent_amount: int = 0) -> str:
+    """Indent a string with a given indentation amount."""
+    return "\t" * indent_amount + text
 
 
 def indent(text, amount, ch="\t"):

@@ -55,7 +55,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_parse_als_zipped(self):
-        self.max_diff = None
+        self.maxDiff = None
 
         expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
         test_file_path = get_test_path_file("test_files/Test Project/Test.als")
