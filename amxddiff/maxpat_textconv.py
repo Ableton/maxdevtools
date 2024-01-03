@@ -6,7 +6,7 @@ import argparse
 from patch_printer import print_patcher
 
 
-def parse(path: str) -> str:
+def parse(path: str) -> dict | str:
     """Parse a file and returns a textual representation of it."""
     with open(path, "r", encoding="utf-8") as file_obj:
         patcher_dict = json.load(file_obj)

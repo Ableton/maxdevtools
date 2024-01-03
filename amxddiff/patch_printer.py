@@ -3,9 +3,10 @@
 from known_objects import known_objects
 from default_patcher import default_patcher
 from object_aliases import object_aliases
+from typing import Any
 
 
-def print_patcher(patcher_dict: dict, summarize: bool=True) -> [dict, str]:
+def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
     """Print a summary of a patcher dict.
 
     Note that the script should only format properties it knows about or is actively set to skip.
@@ -14,7 +15,7 @@ def print_patcher(patcher_dict: dict, summarize: bool=True) -> [dict, str]:
     if summarize:
         known_objects_map = {}
         for box_obj in known_objects["boxes"]:
-            box = box_obj["box"]
+            box = box_obj["box"] # type: ignore
             name = get_box_text(box)
             known_objects_map[name] = box
 
@@ -25,7 +26,9 @@ def print_patcher(patcher_dict: dict, summarize: bool=True) -> [dict, str]:
         return json.dumps(patcher_dict, indent=4, sort_keys=True)
 
 
-def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict, indent: int=0) -> [str, None]:
+def print_patcher_summary_recursive(
+    patcher_dict: dict, known_objects_map: dict, indent: int = 0
+) -> str:
     """Recursively print a summary of a patcher dict."""
     if (
         "patcher" not in patcher_dict
@@ -49,7 +52,9 @@ def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict,
         "styles",  # treated separately
     ]
 
-    properties = get_properties_to_print(patcher, default_patcher, skip_patcher_properties)
+    properties = get_properties_to_print(
+        patcher, default_patcher, skip_patcher_properties
+    )
 
     display_text = ""
     for key, value in properties.items():
@@ -72,12 +77,12 @@ def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict,
         display_text += get_styles_string_block(patcher["styles"], indent)
 
     if display_text != "":
-        summary_string += create_indented_text(f'{display_text}\n', indent)
+        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     #### objects ####
 
     if not patcher["boxes"]:
-        return
+        return ""
 
     summary_string += create_indented_text("----------- objects -----------\n", indent)
 
@@ -124,7 +129,7 @@ def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict,
 
             display_text = concat(display_text, f"{key}: {get_property_string(value)}")
 
-        summary_string += create_indented_text(f'[{box_text}] {display_text}\n', indent)
+        summary_string += create_indented_text(f"[{box_text}] {display_text}\n", indent)
         if "patcher" in box:
             summary_string += print_patcher_summary_recursive(
                 box, known_objects_map, indent + 1
@@ -135,7 +140,9 @@ def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict,
     if len(patcher["lines"]) == 0:
         return summary_string
 
-    summary_string += create_indented_text('----------- patch cords -----------\n', indent)
+    summary_string += create_indented_text(
+        "----------- patch cords -----------\n", indent
+    )
 
     lines = []
     for val in patcher_dict["patcher"]["lines"]:
@@ -157,14 +164,14 @@ def print_patcher_summary_recursive(patcher_dict: dict, known_objects_map: dict,
         to_inlet = f"({line['destination'][1]})"
 
         display_text = f"{from_name} {from_outlet} => {to_inlet} {to_name}"
-        summary_string += create_indented_text(f'{display_text}\n', indent)
+        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     return summary_string
 
 
 def get_box_text(box: dict) -> str:
     """Extract the text in a box in a Max patch.
-    
+
     A box is otherwise known as an "object".
     """
     objecttype = box["maxclass"]
@@ -180,7 +187,9 @@ def get_box_text(box: dict) -> str:
     return boxtext
 
 
-def get_properties_to_print(box_or_patcher: dict, default: dict, skip_properties: list[str]) -> dict:
+def get_properties_to_print(
+    box_or_patcher: dict, default: dict, skip_properties: list[str]
+) -> dict:
     """Get the properties of a box or patcher that should be printed."""
     properties = {}
     for key, value in box_or_patcher.items():
@@ -197,7 +206,9 @@ def get_properties_to_print(box_or_patcher: dict, default: dict, skip_properties
         if key == "saved_attribute_attributes":
             # We take the attributes out or saved_attribute_attributes and present them as properties
             attributes = get_saved_attribute_attributes(value)
-            attributes_to_print = get_properties_to_print(attributes, default, skip_properties)
+            attributes_to_print = get_properties_to_print(
+                attributes, default, skip_properties
+            )
             for new_key, new_value in attributes_to_print.items():
                 properties[
                     new_key
@@ -207,7 +218,9 @@ def get_properties_to_print(box_or_patcher: dict, default: dict, skip_properties
         if key == "saved_object_attributes":
             # We take the attributes out or saved_object_attributes and present them as properties
             attributes = get_saved_object_attributes(value)
-            attributes_to_print = get_properties_to_print(attributes, default, skip_properties)
+            attributes_to_print = get_properties_to_print(
+                attributes, default, skip_properties
+            )
             for new_key, new_value in attributes_to_print.items():
                 properties[new_key] = new_value
             continue
@@ -219,7 +232,7 @@ def get_properties_to_print(box_or_patcher: dict, default: dict, skip_properties
     return properties
 
 
-def get_property_string(value: [str, list]) -> str:
+def get_property_string(value: str | list) -> str:
     """Produce a string representation of a property value."""
     if isinstance(value, list):
         property_string = ""
@@ -241,7 +254,7 @@ def get_property_string(value: [str, list]) -> str:
 
 def get_code_string_block(value: str, indent_amount: int) -> str:
     """Produce a string representing code in a patcher."""
-    return f'\n{indent(value, indent_amount)}'
+    return f"\n{indent(value, indent_amount)}"
 
 
 def get_saved_attribute_attributes(value: dict) -> dict:
@@ -297,7 +310,7 @@ def get_parameters_string_block(parameters: dict) -> str:
             override_print = [
                 override.get("parameter_longname", "-"),
                 override.get("parameter_shortname", "-"),
-                str(override.get("parameter_linknames", "-"))
+                str(override.get("parameter_linknames", "-")),
             ]
 
             for key2, value2 in override.items():
@@ -314,10 +327,13 @@ def get_parameters_string_block(parameters: dict) -> str:
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
         for key, value in parameters["parameterbanks"].items():
-            parameters_string += f"\t{value['index']}" + (f" ({value['name']})" if value['name'] != '' else '') + f": {value['parameters']}"
+            parameters_string += (
+                f"\t{value['index']}"
+                + (f" ({value['name']})" if value["name"] != "" else "")
+                + f": {value['parameters']}"
+            )
 
-
-    return f'\nparameters:\n{parameters_string}'
+    return f"\nparameters:\n{parameters_string}"
 
 
 def get_dependency_cache_string_block(dependency_cache: list):
@@ -346,13 +362,15 @@ def get_project_string_block(project: dict):
     project_string = ""
     for key, value in project.items():
         if key != "contents":
-            project_string = concat(project_string, f"{key}: {get_property_string(value)}")
+            project_string = concat(
+                project_string, f"{key}: {get_property_string(value)}"
+            )
     if "contents" in project:
         contents_string = ""
         for key2, value2 in project["contents"].items():
             key3_string = ""
             for key3 in value2:
-                key3_string += f'\n\t\t\t{key3}'
+                key3_string += f"\n\t\t\t{key3}"
             if key3_string != "":
                 contents_string += f"\n\t\t{key2}:{key3_string}"
         if contents_string != "":
@@ -361,9 +379,10 @@ def get_project_string_block(project: dict):
     return f"\nproject:\n\t{project_string}"
 
 
-def get_styles_string_block(styles: any, indent: int) -> str:
+def get_styles_string_block(styles: Any, indent: int) -> str:
     """Produce a string representing styles in a patcher."""
     return "\n" + "\t" * indent + "styles: " + str(styles)
+
 
 def get_object_parameter_string(parameter: dict) -> str:
     """Produce a string representing an object parameter."""
@@ -376,22 +395,26 @@ def get_object_parameter_string(parameter: dict) -> str:
 
     return parameter_string
 
+
 def concat(a: str, b: str) -> str:
     """Concatenate two strings with a separator if both are non-empty."""
     sep = " | "
     return sep.join(filter(None, [a, b]))
 
+
 def create_indented_text(text: str, indent_amount: int = 0) -> str:
     """Indent a string with a given indentation amount."""
-    return '\t' * indent_amount + text
+    return "\t" * indent_amount + text
 
-def indent(text: str, amount: int, ch: str="\t"):
+
+def indent(text: str, amount: int, ch: str = "\t"):
     """Indent a string with a given indentation amount and character.
-    
+
     It will also split the lines of the string and indent each line.
     """
     padding = amount * ch
     return "".join(padding + line for line in text.splitlines(True))
+
 
 color_properties = [
     "slidercolor",

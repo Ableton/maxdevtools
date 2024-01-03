@@ -69,7 +69,7 @@ def handle_ciph(datasize: int, data: bytes, device_types: dict) -> str:
     return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
 
 
-def handle_ptch(datasize: int, data: bytes, device_types: dict) -> str:
+def handle_ptch(datasize: int, data: bytes, device_types: dict) -> dict | str:
     """Handle the ptch field."""
     if data[:4].decode("ascii") == "mx@c":
         return "Device is frozen"
