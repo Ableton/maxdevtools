@@ -3,8 +3,6 @@
 
 import sys
 import unittest
-import difflib
-
 import os.path
 
 sys.path.append(
