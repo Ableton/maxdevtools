@@ -15,7 +15,7 @@ def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
     if summarize:
         known_objects_map = {}
         for box_obj in known_objects["boxes"]:
-            box = box_obj["box"] # type: ignore
+            box = box_obj["box"]  # type: ignore
             name = get_box_text(box)
             known_objects_map[name] = box
 

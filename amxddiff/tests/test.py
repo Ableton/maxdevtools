@@ -76,7 +76,7 @@ def parse(path):
     parsers = {
         ".amxd": amxd_textconv.parse,
         ".maxpat": maxpat_textconv.parse,
-        ".als": als_textconv.parse
+        ".als": als_textconv.parse,
     }
 
     file_extension = os.path.splitext(path)[1]

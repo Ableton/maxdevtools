@@ -1,8 +1,9 @@
 """Module to convert an AMXD file to a textual representation that can then be diffed."""
-import sys 
+import sys
 import json
 import argparse
 from patch_printer import print_patcher
+
 
 def parse(path: str) -> str:
     """Parse a file and returns a textual representation of it."""
@@ -79,11 +80,14 @@ def handle_ptch(datasize: int, data: bytes, device_types: dict) -> dict | str:
         else:
             patcher_dict = json.loads(data.decode("utf-8"))
         return print_patcher(patcher_dict)
-    
+
+
 def main():
     """Entry point of the program."""
-    parser = argparse.ArgumentParser(description='Convert AMXD file to a textual representation.')
-    parser.add_argument('file', type=str, help='Path to the file to convert')
+    parser = argparse.ArgumentParser(
+        description="Convert AMXD file to a textual representation."
+    )
+    parser.add_argument("file", type=str, help="Path to the file to convert")
     args = parser.parse_args()
 
     try:
@@ -91,6 +95,7 @@ def main():
         print(result)
     except RuntimeError:
         sys.exit(2)
-    
+
+
 if __name__ == "__main__":
     main()
