@@ -3,7 +3,6 @@ import json
 
 
 def main(argv):
-    inputfile = ""
     if len(argv) != 1:
         print("Requires the path to Max.app")
         sys.exit(2)
