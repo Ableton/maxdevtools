@@ -1,5 +1,5 @@
 import sys, json
-from patchPrinter import printPatcher
+from patch_printer import print_patcher
 
 
 def main(argv):
@@ -10,9 +10,9 @@ def main(argv):
 
 
 def parse(path):
-    with open(path, "r", encoding="utf-8") as fileObj:
-        patcherDict = json.load(fileObj)
-        return printPatcher(patcherDict)
+    with open(path, "r", encoding="utf-8") as file_obj:
+        patcher_dict = json.load(file_obj)
+        return print_patcher(patcher_dict)
 
 
 if __name__ == "__main__":

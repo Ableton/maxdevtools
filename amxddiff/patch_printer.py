@@ -1,43 +1,43 @@
-from knownObjects import knownObjects
-from defaultPatcher import defaultPatcher
-from objectAliases import objectAliases
+from known_objects import known_objects
+from default_patcher import default_patcher
+from object_aliases import object_aliases
 
 
-def printPatcher(patcherDict, summarize=True):
+def print_patcher(patcher_dict, summarize=True):
     """
     Prints a summary of a patcher dict.
     Note that the script should only format properties it knows about or is actively set to skip.
     Unknown or unexpected data should always be printed as raw json, so that the summary never discards valuable information.
     """
     if summarize:
-        knownObjectsMap = {}
-        for boxObj in knownObjects["boxes"]:
-            box = boxObj["box"]
-            name = getBoxText(box)
-            knownObjectsMap[name] = box
+        known_objects_map = {}
+        for box_obj in known_objects["boxes"]:
+            box = box_obj["box"]
+            name = get_box_text(box)
+            known_objects_map[name] = box
 
-        return printPatcherSummaryRecursive(patcherDict, knownObjectsMap)
+        return print_patcher_summary_recursive(patcher_dict, known_objects_map)
     else:
         import json
 
-        return json.dumps(patcherDict, indent=4, sort_keys=True)
+        return json.dumps(patcher_dict, indent=4, sort_keys=True)
 
 
-def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
+def print_patcher_summary_recursive(patcher_dict, known_objects_map, indent=0):
     if (
-        "patcher" not in patcherDict
-        or "boxes" not in patcherDict["patcher"]
-        or "lines" not in patcherDict["patcher"]
+        "patcher" not in patcher_dict
+        or "boxes" not in patcher_dict["patcher"]
+        or "lines" not in patcher_dict["patcher"]
     ):
         return ""
 
-    summaryString = ""
+    summary_string = ""
 
-    patcher = patcherDict["patcher"]
+    patcher = patcher_dict["patcher"]
 
     #### patcher ####
 
-    skipPatcherProperties = [
+    skip_patcher_properties = [
         "boxes",  # iterated over later
         "lines",  # iterated over later
         "parameters",  # treated separately
@@ -46,42 +46,44 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
         "styles",  # treated separately
     ]
 
-    properties = getPropertiesToPrint(patcher, defaultPatcher, skipPatcherProperties)
+    properties = get_properties_to_print(
+        patcher, default_patcher, skip_patcher_properties
+    )
 
-    displayText = ""
+    display_text = ""
     for key, value in properties.items():
         if key == "appversion":
-            displayText += getAppversionStringShort(value)
+            display_text += get_appversion_string_short(value)
             continue
 
-        displayText = concat(displayText, key + ": " + getPropertyString(value))
+        display_text = concat(display_text, key + ": " + get_property_string(value))
 
     if "parameters" in patcher:
-        displayText += getParametersStringBlock(patcher["parameters"])
+        display_text += get_parameters_string_block(patcher["parameters"])
 
     if "dependency_cache" in patcher:
-        displayText += getDependencyCacheStringBlock(patcher["dependency_cache"])
+        display_text += get_dependency_cache_string_block(patcher["dependency_cache"])
 
     if "project" in patcher:
-        displayText += getProjectStringBlock(patcher["project"])
+        display_text += get_project_string_block(patcher["project"])
 
     if "styles" in patcher:
-        displayText += getStylesStringBlock(patcher["styles"], indent)
+        display_text += get_styles_string_block(patcher["styles"], indent)
 
-    if displayText != "":
-        summaryString += ("\t") * indent + displayText + "\n"
+    if display_text != "":
+        summary_string += ("\t") * indent + display_text + "\n"
 
     #### objects ####
 
     if not patcher["boxes"]:
         return
 
-    summaryString += ("\t") * indent + "----------- objects -----------" + "\n"
+    summary_string += ("\t") * indent + "----------- objects -----------" + "\n"
 
     # every entry of "boxes" has a single item "box"
     boxes = list(map(lambda val: val["box"], patcher["boxes"]))
 
-    skipBoxProperties = [
+    skip_box_properties = [
         "maxclass",  # used in box name
         "text",  # shown in box name
         "id",  # used only for lines
@@ -96,71 +98,71 @@ def printPatcherSummaryRecursive(patcherDict, knownObjectsMap, indent=0):
         "color",  # duplicate from patcher properties
     ]
 
-    idsToNames = {}
+    ids_to_names = {}
     for box in boxes:
-        boxText = getBoxText(box)
+        box_text = get_box_text(box)
 
-        idsToNames[box["id"]] = boxText
+        ids_to_names[box["id"]] = box_text
 
-        displayText = ""
-        objectName = boxText.split()[0]
+        display_text = ""
+        object_name = box_text.split()[0]
 
-        if objectName not in knownObjectsMap and objectName in objectAliases:
-            objectName = objectAliases[objectName]
+        if object_name not in known_objects_map and object_name in object_aliases:
+            object_name = object_aliases[object_name]
 
-        defaultBox = {}
-        if objectName in knownObjectsMap:
-            defaultBox = knownObjectsMap[objectName]
+        default_box = {}
+        if object_name in known_objects_map:
+            default_box = known_objects_map[object_name]
 
-        properties = getPropertiesToPrint(box, defaultBox, skipBoxProperties)
+        properties = get_properties_to_print(box, default_box, skip_box_properties)
 
         for key, value in properties.items():
             if key == "code":
-                displayText += getCodeStringBlock(value, indent + 1)
+                display_text += get_code_string_block(value, indent + 1)
                 continue
 
-            displayText = concat(displayText, key + ": " + getPropertyString(value))
+            display_text = concat(display_text, key + ": " + get_property_string(value))
 
-        summaryString += ("\t") * indent + "[" + boxText + "] " + displayText + "\n"
+        summary_string += ("\t") * indent + "[" + box_text + "] " + display_text + "\n"
 
         if "patcher" in box:
-            summaryString += printPatcherSummaryRecursive(
-                box, knownObjectsMap, indent + 1
+            summary_string += print_patcher_summary_recursive(
+                box, known_objects_map, indent + 1
             )
 
     #### patch cords ####
 
     if len(patcher["lines"]) == 0:
-        return summaryString
+        return summary_string
 
-    summaryString += ("\t") * indent + "----------- patch cords -----------" + "\n"
+    summary_string += ("\t") * indent + "----------- patch cords -----------" + "\n"
 
     lines = []
-    for val in patcherDict["patcher"]["lines"]:
+    for val in patcher_dict["patcher"]["lines"]:
         lines.append(val["patchline"])
 
-    def lineSort(line):
-        return idsToNames[line["source"][0]]
+    def line_sort(line):
+        return ids_to_names[line["source"][0]]
 
-    lines.sort(key=lineSort)
+    lines.sort(key=line_sort)
 
     # We don't try to vertically align the sources and destinations of the lines,
     # even though that might make this more readable; a change in the maximum
     # source object length would affect all other printed lines
 
     for line in lines:
-        fromName = "[" + idsToNames[line["source"][0]] + "]"
-        fromOutlet = "(" + str(line["source"][1]) + ")"
-        toName = "[" + idsToNames[line["destination"][0]] + "]"
-        toInlet = "(" + str(line["destination"][1]) + ")"
+        from_name = "[" + ids_to_names[line["source"][0]] + "]"
+        from_outlet = "(" + str(line["source"][1]) + ")"
+        to_name = "[" + ids_to_names[line["destination"][0]] + "]"
+        to_inlet = "(" + str(line["destination"][1]) + ")"
 
-        displayText = fromName + " " + fromOutlet + " => " + toInlet + " " + toName
-        summaryString += ("\t") * indent + displayText + "\n"
+        display_text = from_name + " " + from_outlet + " => " + to_inlet + " " + to_name
+        summary_string += ("\t") * indent + display_text + "\n"
 
-    return summaryString
+    return summary_string
 
 
-def getBoxText(box):
+def get_box_text(box):
     objecttype = box["maxclass"]
     boxtext = objecttype
     if objecttype == "newobj":
@@ -174,10 +176,10 @@ def getBoxText(box):
     return boxtext
 
 
-def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
+def get_properties_to_print(box_or_patcher, default, skip_properties):
     properties = {}
-    for key, value in boxOrPatcher.items():
-        if key in skipProperties:
+    for key, value in box_or_patcher.items():
+        if key in skip_properties:
             continue
 
         if key in default and default[key] == value:
@@ -189,24 +191,24 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
 
         if key == "saved_attribute_attributes":
             # We take the attributes out or saved_attribute_attributes and present them as properties
-            attributes = getSavedAttributeAttributes(value)
-            attributesToPrint = getPropertiesToPrint(
-                attributes, default, skipProperties
+            attributes = get_saved_attribute_attributes(value)
+            attributes_to_print = get_properties_to_print(
+                attributes, default, skip_properties
             )
-            for newKey, newValue in attributesToPrint.items():
+            for new_key, new_value in attributes_to_print.items():
                 properties[
-                    newKey
-                ] = newValue  # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
+                    new_key
+                ] = new_value  # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
             continue
 
         if key == "saved_object_attributes":
             # We take the attributes out or saved_object_attributes and present them as properties
-            attributes = getSavedObjectAttributes(value)
-            attributesToPrint = getPropertiesToPrint(
-                attributes, default, skipProperties
+            attributes = get_saved_object_attributes(value)
+            attributes_to_print = get_properties_to_print(
+                attributes, default, skip_properties
             )
-            for newKey, newValue in attributesToPrint.items():
-                properties[newKey] = newValue
+            for new_key, new_value in attributes_to_print.items():
+                properties[new_key] = new_value
             continue
 
         if key not in properties:
@@ -216,30 +218,30 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
     return properties
 
 
-def getPropertyString(value):
+def get_property_string(value):
     if isinstance(value, list):
-        propertyString = ""
+        property_string = ""
         for item in value:
-            if propertyString != "":
-                propertyString += ", "
+            if property_string != "":
+                property_string += ", "
 
             if isinstance(item, float):
                 if item.is_integer():
-                    propertyString += "{:.0f}".format(item)
+                    property_string += "{:.0f}".format(item)
                 else:
-                    propertyString += "{:.2f}".format(item)
+                    property_string += "{:.2f}".format(item)
             else:
-                propertyString += str(item)
-        return "[" + propertyString + "]"
+                property_string += str(item)
+        return "[" + property_string + "]"
 
     return str(value)
 
 
-def getCodeStringBlock(value, indentAmount):
-    return "\n" + indent(value, indentAmount)
+def get_code_string_block(value, indent_amount):
+    return "\n" + indent(value, indent_amount)
 
 
-def getSavedAttributeAttributes(value):
+def get_saved_attribute_attributes(value):
     result = {}
     for attrkey, attrvalue in value.items():
         if attrvalue == "":
@@ -247,7 +249,7 @@ def getSavedAttributeAttributes(value):
 
         if attrkey == "valueof":
             # Handle parameter info. TODO: are there usages of valueof other than for parameter info?
-            result["parameter"] = "<" + getObjectParameterString(attrvalue) + ">"
+            result["parameter"] = "<" + get_object_parameter_string(attrvalue) + ">"
             continue
 
         # Handle dynamic colors
@@ -263,7 +265,7 @@ def getSavedAttributeAttributes(value):
     return result
 
 
-def getSavedObjectAttributes(value):
+def get_saved_object_attributes(value):
     result = {}
     for attrkey, attrvalue in value.items():
         if attrvalue == "":
@@ -273,8 +275,8 @@ def getSavedObjectAttributes(value):
     return result
 
 
-def getParametersStringBlock(parameters):
-    parametersString = ""
+def get_parameters_string_block(parameters):
+    parameters_string = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
@@ -283,21 +285,21 @@ def getParametersStringBlock(parameters):
             "parameter_overrides" in parameters
             and key in parameters["parameter_overrides"]
         ):
-            parametersString += "\t" + key + " " + str(value)
+            parameters_string += "\t" + key + " " + str(value)
 
             override = parameters["parameter_overrides"][key]
-            overridePrint = []
-            overridePrint.append(
+            override_print = []
+            override_print.append(
                 override["parameter_longname"]
                 if ("parameter_longname" in override)
                 else "-"
             )
-            overridePrint.append(
+            override_print.append(
                 override["parameter_shortname"]
                 if ("parameter_shortname" in override)
                 else "-"
             )
-            overridePrint.append(
+            override_print.append(
                 str(override["parameter_linknames"])
                 if ("parameter_linknames" in override)
                 else "-"
@@ -310,14 +312,14 @@ def getParametersStringBlock(parameters):
                     "parameter_linknames",
                 ]:
                     continue
-                overridePrint.append("" + key2 + ": " + str(value2))
+                override_print.append("" + key2 + ": " + str(value2))
 
-            parametersString += " > override > " + str(overridePrint) + "\n"
+            parameters_string += " > override > " + str(override_print) + "\n"
 
     if "parameterbanks" in parameters:
-        parametersString += "banks:\n"
+        parameters_string += "banks:\n"
         for key, value in parameters["parameterbanks"].items():
-            parametersString += (
+            parameters_string += (
                 "\t"
                 + str(value["index"])
                 + ((" (" + value["name"] + ")") if value["name"] != "" else "")
@@ -325,60 +327,62 @@ def getParametersStringBlock(parameters):
                 + str(value["parameters"])
             )
 
-    return "\nparameters:\n" + parametersString
+    return "\nparameters:\n" + parameters_string
 
 
-def getDependencyCacheStringBlock(dependencyCache):
-    if len(dependencyCache) > 0:
+def get_dependency_cache_string_block(dependency_cache):
+    if len(dependency_cache) > 0:
         return ""
 
-    dependencyCacheString = ""
-    for dependency in dependencyCache:
-        dependencyCacheString += "\t" + str(dependency) + "\n"
+    dependency_cache_string = ""
+    for dependency in dependency_cache:
+        dependency_cache_string += "\t" + str(dependency) + "\n"
 
     return (
-        "\ndependency_cache:\n" + dependencyCacheString
-        if dependencyCacheString != ""
+        "\ndependency_cache:\n" + dependency_cache_string
+        if dependency_cache_string != ""
         else ""
     )
 
 
-def getAppversionStringShort(appversion):
+def get_appversion_string_short(appversion):
     return f"appversion: {appversion['major']}.{appversion['minor']}.{appversion['revision']}-{appversion['architecture']}-{appversion['modernui']}"
 
 
-def getProjectStringBlock(project):
-    projectString = ""
+def get_project_string_block(project):
+    project_string = ""
     for key, value in project.items():
         if key != "contents":
-            projectString = concat(projectString, key + ": " + getPropertyString(value))
+            project_string = concat(
+                project_string, key + ": " + get_property_string(value)
+            )
     if "contents" in project:
-        contentsString = ""
+        contents_string = ""
         for key2, value2 in project["contents"].items():
-            key3String = ""
+            key3_string = ""
             for key3 in value2:
-                key3String += "\n\t\t\t" + key3
-            if key3String != "":
-                contentsString += "\n\t\t" + key2 + ":" + key3String
-        if contentsString != "":
-            projectString += "\n\tcontents:" + contentsString
+                key3_string += "\n\t\t\t" + key3
+            if key3_string != "":
+                contents_string += "\n\t\t" + key2 + ":" + key3_string
+        if contents_string != "":
+            project_string += "\n\tcontents:" + contents_string
 
-    return "\nproject:\n\t" + projectString
+    return "\nproject:\n\t" + project_string
 
 
-def getStylesStringBlock(styles, indent):
+def get_styles_string_block(styles, indent):
     return "\n" + ("\t") * indent + "styles: " + str(styles)
 
 
-def getObjectParameterString(parameter):
-    parameterString = ""
+def get_object_parameter_string(parameter):
+    parameter_string = ""
     for key, value in parameter.items():
-        keyText = key[len("parameter_") :] if key.startswith("parameter_") else key
-        parameterString = concat(
-            parameterString, keyText + ": " + getPropertyString(value)
+        key_text = key[len("parameter_") :] if key.startswith("parameter_") else key
+        parameter_string = concat(
+            parameter_string, key_text + ": " + get_property_string(value)
         )
 
-    return parameterString
+    return parameter_string
 
 
 def concat(a, b):
@@ -386,7 +390,7 @@ def concat(a, b):
     return sep.join(filter(None, [a, b]))
 
 
-colorProperties = [
+color_properties = [
     "slidercolor",
     "bgcolor",
     "bordercolor",

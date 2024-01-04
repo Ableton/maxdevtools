@@ -1,5 +1,5 @@
 import sys, json
-from patchPrinter import printPatcher
+from patch_printer import print_patcher
 
 
 def main(argv):
@@ -15,16 +15,16 @@ def main(argv):
 
 def parse(path):
     result = ""
-    with open(path, "rb") as fileObj:
+    with open(path, "rb") as file_obj:
         encrypted = False
         while True:
-            chunk = fileObj.read(4)
+            chunk = file_obj.read(4)
             if len(chunk) < 4:
                 break
 
             field = chunk.decode("ascii")
-            datasize = int.from_bytes(fileObj.read(4), byteorder="little")
-            data = fileObj.read(datasize)
+            datasize = int.from_bytes(file_obj.read(4), byteorder="little")
+            data = file_obj.read(datasize)
 
             if field == "ciph":
                 encrypted = True
@@ -32,12 +32,12 @@ def parse(path):
             if field == "ptch" and encrypted:
                 result += "<Patch is encrypted>\n"
             else:
-                result += parseField(field, datasize, data)
+                result += parse_field(field, datasize, data)
     return result
 
 
-def parseField(field, datasize, data):
-    deviceTypes = {
+def parse_field(field, datasize, data):
+    device_types = {
         "aaaa": "Audio Effect Device",
         "mmmm": "MIDI Effect Device",
         "iiii": "Instrument Device",
@@ -45,43 +45,43 @@ def parseField(field, datasize, data):
         "natt": "MIDI Tool Transformation",
     }
 
-    fieldHandlers = {
-        "ampf": handleAmpf,
-        "meta": handleMeta,
-        "ciph": handleCiph,
-        "ptch": handlePtch,
+    field_handlers = {
+        "ampf": handle_ampf,
+        "meta": handle_meta,
+        "ciph": handle_ciph,
+        "ptch": handle_ptch,
     }
 
-    if field in fieldHandlers:
-        return fieldHandlers[field](datasize, data, deviceTypes)
+    if field in field_handlers:
+        return field_handlers[field](datasize, data, device_types)
     else:
         raise RuntimeError(f"Unknown field {field}")
 
 
-def handleAmpf(datasize, data, device_types):
+def handle_ampf(datasize, data, device_types):
     if datasize != 4:
         raise RuntimeError("Incorrect device type argument")
     devicetype = data.decode("ascii")
     return f"{device_types.get(devicetype, f'Unknown device type {devicetype}')}\n-------------------\n"
 
 
-def handleMeta(datasize, data, device_types):
+def handle_meta(datasize, data, device_types):
     return ""
 
 
-def handleCiph(datasize, data, device_types):
+def handle_ciph(datasize, data, device_types):
     return f"----- Cipher -----\n...{data[datasize-8:datasize].hex()}\n"
 
 
-def handlePtch(datasize, data, device_types):
+def handle_ptch(datasize, data, device_types):
     if data[:4].decode("ascii") == "mx@c":
         return "Device is frozen"
     else:
         if data[datasize - 1] == 0:
-            patcherDict = json.loads(data[: datasize - 1].decode("utf-8"))
+            patcher_dict = json.loads(data[: datasize - 1].decode("utf-8"))
         else:
-            patcherDict = json.loads(data.decode("utf-8"))
-        return printPatcher(patcherDict)
+            patcher_dict = json.loads(data.decode("utf-8"))
+        return print_patcher(patcher_dict)
 
 
 if __name__ == "__main__":

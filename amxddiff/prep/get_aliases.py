@@ -6,21 +6,21 @@ def main(argv):
     if len(argv) != 1:
         print("Requires the path to Max.app")
         sys.exit(2)
-    allAliases = {}
+    all_aliases = {}
     for source in ["audio", "max", "jitter"]:
-        aliases = getAliases(
+        aliases = get_aliases(
             argv[0] + "/Contents/Resources/C74/init/" + source + "-objectmappings.txt"
         )
         for key, value in aliases.items():
-            allAliases[key] = value
+            all_aliases[key] = value
 
-    print(json.dumps(allAliases))
+    print(json.dumps(all_aliases, indent=4))
 
 
-def getAliases(path):
+def get_aliases(path):
     print("Parsing ", path)
-    with open(path, "r", encoding="utf-8") as fileObj:
-        lines = fileObj.readlines()
+    with open(path, "r", encoding="utf-8") as file_obj:
+        lines = file_obj.readlines()
         aliases = {}
         for line in lines:
             if line == "\n" or line == "":

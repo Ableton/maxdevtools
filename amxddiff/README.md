@@ -43,12 +43,12 @@ brew install python
 
    ```text
    [diff "maxpat"]
-     textconv = python3 ~/maxdevtools/amxddiff/maxpatTextconv.py
+     textconv = python3 ~/maxdevtools/amxddiff/maxpat_textconv.py
    [diff "amxd"]
-     textconv = python3 ~/maxdevtools/amxddiff/amxdTextconv.py
+     textconv = python3 ~/maxdevtools/amxddiff/amxd_textconv.py
      binary = true
    [diff "als"]
-    textconv = python3 ~/maxdevtools/amxddiff/alsTextconv.py
+    textconv = python3 ~/maxdevtools/amxddiff/als_textconv.py
     binary = true
    ```
 

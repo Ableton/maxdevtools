@@ -1,4 +1,4 @@
-objectAliases = {
+object_aliases = {
     "*~": "times~",
     ">~": "greaterthan~",
     ">=~": "greaterthaneq~",
