@@ -1,12 +1,5 @@
-import sys, json
+import sys, json, argparse
 from patch_printer import print_patcher
-
-
-def main(argv):
-    if len(argv) != 1:
-        print("Requires the file to convert as an argument")
-        sys.exit(2)
-    print(parse(argv[0]))
 
 
 def parse(path):
@@ -15,5 +8,19 @@ def parse(path):
         return print_patcher(patcher_dict)
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Convert a Max patch to a textual representation"
+    )
+    parser.add_argument("file", help="Path to the file to convert")
+    args = parser.parse_args()
+
+    try:
+        result = parse(args.file)
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
+
+
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

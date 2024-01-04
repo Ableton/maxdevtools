@@ -3,6 +3,8 @@
 
 import sys
 import unittest
+from io import StringIO
+from unittest.mock import patch
 import difflib
 
 import os.path
@@ -79,15 +81,30 @@ class TestStringMethods(unittest.TestCase):
 
 
 def parse(path):
-    parsers = {
-        ".amxd": amxd_textconv.parse,
-        ".maxpat": maxpat_textconv.parse,
-        ".als": als_textconv.parse,
+    mains = {
+        ".amxd": amxd_textconv.main,
+        ".maxpat": maxpat_textconv.main,
+        ".als": als_textconv.main,
     }
 
     file_extension = os.path.splitext(path)[1]
-    if file_extension in parsers:
-        return parsers[file_extension](path)
+    if file_extension in mains:
+        # route std output to a cystom StringIO
+        old_stdout = sys.stdout
+        sys.stdout = actualStringIo = StringIO()
+
+        # set the main arguments
+        old_sys_argv = sys.argv
+        sys.argv = [old_sys_argv[0]] + [path]
+
+        # call the main function of the appropriate script
+        try:
+            patch("sys.argv", ["prog", path])
+            mains[file_extension]()
+        finally:
+            sys.argv = old_sys_argv
+            sys.stdout = old_stdout
+        return actualStringIo.getvalue()[:-1]
     return ""
 
 

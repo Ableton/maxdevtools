@@ -1,16 +1,5 @@
-import sys, json
+import sys, json, argparse
 from patch_printer import print_patcher
-
-
-def main(argv):
-    if len(argv) != 1:
-        print("Requires the file to convert as an argument")
-        sys.exit(2)
-    try:
-        result = parse(argv[0])
-        print(result)
-    except RuntimeError:
-        sys.exit(2)
 
 
 def parse(path):
@@ -84,5 +73,19 @@ def handle_ptch(datasize, data, device_types):
         return print_patcher(patcher_dict)
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Convert AMXD file to a textual representation."
+    )
+    parser.add_argument("file", type=str, help="Path to the file to convert")
+    args = parser.parse_args()
+
+    try:
+        result = parse(args.file)
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
+
+
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

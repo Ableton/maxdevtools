@@ -1,12 +1,4 @@
-import sys, gzip
-
-
-def main(argv):
-    if len(argv) != 1:
-        print("Requires the file to convert as an argument")
-        sys.exit(2)
-    result = parse(argv[0])
-    print(result)
+import sys, gzip, argparse
 
 
 def parse(path):
@@ -25,5 +17,19 @@ def is_gzipped(path):
         return file_obj.read(2) == b"\x1f\x8b"
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Convert ALS file to a textual representation."
+    )
+    parser.add_argument("file", type=str, help="Path to the file to convert")
+    args = parser.parse_args()
+
+    try:
+        result = parse(args.file)
+        print(result)
+    except RuntimeError:
+        sys.exit(2)
+
+
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
