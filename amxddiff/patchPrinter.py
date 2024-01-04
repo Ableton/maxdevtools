@@ -190,7 +190,9 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
         if key == "saved_attribute_attributes":
             # We take the attributes out or saved_attribute_attributes and present them as properties
             attributes = getSavedAttributeAttributes(value)
-            attributesToPrint = getPropertiesToPrint(attributes, default, skipProperties)
+            attributesToPrint = getPropertiesToPrint(
+                attributes, default, skipProperties
+            )
             for newKey, newValue in attributesToPrint.items():
                 properties[
                     newKey
@@ -200,7 +202,9 @@ def getPropertiesToPrint(boxOrPatcher, default, skipProperties):
         if key == "saved_object_attributes":
             # We take the attributes out or saved_object_attributes and present them as properties
             attributes = getSavedObjectAttributes(value)
-            attributesToPrint = getPropertiesToPrint(attributes, default, skipProperties)
+            attributesToPrint = getPropertiesToPrint(
+                attributes, default, skipProperties
+            )
             for newKey, newValue in attributesToPrint.items():
                 properties[newKey] = newValue
             continue

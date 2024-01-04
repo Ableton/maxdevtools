@@ -68,9 +68,13 @@ This tool is an on-going work in progress. If you have a Max patch or device tha
 
 # Contributing
 
-Contributions are welcome. Feel free to fork this repo and submit a Pull request.
+Contributions are welcome. Feel free to fork this repo and submit a Pull Request.
 
-All scripts are Python 3.
+All scripts are based on Python 3. 
+
+Code is formatted using black:
+* Install [black](https://pypi.org/project/black/)
+* Run `black .` in the repo root
 
 ## Testing
 

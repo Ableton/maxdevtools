@@ -1,3 +1,4 @@
+# fmt: off
 defaultPatcher = {
     "fileversion": 1,
     "appversion": {

@@ -1,3 +1,4 @@
+# fmt: off
 knownObjects = {
     "boxes": [
         {
