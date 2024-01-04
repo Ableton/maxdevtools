@@ -1,4 +1,6 @@
-import sys, gzip, argparse
+import sys
+import gzip
+import argparse
 
 
 def parse(path):

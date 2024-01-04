@@ -1,4 +1,6 @@
-import sys, json, argparse
+import sys
+import json
+import argparse
 from patch_printer import print_patcher
 
 
