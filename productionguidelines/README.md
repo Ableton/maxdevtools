@@ -54,7 +54,9 @@ Failing to freeze a device before sharing or distributing it can often result in
 
 To freeze your device, click the snowflake icon in the device toolbar, then save the device, ideally under a different name. Preferably continue developing from the unfrozen version instead of unfreezing the frozen device, see [Version Management](#version-management).
 
-![The Freeze button](freeze.png "The Freeze button")
+<img width=312 alt="The Freeze button" src="freeze.png">
+
+*The Freeze button*
 
 ### Inspector
 
@@ -62,7 +64,9 @@ You can set your device to always **Open in Presentation mode** in the following
 
 In an unlocked patcher with no objects selected, right-click the patcher background and select **Inspector Window**. This will open the Inspector window for the patch. Then, go to **View > Open in Presentation**.
 
-![Open in presentation](open-in-presentation.png "‘Open in Presentation’ in the ‘View’ section of the patch Inspector")
+<img width=769 alt="Open in presentation" src="open-in-presentation.png">
+
+*‘Open in Presentation’ in the ‘View’ section of the patch Inspector*
 
 Note that this option is only available in the Inspector window that pertains to the whole patch. You can toggle the Inspector window for **individual objects** by selecting the object first, then using the key command **Cmd+I / Ctrl+I**.
 
@@ -70,7 +74,9 @@ Note that this option is only available in the Inspector window that pertains to
 
 You can view your device’s dependencies in a dedicated file manager window by clicking **Show Containing Project** in the toolbar.
 
-![The Project Window button](project-window.png "The ‘Show Containing Project’ icon")
+<img width=629 alt="The Project Window button" src="project-window.png">
+
+*The ‘Show Containing Project’ icon*
 
 ### Local and Global Naming
 
@@ -78,7 +84,9 @@ The **‘name space’** in Max is global - when you have objects that have name
 
 If you want a named object to be local to a device, use three dashes (`---`) to start the name of your `[buffer~]`, `[coll]`, or `[send]`/`[receive]` pair (e.g. `[s ---filtercutoff]`). When your patch is initialised, it will replace the three dashes with a number that is unique to your device, for example `[s 024filtercutoff]`.
 
-![Three dashes](three-dashes.png "A `[send]` object name prepended with three dashes will keep data local to the device")
+<img width=117 alt="Three dashes" src="three-dashes.png">
+
+*A `[send]` object name prepended with three dashes will keep data local to the device*
 
 
 ## Parameters
@@ -93,7 +101,9 @@ There are several ways to name a parameter in a device, which can be set using a
 * **Long Name**: for automation and MIDI mapping.
 * **Scripting Name**: for use with the [pattr] preset objects or scripting.
 
-![Parameter names](parameter-names.png "‘Long Name’ and ‘Short Name’ in Max’s object Inspector")
+<img width=533 alt="Parameter names" src="parameter-names.png">
+
+*‘Long Name’ and ‘Short Name’ in Max’s object Inspector*
 
 Keep the **Short Name** short enough to avoid the label being truncated, whereas the **Long Name** can be more descriptive and use full words. An example of this distinction would be ‘Env’ and ‘Envelope’, or ‘Freq’ and ‘Frequency’.
 
@@ -113,7 +123,9 @@ In Max, go to **View > Parameters** to open a window in which you can edit attri
 * **Float**: Floating point values (no range restriction)
 * **Enum**: An enumerated list of items
 
-![Parameter type](parameter-type.png "Parameter Type in the object Inspector")
+<img width=518 alt="Parameter type" src="parameter-type.png">
+
+*Parameter Type in the object Inspector*
 
 Keep in mind that Enum-type values will display a stepped automation lane in Live’s automation view. Int-type parameters display a grid with a continuous automation line, but the resulting value will be rounded.
 
@@ -129,13 +141,17 @@ If you don't want a parameter's automation lane to show as a grid, but you do wa
 
 Parameters can be made available for automation in Live, by setting the Parameter Visibility to Automated and Stored in the Parameter section of the object Inspector.
 
-![Parameter visibility](parameter-visibility.png "Set an object’s ‘Parameter Visibility’ to ‘Automated and Stored’ to make it available for automation in Live")
+<img width=441 alt="Parameter visibility" src="parameter-visibility.png">
+
+*Set an object’s ‘Parameter Visibility’ to ‘Automated and Stored’ to make it available for automation in Live*
 
 By default, automation parameters in new Max for Live devices are called live.numbox[1] or live.dial[3]. These default parameter names should be changed to meaningful names (ideally the parameter name as displayed within the UI itself), so that a user can identify them easily in the list of automation parameters in Live.
 
 You can check the automation parameters by loading the Max for Live device in Live. Switch to **Arrangement View**, toggle **Automation mode** (key command A), and open the list of automation parameters for the track that contains the device.
 
-![Automatable Parameters](automatable-parameters.png "Automatable parameters listed in Live’s Arrangement view")
+<img width=300 alt="Automatable Parameters" src="automatable-parameters.png">
+
+*Automatable parameters listed in Live’s Arrangement view*
 
 ### Saving Parameters
 
@@ -168,11 +184,16 @@ Default parameter values can be set in the object Inspector in the **Parameter**
 
 Info Text can be added for UI objects in the object Inspector in the **Description** section. **Annotation Name** refers to the header of the Info Text, and **Annotation** refers to the contents of the Info Text.
 
-![Annotation](annotation.png "Edit ‘Annotation’ and ‘Annotation Name’ in Max’s object Inspector to set Info Text in Live")
+<img width=770 alt="Annotation" src="annotation.png">
+
+*Edit ‘Annotation’ and ‘Annotation Name’ in Max’s object Inspector to set Info Text in Live*
 
 Check that it works by loading the device, then hover the mouse over parameters to check that the Info Text shows up correctly in Live’s Info View.
 
-![Info View](info-view.png "Live’s Info View")
+<img width=483 alt="Info View" src="info-view.png">
+
+*Live’s Info View*
+
 
 ### MIDI Mapping
 
@@ -182,9 +203,13 @@ This is most important for all parameters seen in the UI when the AMXD file is f
 
 To check this, load the device, enable **MIDI Map mode** in Live with the key command **Cmd+M / Ctrl+M**, and check that all device parameters have a blue overlay.
 
-![MIDI map button](midi-map-button.png "Live’s MIDI Map mode button")
+<img width=211 alt="MIDI map button" src="midi-map-button.png">
 
-![Blue overlay](blue-overlay.png "Blue overlay on mappable parameters in MIDI Map mode")
+*Live’s MIDI Map mode button*
+
+<img width=330 alt="Blue overlay" src="blue-overlay.png">
+
+*Blue overlay on mappable parameters in MIDI Map mode*
 
 If the parameters are not mappable, it may be that you are not using `[live.*]` objects, or that the UI object Parameter Visibility has not been set to Automated and Stored in the Inspector.
 
@@ -205,7 +230,9 @@ One benefit of supporting the Live themes is that it can also save time in devel
 
 For an object color to automatically follow Live themes, it needs to be set to its default value with the Set to Default Value option in the Max inspector.
 
-![Default color value](default-color-value.png "A color can be returned to its default value explicitly via the Inspector.")
+<img width=452 alt="Default color value" src="default-color-value.png">
+
+*A color can be returned to its default value explicitly via the Inspector.*
 
 Notice that many `[live.*]` objects have separate colors for when the device is active and for when the device is inactive. When using the dynamic inactive colors, these too will follow themes.
 
@@ -215,13 +242,21 @@ If you choose to not follow Live themes, be mindful of the fact that there are s
 
 Notice, for example, that in the screenshots below the black text changes to white text when darker themes are used.
 
-![LFO Theme 1](lfo-theme1.png "The LFO device in the lightest color theme")
+<img width=161 alt="LFO Theme 1" src="lfo-theme1.png">
 
-![LFO Theme 2](lfo-theme2.png "The LFO device in the mid-light color theme")
+*The LFO device in the lightest color theme*
 
-![LFO Theme 3](lfo-theme3.png "The LFO device in the mid-dark color theme")
+<img width=160 alt="LFO Theme 2" src="lfo-theme2.png">
 
-![LFO Theme 4](lfo-theme4.png "The LFO device in the darkest color theme")
+*The LFO device in the mid-light color theme*
+
+<img width=161 alt="LFO Theme 3" src="lfo-theme3.png">
+
+*The LFO device in the mid-dark color theme*
+
+<img width=160 alt="LFO Theme 4" src="lfo-theme4.png">
+
+*The LFO device in the darkest color theme*
 
 Device colors can be adjusted to the current Live themes with the `[live.colors]` object. See the `[live.colors]` Help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.colors) for more information.
 
@@ -254,21 +289,29 @@ There are several settings in the Object Inspector that we recommend for best us
 
 For the **Presentation Rectangle** setting, make sure that widgets are sized in **whole pixels** to avoid blurry shapes on non-retina screens, by using numbers like ‘4’ instead of ‘4.3562635’. Re-positioning objects with click-drag often results in these decimal point numbers, so be sure to check the Inspector for object dimensions and positions in Presentation Mode when fine-tuning the device UI.
 
-![Presentation Rectangle](presentation-rect.png "The ‘Presentation Rectangle’ setting in the Object Inspector")
+<img width=578 alt="Presentation Rectangle" src="presentation-rect.png">
+
+*The ‘Presentation Rectangle’ setting in the Object Inspector*
 
 Use the **LCD** mode for the **Display Style** in `[live.tab]`, `[live.numbox]`, and `[live.text]`, which was designed to mirror Live’s UI parameters. This ensures that pixels snap to the pixel grid on non-retina screens. Note that this Display Style is not selected by default.
 
-![Display Style](display-style.png "The ‘Display Style’ setting in the [live.tab] Object Inspector")
+<img width=632 alt="Display Style" src="display-style.png">
+
+*The ‘Display Style’ setting in the [live.tab] Object Inspector*
 
 Make sure that **Mouse Up** (in the **Behavior** section) is selected as the **Output Mode** for `[live.text]`, since it will match Live’s native button behavior. Note that this Output Mode is not selected by default.
 
-![Output Mode](output-mode.png "The ‘Output Mode’ setting in the [live.text] Object Inspector")
+<img width=587 alt="Output Mode" src="output-mode.png">
+
+*The ‘Output Mode’ setting in the [live.text] Object Inspector*
 
 ### Pop-out windows
 
 Although this is ideally avoided, if you need more interface real estate than the device view offers, you may want to add a pop-out window to your device by means of a sub patcher that is opened with a `[pcontrol]` object.
 
-![pcontrol](pcontrol.png "Using [pcontrol] to open a subpatcher as a new window")
+<img width=82 alt="pcontrol" src="pcontrol.png">
+
+*Using [pcontrol] to open a subpatcher as a new window*
 
 However, it is important to consider what happens when Live is in full-screen mode when this window is opened.
 
@@ -276,7 +319,9 @@ If the subpatcher window is not a floating window, opening it will take Live out
 
 Therefore it is recommended to always set pop-out windows like these to floating mode:
 
-![Floating Window](floating-window.png "Using window messages to give a subpatcher a floating window")
+<img width=390 alt="Floating Window" src="floating-window.png">
+
+*Using window messages to give a subpatcher a floating window*
 
 
 ## Performance
@@ -297,7 +342,9 @@ Although verbose output during development can be useful for debugging, seeing e
 
 Open the AMXD file in Live, right-click on the device’s title bar and choose **Open Max Window** to check for any error messages being printed to the Console. To be safe, you can also double-check on a different computer.
 
-![Open Max Window](open-max-window.png "'Open Max Window' to view the Max Console without opening the Max for Live Editor")
+<img width=266 alt="Open Max Window" src="open-max-window.png">
+
+*'Open Max Window' to view the Max Console without opening the Max for Live Editor*
 
 ### Undo History
 
@@ -305,7 +352,9 @@ Some Max for Live devices that use internal modulations may create a very large 
 
 This happens when a live parameter object like `[live.dial]` has its **Parameter Visibility** attribute set to **Automated and Stored** (default) or **Stored Only**, and is then controlled internally by the patch, like this:
 
-![Controlling a live.dial creates undos](controlling-dial-undos.png "A live.dial set to Automated and Stored or Stored Only will flood the undo history when controlled from inside the patch")
+<img width=131 alt="Controlling a live.dial creates undos" src="controlling-dial-undos.png">
+
+*A live.dial set to Automated and Stored or Stored Only will flood the undo history when controlled from inside the patch*
 
 Your device will now be sending a constant stream of the same Undo action to Live, so any other action you perform in the program can’t be undone because it is instantly ‘buried’ by this constant stream of Undo actions.
 
@@ -313,7 +362,9 @@ To check this, load the device, enable any modulations, and start Live’s playb
 
 If you need to control a native-looking interface element from within your patch, you will likely need to change its **Parameter Visibility** setting to **Hidden**.
 
-![Parameter visibility hidden](parameter-visibility-hidden.png "Set its Parameter Visibility to Hidden if you need to control a parameter object from inside the patch")
+<img width=448 alt="Parameter visibility hidden" src="parameter-visibility-hidden.png">
+
+*Set its Parameter Visibility to Hidden if you need to control a parameter object from inside the patch*
 
 Another scenario where **Hidden** is the correct choice, is when using a `[live.text]` object in **Button** mode.
 
