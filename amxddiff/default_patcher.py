@@ -1,3 +1,4 @@
+# fmt: off
 """Exposes a dictionary representation of a default patcher."""
 
 default_patcher = {
