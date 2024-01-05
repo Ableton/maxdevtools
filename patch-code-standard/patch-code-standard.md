@@ -23,7 +23,7 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * Whenever addressing a bug, we first reproduce it in the test set, then fix it, then verify in the test set that it is fixed.
 * Devices should ideally come with a test set called `DeviceName-CpuTest.als`, which is an example of a typical heavy use of one or more copies of a device so that our CPU measuring tools can determine the average and peak usage. After any significant change of the patch code, we test if the CPU usage went up.
 * The load time of a device is monitored by manual testing and by counting objects, including in duplicate and nested abstractions, and keeping the total as low as possible.
-* Before a device is published, it has to pass [these user-facing functional checks](https://maxforlive.com/resources/M4L-Production-Guidelines.pdf).
+* Before a device is published, it has to adhere to [these user-facing guidelines](../productionguidelines/README.md).
 
 ## Version control
 * The device code and its dependencies live unfrozen in their repository.
