@@ -1,0 +1,82 @@
+MIDI Effect Device
+-------------------
+appversion: 8.5.5-x64-1 | rect: [65, 399, 849, 351] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+parameters:
+	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
+banks:
+	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
+project:
+	version: 1 | creationdate: 3590052786 | modificationdate: 3590052786 | viewrect: [25, 106, 300, 500] | autoorganize: 1 | hideprojectwindow: 1 | showdependencies: 1 | autolocalize: 0 | layout: {} | searchpath: {} | detailsvisible: 0 | amxdtype: 1835887981 | readonly: 0 | devpathtype: 0 | devpath: . | sortmode: 0 | viewmode: 0 | includepackages: 0
+	contents:
+		data:
+			collContent.txt
+----------- objects -----------
+[gen @t exponent] 
+	appversion: 8.5.5-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	----------- objects -----------
+	[codebox] 
+		//============================================================
+		// Generate exponential curve.
+		//============================================================
+		
+		
+		exponent(x, amount)
+		{
+		    y = 0;
+		    
+		    if (amount != 0)
+		    {
+		        a = abs(amount);
+		        
+		        if (amount > 0)
+		        {
+		            y = exp(ln(x) * (1 / (1 - a)));
+		        }
+		        else
+		        {
+		            y = 1 - (exp(ln(1 - x) * (1 / (1 - a))));
+		        }
+		    
+		        return y;
+		    }
+		    else {
+		        return x;
+		    }
+		}
+		
+		out1 = exponent(in1, in2 * 0.0095); | fontface: 0 | fontname: <Monospaced> | fontsize: 12.0
+	[in 1] 
+	[in 2] 
+	[out 1] 
+	----------- patch cords -----------
+	[codebox] (0) => (0) [out 1]
+	[in 1] (0) => (0) [codebox]
+	[in 2] (0) => (1) [codebox]
+[coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
+[p MySubpatcher] 
+	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480]
+	----------- objects -----------
+	[t b b] 
+[loadbang] 
+[message read collContent.txt] 
+[coll] 
+[fpic] pic: fpic.png
+[live.tab] annotation: Toggles between Beat Sync and Free running (Hz). | annotation_name: Time Mode | fontsize: 9.0 | livemode: 1 | num_lines_patching: 2 | num_lines_presentation: 2 | pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <annotation_name: Time Mode | enum: [Free, Sync] | invisible: 2 | linknames: 1 | longname: Time Mode | mmax: 1 | shortname: Time Mode | type: 2 | unitstyle: 9> | usepicture: 1 | usesvgviewbox: 1 | varname: Time Mode
+[live.banks] 
+[bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
+[bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
+[live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: live.dial[1] | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
+[live.dial] 
+[button] presentation: 1 | presentation_rect: [265, 26, 24, 24]
+[bpatcher MyAbstraction.maxpat] offset: [-4, -12]
+[comment A comment] 
+[live.comment A live.comment] 
+[midiout] fontname: Arial Bold | fontsize: 10.0
+[midiin] fontname: Arial Bold | fontsize: 10.0
+[button] hidden: 1
+[button] background: 1
+[MyAbstraction] background: 1
+----------- patch cords -----------
+[loadbang] (0) => (0) [message read collContent.txt]
+[message read collContent.txt] (0) => (0) [coll]
+[midiin] (0) => (0) [midiout]

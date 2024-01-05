@@ -1,0 +1,22 @@
+[tool.black]
+line-length = 90
+exclude = '''
+(
+  /(
+      third-party
+    | third_party
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 90
+lines_after_imports = 2
+lines_between_types = 1
+skip = ["third-party", "third_party"]
+
+known_compatibility = ["builtins", "future", "past"]
+sections = [
+    "FUTURE", "COMPATIBILITY", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"
+]
