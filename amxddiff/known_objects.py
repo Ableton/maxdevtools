@@ -1,5 +1,7 @@
+"""Exposes a dictionary representation of known objects that exist in Max."""
+
 # fmt: off
-knownObjects = {
+known_objects = {
     "boxes": [
         {
             "box": {
