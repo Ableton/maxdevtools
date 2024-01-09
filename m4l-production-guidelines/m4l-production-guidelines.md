@@ -217,6 +217,7 @@ If the parameters are not mappable, it may be that you are not using `[live.*]` 
 
 Device parametes can be mapped to Push by using the `[live.banks]` system. See the `[live.banks]` help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.banks) for more information.
 
+For example it may require some work to make the parameters of a device appear in the same order as they appear in the GUI.
 
 ## Design
 
@@ -324,9 +325,9 @@ Therefore it is recommended to always set pop-out windows like these to floating
 *Using window messages to give a subpatcher a floating window*
 
 
-## Performance
+## Functionallity
 
-How to avoid common device performance pitfalls and bugs, for a device that is reliable in its performance.
+How to avoid common device pitfalls and bugs, for a device that is reliable in its performance.
 
 ### OS Compatibility
 
@@ -417,46 +418,85 @@ If someone were to press the Edit button on your Max for Live device in Live, th
 
 Max offers various tools to make a patch easy to understand, such as encapsulation, object coloring, naming, patching and presentation mode, segmented patch cords, `[send]`/`[receive]` pairs with local naming, inlet/outlet descriptions and comments. For an overview, check out the [Organizing Your Patch](https://docs.cycling74.com/max8/vignettes/organizing_your_patch_topic) chapter from the Max Reference Documentation.
 
-What constitues a legible patch can be highly subjective. Here are [the patch code guidelines that Ableton uses](../patchcodestandard/README.md) for built-in devices.
+What constitues a legible patch can be highly subjective. Here are [the patch code guidelines that Ableton uses](../patch-code-standard/patch-code-standard.md) for built-in devices.
 
 
 ## Final Checklist
 
 Here is a checklist to quickly recap the topics of this guide that can be tested, which you can use for **Quality Assurance** purposes for your device.
 
-* Freezing: The device is frozen.
-* Parameter Names: All parameters have a Short Name and a Long Name.
-* Saving Parameters: All parameters are stored and recalled correctly with the Live Set.
-* OS Compatibility: The device works on both macOS and Windows. 
-* Parameter Type: Parameter Types and Units correspond to the kind of data being represented.
-* Automation: The device has automatable parameters.
-* Max Console: The device does not display red error messages in the Max Console window.
-* Undo History: The device does not ‘flood’ Live’s Undo menu.
-* Playback: The device sounds identical on playback, on a frozen track, and on rendering an audio file.
-* Latency: The device plays in sync with the rest of the Live Set.
-* CPU Load: The device does not cause high CPU load in the context of a Live Set.
-* Patch Formatting: The patch is clean and legible when opened in the Max for Live Editor.
-* Presets: The device comes with a collection of presets.
-* Info Text: The device parameters show Info text in Live’s Info View when hovered over with the mouse.
-* MIDI Mapping: The main device parameters can be mapped to a MIDI controller.
-* Live Skins: The device is legible in all Live color themes.
-* Device Width: The device does not take up much of the horizontal space in the Device view.
+**General**
+
+- [ ] Error messages: There are no prints in the Max Console on load.
+- [ ] Undo History: There are no extra undo steps on initialization, i.e. loading the device doesn't change the document.
+- [ ] Undo History: Live's undo menu is never ‘flooded’.
+- [ ] Freezing: The device is frozen if it contains dependencies.
+- [ ] Presets: The device comes with a collection of presets.
+
+**Audio and MIDI**
+
+- [ ] Clicks: There are no unintended audio clicks, when changing parameter values or otherwise.
+- [ ] Sample rate consistency: Everything continues to work and sound the same when changing the sample rate in Live's preferences.
+- [ ] Render consistency: The device sounds identical on playback, on a frozen track, and on rendering an audio file.
+- [ ] MPE: MIDI devices support MPE (`is_mpe` is set to active).
+- [ ] Latency: The device plays in sync with the rest of the Live Set.
+- [ ] MIDI Mapping: The main device parameters can be mapped to a MIDI controller.
+
+**UI**
+
+- [ ] Live themes: All UI objects have theme-following colors, checked with all color themes.
+- [ ] Disabling: The UI colors are correct when the device is disabled.
+- [ ] Positioning: The left-most element in presentation mode is as far from the left side of the device as the right-most element is from the right side.
+- [ ] Default initialization: Colors and texts that are changed dynamically are saved in their default state to prevent a color or content flash after loading a new instance of the device.
+- [ ] Font consistency: All UI fonts are set to default.
+- [ ] Tab stops: Comments don't include any tab stops. The result will look different per OS. On Mac: like a space, on Windows: like a tab, with some unexpected behavior.
+- [ ] Device width: The device does not take up too much of the horizontal space in the Device view.
+
+**Parameters**
+
+Note: many of these things can be checked and changed in the View > Parameters window.
+
+- [ ] Info fields: All Info Title and Info fields are filled in.
+- [ ] Naming: All parameters have non-generic Long Name and Short Name fields. No names have auto-appended indexes, like [1].
+- [ ] Automation: The parameter dropdown for a device contains all intended automatable parameters.
+- [ ] Value editing: Parameter Types and Units correspond to the kind of data being represented, taking into account that using the Int type give users a grid automation lane.
+- [ ] Enum labels: Unit / labels of automation for Enum parameters don't have generic values ("val1"/"val2" for buttons).
+- [ ] Modulation: All parameters have modulation active.
+- [ ] Defaults: All default parameter values are correct, i.e. the device works well after newly instantiating it.
+- [ ] Save and recall: All parameters are recalled correctly when opening a Live Set that contains the device with non-default values for all parameters.
+- [ ] Push: The parameters show up correctly on Push.
+
+**Performance**
+- [ ] CPU Load: The device does not cause high CPU load in the context of a Live Set.
+- [ ] Version support: The device runs well with all Live and Max versions starting from the lowest versions set in the device.
+- [ ] Platform support: macOS, Windows and ideally Push 3 all host the device well.
+- [ ] Independence: Multiple instances of the device run well simultaneously.
+
+**For new versions of existing devices**
+
+- [ ] Name consistency: The parameter names are all the same as the old version
+	- Take special care of auto-indexed names when there are parameters in abstractions (also in bpatchers) that are instantiated multiple times.
+- [ ] Value recall: Parameter values stored in a Live Set with an old version of the device are all recalled properly.
+- [ ] API ID recall: Persistent ids stored in a Live Set with an old version of the device are all recalled properly.
 
 
 ## Appendix A - Help and Support
 
 Finding help with usability topics, and technical support.
 
-* [Cycling ’74 Forums](https://cycling74.com/forums/)
-* [Facebook User Group - Max/MSP](https://www.facebook.com/groups/maxmspjitter/)
-* [Facebook User Group - Max for Live](https://www.facebook.com/groups/maxforliveusers/)
-
+Documentation
 * [Cycling ’74 - Max Reference Documentation](https://docs.cycling74.com/max7/)
 * [Ableton Knowledge Base - Max for Live](https://help.ableton.com/hc/en-us/categories/201105669-Max-for-Live)
 
-* [Ableton Support](https://help.ableton.com/hc/en-us/requests/new)
+Support
 * [Cycling '74 Support](support@cycling74.com)
+* [Ableton Support](https://help.ableton.com/hc/en-us/requests/new)
 
+Community
+* [Cycling ’74 Forums](https://cycling74.com/forums/)
+* [Max/MSP Discord group](https://discord.com/invite/unVt7Uy)
+* [Facebook User Group - Max/MSP](https://www.facebook.com/groups/maxmspjitter/)
+* [Facebook User Group - Max for Live](https://www.facebook.com/groups/maxforliveusers/)
 
 ## Appendix B - Learning
 
