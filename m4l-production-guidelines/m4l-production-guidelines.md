@@ -42,13 +42,15 @@ Max objects will be denoted with brackets, i.e `[live.path]`.
 
 A spotlight on some Max concepts that are specific to Max for Live. It is good to be aware of these concepts when intending to share or distribute a device.
 
-### Freezing
+### Freezing and dependencies
 
 Once you have finished patching your Max for Live device and are ready to distribute it, remember to **freeze** it.
 
-Freezing a Max device is similar to Live’s **Collect All and Save** function. It prepares the device for distribution, by making sure that it contains all the files it needs to operate.
+Freezing a Max device is similar to Live’s **Collect All and Save** function. It prepares the device for distribution, by making sure that it contains all the files it needs to operate, its **dependencies**.
 
-Max analyzes your device to find any files it uses, and consolidates these files within your device. When a frozen device is then opened on another user’s computer, the files used by the device are referenced correctly. These files, referred to as **dependencies**, are most commonly abstractions, audio files, and image files, but can also include Javascript code or third-party Max externals.
+Max analyzes your device to find any files it uses, and consolidates these files within your device. When a frozen device is then opened on another user’s computer, the files used by the device are referenced correctly. These files are most commonly abstractions, audio files, and image files, but can also include Javascript code or third-party Max externals.
+
+To get a list if all dependencies of a device, the File menu in Max has an option called List Externals and Subpatcher Files.
 
 Failing to freeze a device before sharing or distributing it can often result in a device malfunctioning due to broken file references.
 
