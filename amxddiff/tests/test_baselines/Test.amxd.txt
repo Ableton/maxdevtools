@@ -11,6 +11,11 @@ project:
 		data:
 			collContent.txt
 ----------- objects -----------
+[print] 
+[t 3] 
+[t 1] 
+[t 2] 
+[button] 
 [gen @t exponent] 
 	appversion: 8.5.5-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
@@ -49,9 +54,9 @@ project:
 	[in 2] 
 	[out 1] 
 	----------- patch cords -----------
-	[codebox] (0) => (0) [out 1]
 	[in 1] (0) => (0) [codebox]
 	[in 2] (0) => (1) [codebox]
+	[codebox] (0) => (0) [out 1]
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
 	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480]
@@ -77,6 +82,12 @@ project:
 [button] background: 1
 [MyAbstraction] background: 1
 ----------- patch cords -----------
-[loadbang] (0) => (0) [message read collContent.txt]
-[message read collContent.txt] (0) => (0) [coll]
 [midiin] (0) => (0) [midiout]
+[button] (0) => (0) [t 2] | order: 0
+[button] (0) => (0) [t 1] | disabled: 1
+[button] (0) => (0) [t 3] | order: 1
+[t 2] (0) => (0) [print]
+[message read collContent.txt] (0) => (0) [coll]
+[loadbang] (0) => (0) [message read collContent.txt]
+[t 1] (0) => (0) [print]
+[t 3] (0) => (0) [print]

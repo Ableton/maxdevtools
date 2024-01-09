@@ -13,6 +13,7 @@ def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
     Unknown or unexpected data should always be printed as raw json, so that the summary never discards valuable information.
 
     The only exception is the patcher (not presentation) rectangle of objects.
+    The execution order in case of multiple connections from a single outlet is covered by the line order summaries.
     """
     if summarize:
         known_objects_map = {}
@@ -147,26 +148,35 @@ def print_patcher_summary_recursive(
     )
 
     lines = []
-    for val in patcher_dict["patcher"]["lines"]:
-        lines.append(val["patchline"])
+    for line in patcher_dict["patcher"]["lines"]:
+        from_name = ""
+        from_outlet = ""
+        to_name = ""
+        to_inlet = ""
+        more_info = ""
 
-    def line_sort(line):
-        return ids_to_names[line["source"][0]]
+        for key, val in line.items():
+            if key == "patchline":
+                for key2, val2 in val.items():
+                    if key2 == "source":
+                        from_name = f"[{ids_to_names[val2[0]]}]"
+                        from_outlet = f"({val2[1]})"
+                    elif key2 == "destination":
+                        to_name = f"[{ids_to_names[val2[0]]}]"
+                        to_inlet = f"({val2[1]})"
+                    else:
+                        more_info += concat(more_info, f"{key2}: {val2}")
+            else:
+                more_info += concat(more_info, f"{key}: {value}")
 
-    lines.sort(key=line_sort)
+        display_text = f"{from_name} {from_outlet} => {to_inlet} {to_name}"
+        if more_info != "":
+            display_text += f" | {more_info}"
+        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     # We don't try to vertically align the sources and destinations of the lines,
     # even though that might make this more readable; a change in the maximum
     # source object length would affect all other printed lines
-
-    for line in lines:
-        from_name = f"[{ids_to_names[line['source'][0]]}]"
-        from_outlet = f"({line['source'][1]})"
-        to_name = f"[{ids_to_names[line['destination'][0]]}]"
-        to_inlet = f"({line['destination'][1]})"
-
-        display_text = f"{from_name} {from_outlet} => {to_inlet} {to_name}"
-        summary_string += create_indented_text(f"{display_text}\n", indent)
 
     return summary_string
 
