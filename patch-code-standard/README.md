@@ -1,6 +1,8 @@
 # Ableton patch code standard for Max devices
 
-The patch code standard that Ableton uses in the Max devices that come bundled with Live 12 and higher can be found [here](patchcodestandard.md).
+The patch code standard can be found in [patch-code-standard.md](patch-code-standard.md).
+
+This documents the patch code standard that Ableton uses in the Max devices that come bundled with Live 12 and higher 
 
 ## Contributing
 
