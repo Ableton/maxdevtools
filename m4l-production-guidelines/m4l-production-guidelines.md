@@ -42,7 +42,7 @@ Max objects will be denoted with brackets, i.e `[live.path]`.
 
 A spotlight on some Max concepts that are specific to Max for Live. It is good to be aware of these concepts when intending to share or distribute a device.
 
-### Freezing and dependencies
+### Freezing and Dependencies
 
 Once you have finished patching your Max for Live device and are ready to distribute it, remember to **freeze** it.
 
@@ -180,7 +180,7 @@ Consider what the default sound of the device should be when first loaded, in or
 
 Default parameter values can be set in the object Inspector in the **Parameter** section, by using the **Initial Enable** option and setting an **Initial Value**.
 
-### Info text
+### Info Text
 
 **Info text** is displayed in the Live **Info View** when hovering the mouse over a parameter. This helps users understand the meaning of individual functions of the device.
 
@@ -215,7 +215,7 @@ To check this, load the device, enable **MIDI Map mode** in Live with the key co
 
 If the parameters are not mappable, it may be that you are not using `[live.*]` objects, or that the UI object Parameter Visibility has not been set to Automated and Stored in the Inspector.
 
-### Push support 
+### Push Support 
 
 Device parametes can be mapped to Push by using the `[live.banks]` system. See the `[live.banks]` help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.banks) for more information.
 
@@ -310,7 +310,7 @@ Make sure that **Mouse Up** (in the **Behavior** section) is selected as the **O
 
 *The ‘Output Mode’ setting in the [live.text] Object Inspector*
 
-### Pop-out windows
+### Pop-out Windows
 
 Although this is ideally avoided, if you need more interface real estate than the device view offers, you may want to add a pop-out window to your device by means of a sub patcher that is opened with a `[pcontrol]` object.
 
@@ -403,11 +403,11 @@ Live stores parameter values for each `[live.*]` parameter that is set to **Auto
 
 If you do make significant changes to the device, we recommend publishing the AMXD file with a different file name, in most cases this is done by appending a version number to the file name. 
 
-### Version management
+### Version Management
 
 You may want to distribute new frozen versions of a plugin regularly. When continuing work on a plugin, it is recommended not to continue with the frozen, distributed version of a plugin but with the original unfrozen version.
 
-When you unfreeze a plugin to continue editing it, new copies of the dependencies it contained can be stored in a new folder on disk (**~/Documents/Max/Max for Live Devices**). This can cause confusion about which version of your dependencies you are working on.
+When you unfreeze a plugin to continue editing it, new copies of the dependencies it contained can be stored in a new folder on disk (in **~/Documents/Max/Max for Live Devices/**). This can cause confusion about which versions of your dependencies you are working on.
 
 A good rule could be to always remove the frozen version of a plugin from your system after distributing it.
 
