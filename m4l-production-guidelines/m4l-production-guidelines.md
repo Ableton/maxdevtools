@@ -231,7 +231,9 @@ We recommend making sure that your device works with all Live color themes. This
 
 One benefit of supporting the Live themes is that it can also save time in development, because `[live.*]` objects and their various states link to them by default. Consider that making your device look like native Live devices also helps provide users with a consistent experience in Live.
 
-For an object color to automatically follow Live themes, it needs to be set to its default value with the Set to Default Value option in the Max inspector.
+For an object color to automatically follow Live themes, it needs to be set to a **dynamic color**, a feature introduced in Max with Live 11. By default, live.* UI objects have their colors set to dynamic colors. For more information, see the [dynamic colors reference](https://docs.cycling74.com/max8/vignettes/dynamic_colors).
+
+To make sure a color property has its original dynamic color value, you can set it to its default value.
 
 <img width=452 alt="Default color value" src="images/default-color-value.png">
 
@@ -239,9 +241,9 @@ For an object color to automatically follow Live themes, it needs to be set to i
 
 Notice that many `[live.*]` objects have separate colors for when the device is active and for when the device is inactive. When using the dynamic inactive colors, these too will follow themes.
 
-Note that for a `[live.*]` object that is not a parameter object, like `[live.scope~]` and `[live.meter~]`, currently its inactive colors are shown only when the active attribute of the object itself is set to **0**. To make an object like this follow the device enabled state, you can control its active attribute with the second outlet of `[live.thisdevice]`.
+Note that for a `[live.*]` object that is not a parameter object, like `[live.scope~]` and `[live.meter~]`, currently its inactive colors are shown only when the active attribute of the object itself is set to **0**. To make an object like this follow the device enabled state, you can control its active attribute with the second outlet of `[live.thisdevice]`. 
 
-If you choose to not follow Live themes, be mindful of the fact that there are some cases in which it may impair legibility, i.e certain UI elements being visible in some themes but not others. 
+If you choose to not follow Live themes, be mindful of the fact that there are some cases in which it may impair legibility, i.e certain UI elements being visible in some themes but not others.
 
 Notice, for example, that in the screenshots below the black text changes to white text when darker themes are used.
 
@@ -261,7 +263,7 @@ Notice, for example, that in the screenshots below the black text changes to whi
 
 *The LFO device in the darkest color theme*
 
-Device colors can be adjusted to the current Live themes with the `[live.colors]` object. See the `[live.colors]` Help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.colors) for more information.
+Device colors can also be adjusted to the current Live themes with the `[live.colors]` object. See the `[live.colors]` Help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.colors) for more information.
 
 You can check that this has been correctly implemented by loading your device, opening the **Look/Feel** tab in Live’s Preferences, and cycling through the selection of color themes.
 
