@@ -391,6 +391,8 @@ Max for Live device performance should be measured in a Live Set within a musica
 
 Check this by loading several instances of your device in a Live Set. Add some other Max for Live devices or Live instruments, and automate some parameters in your Max for Live device.
 
+Sometimes the visual appearance of a device informs what CPU load is expected. For a device that looks like a simple utility, users are likely to expect a lower CPU usage than a larger interface that looks like it does more complicated work.
+
 If parameter automation causes high CPU load, try enabling **Defer Automation Output** in the object Inspector if the automation values are not time-sensitive, or try higher values for the **Update Limit**.
 
 ### Updates
@@ -471,7 +473,7 @@ Note: many of these things can be checked and changed in the View > Parameters w
 - [ ] Push: The parameters show up correctly on Push.
 
 **Performance**
-- [ ] CPU Load: The device does not cause high CPU load in the context of a Live Set.
+- [ ] CPU Load: The device does not cause unexpectedly high CPU load in the context of a Live Set.
 - [ ] Version support: The device runs well with all Live and Max versions starting from the lowest versions set in the device.
 - [ ] Platform support: macOS, Windows and ideally Push 3 all host the device well.
 - [ ] Independence: Multiple instances of the device run well simultaneously.
