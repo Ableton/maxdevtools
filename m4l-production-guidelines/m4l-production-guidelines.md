@@ -13,7 +13,7 @@ That being said, the recommendations are merely considerations to be made, and y
 
 Please note that this document does not aim to explain what Max for Live is, nor is it a beginner’s guide on how to patch in Max. Anyone reading this guide should already have a solid understanding of how Max works. If you don’t know much about Max for Live, and are curious to know more, please check [Appendix B - Learning](#appendix-b---learning) for a list of resources.
 
-This document assumes you are using the latest vesions of Max and Live.
+This document assumes you are using the latest versions of Max and Live.
 
 ### Notations
 
