@@ -7,9 +7,7 @@ from io import StringIO
 from unittest.mock import patch
 import os.path
 
-sys.path.append(
-    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
-)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import amxd_textconv
 import maxpat_textconv
@@ -57,8 +55,8 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_als_zipped(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
-        test_file_path = get_test_path_file("test_files/Test Project/Test.als")
+        expected_file_path = get_test_path_file("test_baselines/Zipped.als.txt")
+        test_file_path = get_test_path_file("test_files/Test Project/Zipped.als")
 
         with open(expected_file_path, mode="r") as expected_file:
             expected = expected_file.read()
@@ -70,7 +68,7 @@ class TestStringMethods(unittest.TestCase):
 
         # result of an unzipped set should be same as a zipped set
         expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
-        test_file_path = get_test_path_file("test_files/Test Project/Test-NoZip.als")
+        test_file_path = get_test_path_file("test_files/Test Project/Test.als")
 
         with open(expected_file_path, mode="r") as expected_file:
             expected = expected_file.read()

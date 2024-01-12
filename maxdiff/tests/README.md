@@ -4,7 +4,7 @@ The tests allow us to make sure we didn't accidentally change something to the p
 
 ## Running the tests
 
-From the `amxddiff` folder, run `python3 tests/test.py`
+From the `maxdiff` folder, run `python3 tests/test.py`
 
 ## Changing the script
 

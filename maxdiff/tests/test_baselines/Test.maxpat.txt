@@ -1,0 +1,6 @@
+appversion: 8.5.5-x64-1 | rect: [59, 106, 325, 253] | autosave: 0
+----------- objects -----------
+[button] 
+[button] 
+----------- patch cords -----------
+[button] (0) => (0) [button]

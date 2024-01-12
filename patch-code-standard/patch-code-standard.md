@@ -31,7 +31,7 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * All dependencies of the device are in the same repository. i.e. nothing in the device refers to files outside of the repository unless this is explicitly mentioned. 
 * Dependencies are only included in the repository once. If dependencies are used by multiple devices, they live in a shared folder.
 * Commits contain isolated changes as much as possible so they are easy to review individually.
-* Commits change as little as possible, so they are easy to review using [amxddiff](../amxddiff).
+* Commits change as little as possible, so they are easy to review using [maxdiff](../maxdiff).
 * Every commit leaves the device in a working state, as verified by its test set.
 * Don't leave unused code in the patch. Code from previous versions can always be brought back with git.
 
