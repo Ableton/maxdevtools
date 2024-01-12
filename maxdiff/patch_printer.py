@@ -350,7 +350,7 @@ def get_parameters_string_block(parameters: dict) -> str:
 
 def get_dependency_cache_string_block(dependency_cache: list):
     """Produce a string representing a dependency cache in a patcher."""
-    if len(dependency_cache) > 0:
+    if len(dependency_cache) < 0:
         return ""
 
     dependency_cache_string = ""

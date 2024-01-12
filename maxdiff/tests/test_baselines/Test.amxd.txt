@@ -5,6 +5,13 @@ parameters:
 	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
 banks:
 	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
+dependency_cache:
+	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
+	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
+	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
+	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+
 project:
 	version: 1 | creationdate: 3590052786 | modificationdate: 3590052786 | viewrect: [25, 106, 300, 500] | autoorganize: 1 | hideprojectwindow: 1 | showdependencies: 1 | autolocalize: 0 | layout: {} | searchpath: {} | detailsvisible: 0 | amxdtype: 1835887981 | readonly: 0 | devpathtype: 0 | devpath: . | sortmode: 0 | viewmode: 0 | includepackages: 0
 	contents:
