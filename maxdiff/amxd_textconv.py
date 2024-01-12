@@ -26,6 +26,10 @@ def parse(path: str) -> str:
                 result += "<Patch is encrypted>\n"
             else:
                 result += parse_field(field, datasize, data)
+
+        if encrypted:
+            result += f"{file_obj.tell()} bytes"
+
     return result
 
 
