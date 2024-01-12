@@ -479,42 +479,42 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "MyAbstraction.maxpat",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "ParamAbstraction.maxpat",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "beat-icon.svg",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "svg",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "collContent.txt",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "fpic.png",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "PNG",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "hz-icon.svg",
-				"bootpath" : "~/maxdevtools/amxddiff/tests",
+				"bootpath" : "~/maxdevtools/maxdiff/tests",
 				"patcherrelativepath" : ".",
 				"type" : "svg",
 				"implicit" : 1

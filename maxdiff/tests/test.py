@@ -7,9 +7,7 @@ from io import StringIO
 from unittest.mock import patch
 import os.path
 
-sys.path.append(
-    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
-)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import amxd_textconv
 import maxpat_textconv

@@ -785,18 +785,18 @@
 								<OverwriteProtectionNumber Value="2819" />
 								<PatchSlot>
 									<Value>
-										<MxDPatchRef Id="0">
+										<MxDPatchRef Id="1">
 											<FileRef>
 												<RelativePathType Value="1" />
 												<RelativePath Value="../Test.amxd" />
-												<Path Value="/Users/mkp/maxdevtools/amxddiff/tests/Test.amxd" />
+												<Path Value="/Users/mkp/maxdevtools/maxdiff/tests/test_files/Test.amxd" />
 												<Type Value="2" />
 												<LivePackName Value="" />
 												<LivePackId Value="" />
-												<OriginalFileSize Value="13638" />
-												<OriginalCrc Value="34943" />
+												<OriginalFileSize Value="19428" />
+												<OriginalCrc Value="37031" />
 											</FileRef>
-											<LastModDate Value="1702560009" />
+											<LastModDate Value="1705054834" />
 											<SourceContext />
 											<SampleUsageHint Value="0" />
 										</MxDPatchRef>
@@ -918,7 +918,7 @@
 								</IdRefList>
 								<BlobSlot>
 									<Value>
-										<MxDBlob Id="1">
+										<MxDBlob Id="2">
 											<Blob />
 											<HasData Value="true" />
 										</MxDBlob>
@@ -978,7 +978,7 @@
 						</EnvelopeTarget>
 						<Automation>
 							<Events>
-								<FloatEvent Id="0" Time="-63072000" Value="120" />
+								<FloatEvent Id="2" Time="-63072000" Value="120" />
 							</Events>
 							<AutomationTransformViewState>
 								<IsTransformPending Value="false" />
@@ -1003,7 +1003,7 @@
 					<AutomationLanes>
 						<AutomationLane Id="0">
 							<SelectedDevice Value="1" />
-							<SelectedEnvelope Value="2" />
+							<SelectedEnvelope Value="3" />
 							<IsContentSelectedInDocument Value="false" />
 							<LaneHeight Value="85" />
 						</AutomationLane>
@@ -1073,7 +1073,7 @@
 					<ModulationSourceCount Value="0" />
 					<ParametersListWrapper LomId="0" />
 					<Pointee Id="19730" />
-					<LastSelectedTimeableIndex Value="2" />
+					<LastSelectedTimeableIndex Value="3" />
 					<LastSelectedClipEnvelopeIndex Value="0" />
 					<LastPresetRef>
 						<Value />
