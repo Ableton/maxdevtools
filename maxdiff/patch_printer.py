@@ -306,7 +306,9 @@ def get_saved_object_attributes(value: dict) -> dict:
 
 
 def get_parameters_string_block(parameters: dict) -> str:
-    """Produce a string representing parameters in a patcher."""
+    """Produce a string that lists overridden parameters in a patcher.
+    Non-overridden parameter attributes are already shown with the parameter objects.
+    """
     parameters_string = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
@@ -345,7 +347,7 @@ def get_parameters_string_block(parameters: dict) -> str:
                 + f": {value['parameters']}"
             )
 
-    return f"\nparameters:\n{parameters_string}"
+    return f"\nparameter_overrides:\n{parameters_string}"
 
 
 def get_dependency_cache_string_block(dependency_cache: list):
