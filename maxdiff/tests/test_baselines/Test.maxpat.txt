@@ -1,31 +1,6 @@
-appversion: 8.5.5-x64-1 | rect: [59, 106, 640, 480] | autosave: 0
-parameters:
-	obj-20::obj-1 ['InsideBpatcher[1]', 'live.dial', 0] > override > ['InsideBpatcher[1]', '-', '-']
-banks:
-	0: ['-', '-', '-', '-', '-', '-', '-', '-']
+appversion: 8.5.5-x64-1 | rect: [59, 106, 325, 253] | autosave: 0
 ----------- objects -----------
-[coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
-[p MySubpatcher] 
-	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480] | bgcolor: [0.78, 0.78, 0.78, 1] | editing_bgcolor: [0.78, 0.78, 0.78, 1]
-	----------- objects -----------
-	[t b b] 
-[loadbang] 
-[message read collContent.txt] 
-[coll] 
-[fpic] pic: fpic.png
-[live.tab] annotation: Toggles between Beat Sync and Free running (Hz). | annotation_name: Time Mode | fontsize: 9.0 | livemode: 1 | num_lines_patching: 2 | num_lines_presentation: 2 | pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <annotation_name: Time Mode | enum: [Free, Sync] | invisible: 2 | linknames: 1 | longname: Time Mode | mmax: 1 | shortname: Time Mode | type: 2 | unitstyle: 9> | usepicture: 1 | usesvgviewbox: 1 | varname: Time Mode
-[live.banks] 
-[bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
-[bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
-[live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: live.dial[1] | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
-[live.dial] 
-[button] presentation: 1 | presentation_rect: [265, 26, 24, 24]
-[bpatcher MyAbstraction.maxpat] offset: [-4, -12]
-[comment A comment] 
-[live.comment A live.comment] 
-[button] hidden: 1
-[button] background: 1
-[MyAbstraction] background: 1
+[button] 
+[button] 
 ----------- patch cords -----------
-[message read collContent.txt] (0) => (0) [coll]
-[loadbang] (0) => (0) [message read collContent.txt]
+[button] (0) => (0) [button]
