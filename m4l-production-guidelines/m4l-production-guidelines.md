@@ -27,11 +27,11 @@ Max objects will be denoted with brackets, i.e `[live.path]`.
 
 [Design](#design): Suggestions for a consistent and flexible device UI. This is also about how the device communicates itself, in order for it to appear professional.
 
-[Performance](#performance): How to avoid common device performance pitfalls and bugs, for a device that is reliable in its performance.
+[Robustness](#robustness): How to avoid common pitfalls, for a device that is reliable and performant.
 
 [Patch Formatting](#patch-formatting): Note about the organization of patches. If someone were to press the Edit button on your Max for Live device in Live, they should ideally be presented with a clean, legible patch, that can be clearly understood, learned from, and even re-used.
 
-[Final Checklist](#final-checklist): Final words, and checklist for QA testing.
+[Final Checklist](#final-checklist): A checklist for QA testing.
 
 [Appendix A - Help and Support](#appendix-a---help-and-support): Finding help with usability topics, and technical support.
 
@@ -48,15 +48,17 @@ Once you have finished patching your Max for Live device and are ready to distri
 
 Freezing a Max device is similar to Live’s **Collect All and Save** function. It prepares the device for distribution, by making sure that it contains all the files it needs to operate, its **dependencies**.
 
-Max analyzes your device to find any files it uses, and consolidates these files within your device. When a frozen device is then opened on another user’s computer, the files used by the device are referenced correctly. These files are most commonly abstractions, audio files, and image files, but can also include Javascript code or third-party Max externals.
+Max analyzes your device to find any files it uses, and consolidates these files within your device. When a frozen device is then loaded on another user’s computer, the files used by the device are referenced correctly. These files are most commonly abstractions, audio files, and image files, but can also include Javascript code or third-party Max externals.
 
 To get a list if all dependencies of a device, the File menu in Max has an option called List Externals and Subpatcher Files.
 
 Failing to freeze a device before sharing or distributing it can often result in a device malfunctioning due to broken file references.
 
-To freeze your device, click the snowflake icon in the device toolbar, then save the device, ideally under a different name. Preferably continue developing from the unfrozen version instead of unfreezing the frozen device, see [Version Management](#version-management).
+To freeze your device, click the snowflake icon in the device toolbar, then save the device, ideally under a different name. 
 
 <img width=312 alt="The Freeze button" src="images/freeze.png">
+
+Preferably continue developing from the unfrozen version instead of unfreezing an frozen device, see [Version Management](#version-management).
 
 *The Freeze button*
 
@@ -68,7 +70,7 @@ In an unlocked patcher with no objects selected, right-click the patcher backgro
 
 <img width=769 alt="Open in presentation" src="images/open-in-presentation.png">
 
-*‘Open in Presentation’ in the ‘View’ section of the patch Inspector*
+*‘Open in Presentation’ in the ‘View’ section of the Patch Inspector*
 
 Note that this option is only available in the Inspector window that pertains to the whole patch. You can toggle the Inspector window for **individual objects** by selecting the object first, then using the key command **Cmd+I / Ctrl+I**.
 
@@ -82,7 +84,7 @@ You can view your device’s dependencies in a dedicated file manager window by 
 
 ### Local and Global Naming
 
-The **‘name space’** in Max is global - when you have objects that have names associated with them such as `[send]`, `[receive]`, `[coll]`, or `[buffer~]`, you can share data between Max for Live devices. In these cases, the Max name space is shared, but the ‘signal processing space’ is independent - each Max for Live device processes its audio data separately.
+The **‘name space’** in Max is global - when you have objects that have names associated with them such as `[send]`, `[receive]`, `[coll]`, or `[buffer~]`, you can share data between Max for Live devices. The ‘signal processing space’ is independent - each Max for Live device processes its audio data separately.
 
 If you want a named object to be local to a device, use three dashes (`---`) to start the name of your `[buffer~]`, `[coll]`, or `[send]`/`[receive]` pair (e.g. `[s ---filtercutoff]`). When your patch is initialised, it will replace the three dashes with a number that is unique to your device, for example `[s 024filtercutoff]`.
 
@@ -101,7 +103,7 @@ There are several ways to name a parameter in a device, which can be set using a
 
 * **Short Name**: for the UI object label.
 * **Long Name**: for automation and MIDI mapping.
-* **Scripting Name**: for use with the [pattr] preset objects or scripting.
+* **Scripting Name** (optional): for use with the [pattr] preset objects or scripting.
 
 <img width=533 alt="Parameter names" src="images/parameter-names.png">
 
@@ -111,33 +113,11 @@ Keep the **Short Name** short enough to avoid the label being truncated, whereas
 
 Both the **Long Name** and the **Scripting Name** have to be unique within your device. 
 
-If your device loads multiple copies of an abstraction that contains parameter objects, note that Max wil automatically duplicate names by appending an integer like `[1]`. 
+If your device uses multiple copies of an abstraction that contains parameter objects, note that Max wil automatically append an integer like `[1]` to duplicate Long Names.
 
 ### Parameters Window
 
 In Max, go to **View > Parameters** to open a window in which you can edit attributes for all parameters at once.
-
-### Parameter Type and Unit Style
-
-`[live.*]` UI parameters can be set to one of three main Types in the object Inspector:
-
-* **Int**: Integer values in the range of 0 - 255
-* **Float**: Floating point values (no range restriction)
-* **Enum**: An enumerated list of items
-
-<img width=518 alt="Parameter type" src="images/parameter-type.png">
-
-*Parameter Type in the object Inspector*
-
-Keep in mind that Enum-type values will display a stepped automation lane in Live’s automation view. Int-type parameters display a grid with a continuous automation line, but the resulting value will be rounded.
-
-Furthermore, parameters have a **Unit Style** setting, which determines how the parameter value is displayed. 
-
-It is possible to set a parameter’s **Type** to **Float** while setting its **Unit Style** to **Int**. In doing so, the parameter value will be stored as a floating-point number, but displayed as an integer.
-
-The **Custom** Unit Style allows adding a custom unit in the **Custom Units** field. Additionally, it supports [printf](https://cplusplus.com/reference/cstdio/printf/)-style strings. For more information, see the [Setting a custom unit style](https://docs.cycling74.com/max8/vignettes/live_parameters#Setting_a_custom_unit_style) section in the Max reference.
-
-If you don't want a parameter's automation lane to show as a grid, but you do want its value to display as an integer percentage without decimals, it is possible to set a parameter's **Type** to **Float** while setting its **Unit Style** to **Custom** and its **Custom Units** to `"%.0f %"`.
 
 ### Automation
 
@@ -154,6 +134,28 @@ You can check the automation parameters by loading the Max for Live device in Li
 <img width=300 alt="Automatable Parameters" src="images/automatable-parameters.png">
 
 *Automatable parameters listed in Live’s Arrangement view*
+
+### Parameter Type and Unit Style
+
+`[live.*]` UI parameters can be set to one of three main Types in the object Inspector:
+
+* **Int**: Integer values in the range of 0 - 255
+* **Float**: Floating point values (no range restriction)
+* **Enum**: An enumerated list of items
+
+<img width=518 alt="Parameter type" src="images/parameter-type.png">
+
+*Parameter Type in the object Inspector*
+
+Keep in mind that Enum-type values will display a stepped automation lane in Live’s automation view and Int-type parameters display a tall grid with a continuous automation line, but the resulting value will be rounded.
+
+Furthermore, parameters have a **Unit Style** setting, which determines how the parameter value is displayed. 
+
+> It is possible to set a parameter’s **Type** to **Float** while setting its **Unit Style** to **Int**. In doing so, the parameter value will be stored as a floating-point number, but displayed as an integer.
+
+The **Custom** Unit Style allows adding a custom unit in the **Custom Units** field. Additionally, it supports [printf](https://cplusplus.com/reference/cstdio/printf/)-style strings. For more information, see the [Setting a custom unit style](https://docs.cycling74.com/max8/vignettes/live_parameters#Setting_a_custom_unit_style) section in the Max reference.
+
+> If you don't want a parameter's automation lane to show as a grid but you do want its value to display as an integer without decimals _and_ you want to use a percentage sign as its unit, it is possible to set a parameter's **Type** to **Float** while setting its **Unit Style** to **Custom** and its **Custom Units** to `"%.0f %"`.
 
 ### Saving Parameters
 
@@ -196,7 +198,6 @@ Check that it works by loading the device, then hover the mouse over parameters 
 
 *Live’s Info View*
 
-
 ### MIDI Mapping
 
 Making parameters **MIDI-mappable** will allow users to control parameters with any MIDI controller. 
@@ -221,17 +222,16 @@ Device parametes can be mapped to Push by using the `[live.banks]` system. See t
 
 For example it may require some work to make the parameters of a device appear in the same order as they appear in the GUI.
 
+
 ## Design
 
 Suggestions for a consistent and flexible device UI. This is also about how the device communicates itself.
 
 ### Live Color Themes
 
-We recommend making sure that your device works with all Live color themes. This feature was introduced in Live 10.
+We recommend making sure that your device works with all Live color themes. Consider that making your device look like native Live devices helps provide users with a consistent experience in Live.
 
-One benefit of supporting the Live themes is that it can also save time in development, because `[live.*]` objects and their various states link to them by default. Consider that making your device look like native Live devices also helps provide users with a consistent experience in Live.
-
-For an object color to automatically follow Live themes, it needs to be set to a **dynamic color**, a feature introduced in Max with Live 11. By default, live.* UI objects have their colors set to dynamic colors. For more information, see the [dynamic colors reference](https://docs.cycling74.com/max8/vignettes/dynamic_colors).
+For an object color to automatically follow Live themes, it \ needs to be set to a **dynamic color**, a feature introduced in Max with Live 11. By default, `[live.*]` UI objects have their colors set to dynamic colors. For more information, see the [dynamic colors reference](https://docs.cycling74.com/max8/vignettes/dynamic_colors).
 
 To make sure a color property has its original dynamic color value, you can set it to its default value.
 
@@ -263,15 +263,15 @@ Notice, for example, that in the screenshots below the black text changes to whi
 
 *The LFO device in the darkest color theme*
 
-Device colors can also be adjusted to the current Live themes with the `[live.colors]` object. See the `[live.colors]` Help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.colors) for more information.
+Device colors can also be adjusted to the current Live themes with the `[live.colors]` object. See the `[live.colors]` help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.colors) for more information.
 
 You can check that this has been correctly implemented by loading your device, opening the **Look/Feel** tab in Live’s Preferences, and cycling through the selection of color themes.
 
 ### Fonts
 
-**Ableton Sans** is included as a standard font in Max. It can be selected from the Inspector, for any text-based object parameter, i.e a [comment] or [live.dial] label. Use this type face for a look that is consistent with Live’s devices.  
+**Ableton Sans** is included as a standard font in Max. It can be selected from the Inspector for any object that displays text, i.e. a `[comment]` or `[live.dial]` label. Use this type face for a look that is consistent with Live’s devices.  
 
-For non-UI objects, notice that when objects are encapsulated instead of kept in the top level patch, by default they change their fonts to the standard Max font. 
+For non-UI objects, notice that when objects are encapsulated instead of kept in the top level patch, by default they change to the standard Max font for a better patching experience.
 
 ### Device Width
 
@@ -279,10 +279,10 @@ Live’s **Device View** has a fixed height, which can increase the inconvenienc
 
 One way to judge whether the width of your device is potentially problematic or not, is to compare it to functionally-similar existing devices.
 
-For example, is your Max for Live device a synth with a lot of included features and parameters? If so, it can have a large device width like Poli from the Creative Extensions Pack. Is your device more of a utility? Then it might make more sense for it to be as narrow as Live's built-in LFO. If you have a complex audio effect, you could use the width of Convolution Reverb Pro from the Convolution Reverb Pack as a reference.
+For example, is your Max for Live device a synth with a lot of included features and parameters? If so, it can have a large device width like Poli from the [Creative Extensions Pack](https://www.ableton.com/en/packs/creative-extensions/). Is your device more of a utility? Then it might make more sense for it to be as narrow as Live's built-in LFO. If you have a complex audio effect, you could use the width of Convolution Reverb Pro from the [Convolution Reverb Pack](https://www.ableton.com/en/packs/convolution-reverb/) as a reference.
 
 If you find that your device takes up too much horizontal space to your liking, there are several ways to reduce its width:
-* **Fold-out view**: Set the device width dynamically by clicking an arrow button. This works particularly well for separating the main device parameters from device configurations. For example, Surround Panner from the Surround Panner Pack provides the option to fold or unfold the I/O configuration section.
+* **Fold-out view**: Set the device width dynamically by clicking an arrow button. This works particularly well for separating the main device parameters from device configurations. For example, Surround Panner from the [Surround Panner Pack](https://www.ableton.com/en/packs/surround-panner/) provides the option to fold or unfold the I/O configuration section.
 * **Tabbed view**: Create several tabs in order to re-use the same area in the device multiple times. This can be useful when your device has a large number of parameters that can be grouped into individual categories that don’t need to be visually present all at once. For example, Convolution Reverb Pro from the Convolution Reverb Pack integrates tabs into its design, to control different aspects of the sound design such as EQ, Panning, and Modulation.
 * **Overlay view**: This refers to a button that toggles an overlay view over the entire device, which can be a useful way to introduce an advanced parameters section. For example, Live's built-in LFO has a button in the top-right corner of the device that toggles its Multi-map options as an overlay.
 
@@ -292,17 +292,15 @@ For each of these cited example devices, you can open the Max for Live Editor to
 
 There are several settings in the Object Inspector that we recommend for best use of the **`[live.*]` UI objects**.
 
-For the **Presentation Rectangle** setting, make sure that widgets are sized in **whole pixels** to avoid blurry shapes on non-retina screens, by using numbers like ‘4’ instead of ‘4.3562635’. Re-positioning objects with click-drag often results in these decimal point numbers, so be sure to check the Inspector for object dimensions and positions in Presentation Mode when fine-tuning the device UI.
+For the **Presentation Rectangle** setting, make sure that widgets are sized in **whole pixels** to avoid blurry shapes on non-retina screens, by using numbers like ‘4’ instead of ‘4.3562635’. Aligning objects with click-drag relative to the center other objects can result in these decimal point numbers, so be sure to check the Inspector for object dimensions and positions in Presentation Mode when fine-tuning the device UI.
 
 <img width=578 alt="Presentation Rectangle" src="images/presentation-rect.png">
 
 *The ‘Presentation Rectangle’ setting in the Object Inspector*
 
-Use the **LCD** mode for the **Display Style** in `[live.tab]`, `[live.numbox]`, and `[live.text]`, which was designed to mirror Live’s UI parameters. This ensures that pixels snap to the pixel grid on non-retina screens. Note that this Display Style is not selected by default.
+In Max 8.6.0 and higher, from the Arrange menu, you can choose the Apply Grid feature to snap all selected objects to a 1x1 pixel grid.
 
-<img width=632 alt="Display Style" src="images/display-style.png">
-
-*The ‘Display Style’ setting in the [live.tab] Object Inspector*
+Enable **Live mode** for `[live.tab]`, which was designed to mirror Live’s tab interfaces. This ensures that pixels snap to the pixel grid on non-retina screens.
 
 Make sure that **Mouse Up** (in the **Behavior** section) is selected as the **Output Mode** for `[live.text]`, since it will match Live’s native button behavior. Note that this Output Mode is not selected by default.
 
@@ -329,15 +327,15 @@ Therefore it is recommended to always set pop-out windows like these to floating
 *Using window messages to give a subpatcher a floating window*
 
 
-## Functionallity
+## Robustness
 
-How to avoid common device pitfalls and bugs, for a device that is reliable in its performance.
+How to avoid common pitfalls, for a device that is reliable and performant.
 
 ### OS Compatibility
 
-For everyone to be able to use your device, it should work on both **Mac and PC** so that a Live Set using the Max for Live device is cross-compatible. 
+For everyone to be able to use your device, ideally it should work on both **Mac, PC and Push 3 Standalone** so that a Live Set using the Max for Live device is cross-compatible. 
 
-Note: Max external objects that are not included in the standard Max distribution need to be compiled separately for Mac and PC platforms by their developers.
+Note: Max external objects that are not included in the standard Max distribution need to be compiled separately for Mac, PC and Push 3 Linux platforms by their developers.
 
 ### Max Console
 
@@ -391,7 +389,7 @@ Max for Live device performance should be measured in a Live Set within a musica
 
 Check this by loading several instances of your device in a Live Set. Add some other Max for Live devices or Live instruments, and automate some parameters in your Max for Live device.
 
-Sometimes the visual appearance of a device informs what CPU load is expected. For a device that looks like a simple utility, users are likely to expect a lower CPU usage than a larger interface that looks like it does more complicated work.
+Sometimes the visual appearance of a device sets an expectation for its CPU load. For a device that looks like a simple utility, users are less likely to expect a high CPU usage than for a larger interface that looks like it does more complicated work.
 
 If parameter automation causes high CPU load, try enabling **Defer Automation Output** in the object Inspector if the automation values are not time-sensitive, or try higher values for the **Update Limit**.
 
@@ -405,15 +403,19 @@ Live stores parameter values for each `[live.*]` parameter that is set to **Auto
 
 If you do make significant changes to the device, we recommend publishing the AMXD file with a different file name, in most cases this is done by appending a version number to the file name. 
 
+### Testing
+
+Before distributing, it is recommended to ask one or more people who are not a device developer to test your device. Often, when developing a device you have blind spots for some specific functional checks.
+
 ### Version Management
 
 You may want to distribute new frozen versions of a plugin regularly. When continuing work on a plugin, it is recommended not to continue with the frozen, distributed version of a plugin but with the original unfrozen version.
 
-When you unfreeze a plugin to continue editing it, new copies of the dependencies it contained can be stored in a new folder on disk (in **~/Documents/Max/Max for Live Devices/**). This can cause confusion about which versions of your dependencies you are working on.
+When you unfreeze a plugin to continue editing it, new copies of the dependencies it contained are created in a new folder on disk (in **~/Documents/Max/Max for Live Devices/**). This can cause confusion about which versions of your dependencies you are working on.
 
 A good rule could be to always remove the frozen version of a plugin from your system after distributing it.
 
-When working on multiple plugins and providing regular incremental updates, you may want to consider keeping the original versions (not the frozen copies) of your plugins and their dependencies in a version control system like **git**.
+When working on multiple plugins and providing regular incremental updates, especially when working on them with multiple people, you may want to consider keeping the original versions (not the frozen copies) of your plugins and their dependencies in a version control system like **[git](https://git-scm.com/)**.
 
 Note though that using git requires careful study, we will not cover that in this document.
 
@@ -429,12 +431,12 @@ What constitues a legible patch can be highly subjective. Here are [the patch co
 
 ## Final Checklist
 
-Here is a checklist to quickly recap the topics of this guide that can be tested, which you can use for **Quality Assurance** purposes for your device.
+Here is a checklist to recap the topics of this guide that can be tested, which you can use for **Quality Assurance** purposes for your device.
 
 **General**
 
 - [ ] Error messages: There are no prints in the Max Console on load.
-- [ ] Undo History: There are no extra undo steps on initialization, i.e. loading the device doesn't change the document.
+- [ ] Undo History: After adding the device, there is only one new undo.
 - [ ] Undo History: Live's undo menu is never ‘flooded’.
 - [ ] Freezing: The device is frozen if it contains dependencies.
 - [ ] Presets: The device comes with a collection of presets.
@@ -454,8 +456,8 @@ Here is a checklist to quickly recap the topics of this guide that can be tested
 - [ ] Disabling: The UI colors are correct when the device is disabled.
 - [ ] Positioning: The left-most element in presentation mode is as far from the left side of the device as the right-most element is from the right side.
 - [ ] Default initialization: Colors and texts that are changed dynamically are saved in their default state to prevent a color or content flash after loading a new instance of the device.
-- [ ] Font consistency: All UI fonts are set to default.
-- [ ] Tab stops: Comments don't include any tab stops. The result will look different per OS. On Mac: like a space, on Windows: like a tab, with some unexpected behavior.
+- [ ] Font consistency: All UI fonts are set to Live's font.
+- [ ] Tab stops: Comments don't include any tab stops. The result will look different per OS.
 - [ ] Device width: The device does not take up too much of the horizontal space in the Device view.
 
 **Parameters**
@@ -463,24 +465,26 @@ Here is a checklist to quickly recap the topics of this guide that can be tested
 Note: many of these things can be checked and changed in the View > Parameters window.
 
 - [ ] Info fields: All Info Title and Info fields are filled in.
-- [ ] Naming: All parameters have non-generic Long Name and Short Name fields. No names have auto-appended indexes, like [1].
+- [ ] Naming: All parameters have non-generic Long Name and Short Name fields. No names have auto-appended indexes, like `[1]`.
 - [ ] Automation: The parameter dropdown for a device contains all intended automatable parameters.
-- [ ] Value editing: Parameter Types and Units correspond to the kind of data being represented, taking into account that using the Int type give users a grid automation lane.
+- [ ] Value editing: Parameter Types and Units correspond to the kind of data being represented, taking into account that using the Int type gives users a tall grid automation lane.
 - [ ] Enum labels: Unit / labels of automation for Enum parameters don't have generic values ("val1"/"val2" for buttons).
 - [ ] Modulation: All parameters have modulation active.
 - [ ] Defaults: All default parameter values are correct, i.e. the device works well after newly instantiating it.
 - [ ] Save and recall: All parameters are recalled correctly when opening a Live Set that contains the device with non-default values for all parameters.
 - [ ] Push: The parameters show up correctly on Push.
 
-**Performance**
+**Robustness**
+
 - [ ] CPU Load: The device does not cause unexpectedly high CPU load in the context of a Live Set.
 - [ ] Version support: The device runs well with all Live and Max versions starting from the lowest versions set in the device.
-- [ ] Platform support: macOS, Windows and ideally Push 3 all host the device well.
+- [ ] Platform support: Ideally macOS, Windows and Push 3 Standalone all host the device well.
 - [ ] Independence: Multiple instances of the device run well simultaneously.
+- [ ] Testing: The device is tested by one or more people besides the device developer.
 
 **For new versions of existing devices**
 
-- [ ] Name consistency: The parameter names are all the same as the old version
+- [ ] Name consistency: The parameter names are the same as the old version.
 	- Take special care of auto-indexed names when there are parameters in abstractions (also in bpatchers) that are instantiated multiple times.
 - [ ] Value recall: Parameter values stored in a Live Set with an old version of the device are all recalled properly.
 - [ ] API ID recall: Persistent ids stored in a Live Set with an old version of the device are all recalled properly.
