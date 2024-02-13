@@ -189,7 +189,10 @@ def get_box_text(box: dict) -> str:
     objecttype = box["maxclass"]
     boxtext = objecttype
     if objecttype == "newobj":
-        boxtext = box["text"]
+        if "text" in box:
+            boxtext = box["text"]
+        else:
+            boxtext = "- empty -"
     elif "text" in box:
         boxtext = f"{objecttype} {box['text']}"
 
