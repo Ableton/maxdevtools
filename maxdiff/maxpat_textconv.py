@@ -27,7 +27,8 @@ def main():
     try:
         result = parse(args.file)
         print(result)
-    except RuntimeError:
+    except RuntimeError as err:
+        print("Error: ", *err.args)
         sys.exit(2)
 
 
