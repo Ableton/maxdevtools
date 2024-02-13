@@ -24,7 +24,7 @@ Readable diffs are very useful for patch code review, or for a sanity check befo
 
 ## Prerequisites
 
-Requires a recent version of Python 3 to be installed, aliased as `python3`. For example on Mac, [Homebrew](https://brew.sh/) should automatically set this up when installing with:
+Requires Python 3.10 or higher to be installed, and assumes it is aliased as `python3`. For example on Mac, [Homebrew](https://brew.sh/) should automatically set this up when installing with:
 
 ```bash
 brew install python
@@ -69,8 +69,6 @@ This tool is an on-going work in progress. If you have a Max patch or device tha
 # Contributing
 
 Contributions are welcome. Feel free to fork this repo and submit a Pull Request.
-
-All scripts are based on Python 3. 
 
 Code is formatted using black:
 * Install [black](https://pypi.org/project/black/)
