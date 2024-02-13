@@ -12,4 +12,4 @@ These tools are aimed at experienced Max for Live builders. To get started with 
 
 ## Maintainers
 
-* @MattijsKneppers
+* [@MattijsKneppers](https://github.com/MattijsKneppers)
