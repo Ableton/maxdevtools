@@ -18,9 +18,6 @@ def main():
     parser = argparse.ArgumentParser(
         description="Convert a Max patch to a textual representation"
     )
-    parser = argparse.ArgumentParser(
-        description="Convert a Max patch to a textual representation"
-    )
     parser.add_argument("file", help="Path to the file to convert")
     args = parser.parse_args()
 
