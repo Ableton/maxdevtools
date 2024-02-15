@@ -62,6 +62,16 @@ Typical things you can do with text-based code that will not work with Max patch
 
 Note that `git-format-patch` (see [man](https://git-scm.com/docs/git-format-patch)) does still work, since by default it ignores the `textconv` setting.
 
-# Please get in touch when the script doesn't work with your patch
+# Troubleshooting
+
+## Testing outside of git
+
+If you see or know that a file is modified but your git interface does not show any diff, there might be an error in a script. To verify this, you can get a summary outside if git:
+
+* Open Terminal / Command Prompt, navigate to this repo.
+* From the repo root, run `python3 ./maxdiff/amxd_textconv.py <path/to/your/device.amxd>`
+* If this doesn't print a patch summary, or if this throws an error, please get in touch.
+
+## Please get in touch when the script doesn't work with your patch
 
 This tool is an on-going work in progress. If you have a Max patch or device that results in an error or is not represented as you would expect, please [create an issue on github](https://github.com/Ableton/maxdevtools/issues) and include the patch that doesn't work plus a description of the problem you're seeing.
