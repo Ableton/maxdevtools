@@ -18,16 +18,14 @@ def main():
     parser = argparse.ArgumentParser(
         description="Convert a Max patch to a textual representation"
     )
-    parser = argparse.ArgumentParser(
-        description="Convert a Max patch to a textual representation"
-    )
     parser.add_argument("file", help="Path to the file to convert")
     args = parser.parse_args()
 
     try:
         result = parse(args.file)
         print(result)
-    except RuntimeError:
+    except RuntimeError as err:
+        print("Error: ", *err.args)
         sys.exit(2)
 
 
