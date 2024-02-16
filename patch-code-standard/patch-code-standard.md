@@ -1,4 +1,4 @@
-# Ableton patch code standard for Max devices
+# Ableton Patch Code Standard for Max Devices
 
 The patch code standard that Ableton uses in the Max devices that come bundled with Live 12 and higher.
 

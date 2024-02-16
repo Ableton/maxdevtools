@@ -74,6 +74,6 @@ If you see or know that a file is modified but your git interface does not show 
   * `python3 ./maxdiff/maxpat_textconv.py <path/to/your/patch.maxpat>` for an abstraction.
 * If this doesn't print a patch summary, or if this throws an error, please get in touch.
 
-## Please get in touch when the script doesn't work with your patch
+# Reporting issues and contributing
 
-This tool is an on-going work in progress. If you have a Max patch or device that results in an error or is not represented as you would expect, please [create an issue on github](https://github.com/Ableton/maxdevtools/issues) and include the patch that doesn't work plus a description of the problem you're seeing.
+Reports and contributions are welcome, please see the [contributing guidelines](CONTRIBUTING.md).

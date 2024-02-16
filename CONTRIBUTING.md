@@ -1,7 +1,3 @@
-Pull Requests
-=============
+# Contributing
 
-We are happy to accept pull requests from the GitHub community, assuming that they meet the following criteria:
-
- - You have signed and returned Ableton's [CLA](http://ableton.github.io/cla/).
- - The code or text is formatted and tested according to the guidelines in the subprojects where applicable. See for example the [guidelines for maxdiff](maxdiff/CONTRIBUTING.md).
+We are happy to accept issue reports and pull requests from the GitHub community. Please see the project-specific contribution guidelines, such as the [guidelines for maxdiff](maxdiff/CONTRIBUTING.md).
