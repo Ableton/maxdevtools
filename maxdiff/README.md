@@ -1,6 +1,8 @@
 # Diffing patches
 
-A way to diff condensed representations of Max patches and Max for Live devices, so the diff is more readable. Also shows the XML content of `.als` files, regardless of whether they are gzipped.
+## Description
+
+A way to diff condensed representations of Max patches and Max for Live devices, so the diff is more readable when working with the version control tool [git](https://git-scm.com/). This tool also allows diffing the XML content of `.als` files, regardless of whether they are gzipped.
 
 In a git client like Tower, this is how it looks.
 
@@ -18,11 +20,21 @@ For `.amxd` files:
 * The scripts will also tell you what device type it is. 
 * If a device is frozen, you will only see a notice saying that the device is frozen, the content will not be shown. We aim never to commit frozen devices to a git repo, instead we include the dependencies as separate files.
 
-## Why?
+### Why?
 
 Readable diffs are very useful for patch code review, or for a sanity check before committing (did I really change nothing else expect removing all my debug messages and prints?).
 
-## Prerequisites
+### What does not work
+
+Typical things you can do with text-based code that will not work with Max patches or devices:
+* Resolving merge conflicts
+* Staging or discarding lines or chunks
+
+Note that `git-format-patch` (see [man](https://git-scm.com/docs/git-format-patch)) does still work, since by default it ignores the `textconv` setting.
+
+## Installing
+
+### Prerequisites
 
 Requires Python 3.10 or higher to be installed, and assumes it is aliased as `python3`. For example on Mac, [Homebrew](https://brew.sh/) should automatically set this up when installing with:
 
@@ -30,7 +42,7 @@ Requires Python 3.10 or higher to be installed, and assumes it is aliased as `py
 brew install python
 ```
 
-## Setup
+### Setup
 
 1. In a `.gitattributes` file in the root of your repo, apply diff attributes for `.maxpat`, `.amxd` and `.als` files:
 ```text
@@ -54,26 +66,16 @@ brew install python
 
 3. Now `git diff` will show you changes in max patch and device files in a condensed format.
 
-## What does not work
+## Troubleshooting
 
-Typical things you can do with text-based code that will not work with Max patches or devices:
-* Resolving merge conflicts
-* Staging or discarding lines or chunks
-
-Note that `git-format-patch` (see [man](https://git-scm.com/docs/git-format-patch)) does still work, since by default it ignores the `textconv` setting.
-
-# Troubleshooting
-
-## Testing outside of git
-
-If you see or know that a file is modified but your git interface does not show any diff, there might be an error in a script. To verify this, you can get a summary outside of git:
+If you see or know that a file is modified but your git interface does not show any diff, there might be an error in a maxdiff script. To verify this, you can get a summary outside of git:
 
 * Open Terminal / Command Prompt, navigate to this repo.
 * From the repo root, run the appropriate python script with your file as an argument:
   * `python3 ./maxdiff/amxd_textconv.py <path/to/your/device.amxd>` for a device, or
   * `python3 ./maxdiff/maxpat_textconv.py <path/to/your/patch.maxpat>` for an abstraction.
-* If this doesn't print a patch summary, or if this throws an error, please get in touch.
+* If this doesn't print a patch summary, or if this throws an error, please [get in touch](CONTRIBUTING.md).
 
-# Reporting issues and contributing
+## Reporting issues and contributing
 
 Reports and contributions are welcome, please see the [contributing guidelines](CONTRIBUTING.md).
