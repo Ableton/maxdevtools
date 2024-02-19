@@ -269,7 +269,7 @@ You can check that this has been correctly implemented by loading your device, o
 
 ### Fonts
 
-**Ableton Sans** is included as a standard font in Max. It can be selected from the Inspector for any object that displays text, i.e. a `[comment]` or `[live.dial]` label. Use this type face for a look that is consistent with Live’s devices.  
+**Ableton Sans** is included as a standard font in Max. It can be selected from the Inspector for any object that displays text, i.e. a `[live.comment]` or `[live.dial]` label. Use this type face for a look that is consistent with Live’s devices, at the font size 10px with the recommended font style **Ableton Sans Small**.  
 
 For non-UI objects, notice that when objects are encapsulated instead of kept in the top level patch, by default they change to the standard Max font for a better patching experience.
 
