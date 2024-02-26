@@ -7,7 +7,7 @@ To ensure that our devices continue to work, they need to be easy to maintain, a
 
 Using a single approach to patching across all our devices means internal and external readers need to become accustomed to our style only once.
 
-That is why we use a patch code standard, that optimizes for being easy to read. Our built-in devices demonstrate this standard.
+That is why we use a patch code standard, that optimizes for being easy to read. Our built-in devices[^1] demonstrate this standard.
 
 ## Context
 * For now these guidelines are only applied to the devices that are built into Live and to the [Building Max Devices Pack](https://www.ableton.com/en/packs/building-max-devices/). In the future we might also apply them to Packs.
@@ -154,3 +154,5 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 	* [Connascence](https://connascence.io/)
 	* [The Grand Unified Theory of Software Design by Jim Weirich](https://vimeo.com/10837903) (video)
 	* [The Grug Brained Developer](https://grugbrain.dev/) (or its more readable [common english translation](https://reidjs.github.io/grug-dev-translation/)).
+
+[^1]: All except the DS devices, which are scheduled for a different update.
