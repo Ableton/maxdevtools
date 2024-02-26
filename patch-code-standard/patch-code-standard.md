@@ -10,6 +10,8 @@ Using a single approach to patching across all our devices means internal and ex
 That is why we use a patch code standard, that optimizes for being easy to read. Our built-in devices[^1] demonstrate this standard.
 
 ## Context
+General thoughts about the scope and intention of this document:
+
 * For now these guidelines are only applied to the devices that are built into Live and to the [Building Max Devices Pack](https://www.ableton.com/en/packs/building-max-devices/). In the future we might also apply them to Packs.
 * These guidelines apply only to devices we publish. When prototyping, none of this applies, everything goes.
 * Standards are subjective. This standard is based on the opinions of various experienced Max users.
@@ -18,15 +20,21 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * We try to keep this standard as brief as possible.
 
 ## Testability
-* Devices should always come with a test set called `DeviceName-FunctionalityTest.als`, which uses all features of a device. This test is used for regression testing, i.e. when refactoring or adding features, it allows the developer to guarantee that existing functionality does not change by comparing the sound of the published version (the baseline) with the new version.
+To make sure we don't break existing features when we make changes, we use the following testing criteria:
+
+* Devices come with a test set which uses all features of a device. This test is used for regression testing, i.e. when refactoring or adding features, it allows the developer to guarantee that existing functionality does not change by comparing the sound of the published version (the baseline) with the new version.
 * After any significant change of the patch code, we check if the test set still works the same.
 * Whenever addressing a bug, we first reproduce it in the test set, then fix it, then verify in the test set that it is fixed.
-* Devices should ideally come with a test set called `DeviceName-CpuTest.als`, which is an example of a typical heavy use of one or more copies of a device so that our CPU measuring tools can determine the average and peak usage. After any significant change of the patch code, we test if the CPU usage went up.
+* Devices come with a test set which is an example of a typical heavy use of one or more copies of a device so that our CPU measuring tools can determine the average and peak usage. After any significant change of the patch code, we test if the CPU usage went up.
 * The load time of a device is monitored by manual testing and by counting objects, including in duplicate and nested abstractions, and keeping the total as low as possible.
 * Before a device is published, it has to adhere to [these user-facing guidelines](../productionguidelines/README.md).
 
-## Version control
-* The device code and its dependencies live unfrozen in their repository.
+## Version control and file management
+To make it easy to collaborate, we manage our patch and dependency versions with [git](https://git-scm.com/), using the following approach:
+
+* We never store frozen devices. The device code and all its dependencies live unfrozen in their repository.
+* There are never files in a general Max search path, such as the `~/Documents/Max 8/Max for Live Devices/` folder. In the unlikely event we unfreeze a device, we move any files away from this folder.
+* Dependencies are found by Max by a) being next to the device file, b) by having the device use a relative project [Development Path Type](https://docs.cycling74.com/max8/vignettes/projects_settings), or c) by adding a local entry in the global Max [File Preferences](https://docs.cycling74.com/max8/vignettes/file_preferences_window?q=File%20Preferences).
 * We follow the same pattern as other code: development happens on a branch. When done, a PR is created, the branch is reviewed and merged and the branch is then deleted.
 * All dependencies of the device are in the same repository. i.e. nothing in the device refers to files outside of the repository unless this is explicitly mentioned. 
 * Dependencies are only included in the repository once. If dependencies are used by multiple devices, they live in a shared folder.
@@ -36,9 +44,10 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * Don't leave unused code in the patch. Code from previous versions can always be brought back with git.
 
 ## Code review
-* All patch code changes are reviewed by another experienced Max developer before being published.
+All patch code changes are reviewed by another experienced Max developer before being published.
 
 ## Patch code
+Below is the approach we use to format and structure Max patches consistently:
 
 ### General guidelines
 * The more complex the functionality of a device, the more important that its patch is as simple as possible. 
@@ -63,7 +72,6 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * For parameter objects that trigger expensive calculations but do not have to be applied in exact sync with other events, `defer automation output` needs to be enabled.
 
 ### Initialization
-
 * There is no need to use a single `[live.thisdevice]` or `[loadbang]` in your patch, except if the order of initialization is important, similar to the criterium for when to use `[trigger]`.
 * When choosing between `[loadbang]` and `[live.thisdevice]`, choose `[live.thisdevice]` only when the initialization actually depends on the connection with Live, i.e. live API queries or initial parameter values. When that is not the case, use `[loadbang]`, which fires when all patch code is loaded but before the connection with Live is working.
 * There shouldn't be data saved in the patch that is also stored in the Live set (parameter data) or depend fully on Live (like sample rate). This is not always possible, for example the points of the function object or the sample rate of live.scope~ are always stored with the patch.
@@ -137,6 +145,7 @@ That is why we use a patch code standard, that optimizes for being easy to read.
 * When the names contains abbreviations, capitalize only the first letter: FlowLcd, MpeMonitor (not FlowLCD, MPEMonitor).
 
 ## Text-based code
+This does not cover general best practices for text-based code, as there is a lot of information available about this already. These are the standards specific to Ableton's projects.
 
 ### Javascript in Max
 * Use `"use strict";`.
