@@ -206,7 +206,7 @@ To check this, load the device, enable **MIDI Map mode** in Live with the key co
 
 *Live’s MIDI Map mode button, and the blue overlay on mappable parameters in MIDI Map mode.*
 
-If the parameters are not mappable, it may be that you are not using `[live.*]` objects, or that the UI object Parameter Visibility has not been set to Automated and Stored in the Inspector.
+If the parameters are not mappable, it may be that you are not using `[live.*]` objects.
 
 ### Push Support 
 
