@@ -27,7 +27,7 @@ To make sure we don't break existing features when we make changes, we use the f
 * Whenever addressing a bug, we first reproduce it in the test set, then fix it, then verify in the test set that it is fixed.
 * Devices come with a test set which is an example of a typical heavy use of one or more copies of a device so that our CPU measuring tools can determine the average and peak usage. After any significant change of the patch code, we test if the CPU usage went up.
 * The load time of a device is monitored by manual testing and by counting objects, including in duplicate and nested abstractions, and keeping the total as low as possible.
-* Before a device is published, it has to adhere to [these user-facing guidelines](../productionguidelines/README.md).
+* Before a device is published, it has to adhere to [these user-facing guidelines](../m4l-production-guidelines/m4l-production-guidelines.md).
 
 ## Version control and file management
 To make it easy to collaborate, we manage our patch and dependency versions with [git](https://git-scm.com/), using the following approach:
