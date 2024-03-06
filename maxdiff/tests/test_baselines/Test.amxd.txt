@@ -20,6 +20,7 @@ project:
 		data:
 			collContent.txt
 ----------- objects -----------
+[message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
 [AbstractionWithParameter] 
 [print] 
