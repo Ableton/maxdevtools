@@ -1,0 +1,23 @@
+name: test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.x]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: |
+         cd maxdiff
+         python3 tests/test.py
+      - run: pip install --upgrade pip wheel
+      - run: pip install pytest
+      - run: pytest maxdiff/tests/test.py
