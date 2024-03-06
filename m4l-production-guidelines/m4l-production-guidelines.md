@@ -393,7 +393,7 @@ When you unfreeze a plugin to continue editing it, new copies of the dependencie
 
 A good rule could be to always remove the frozen version of a plugin from your system after distributing it.
 
-When working on multiple plugins and providing regular incremental updates, especially when working on them with multiple people, you may want to consider keeping the original versions (not the frozen copies) of your plugins and their dependencies in a version control system like **[git](https://git-scm.com/)**.
+When working on multiple plugins and providing regular incremental updates, especially when working on them with multiple people, you may want to consider keeping the original versions (not the frozen copies) of your plugins and their dependencies in a version control system like **[git](https://git-scm.com/)**, optionally using our change formatting tool [maxdiff](../maxdiff).
 
 Note though that using git requires careful study, we will not cover that in this document.
 
