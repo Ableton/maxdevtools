@@ -294,6 +294,8 @@ Make sure that **Mouse Up** (in the **Behavior** section) is selected as the **O
 
 *The ‘Output Mode’ setting in the [live.text] Object Inspector.*
 
+There is one exception to this rule: if this is a control you would use exclusively in a live performance, where accurate timing is required, we recommend using the **Mouse Down** option instead. An example of this is the Hold button in LFO.
+
 ### Pop-out Windows
 
 Although this is ideally avoided, if you need more interface real estate than the device view offers, you may want to add a pop-out window to your device by means of a sub patcher that is opened with a `[pcontrol]` object.
