@@ -61,7 +61,7 @@ Below is the approach we use to format and structure Max patches consistently:
 * If you're missing a feature or run into a bug in Max, contact C74 and postpone the functionality you want to build. Don't use a workaround unless it is well-understood and appropriate to share.
 
 ### Functionality
-* Make sure there can be no audio clicks when changing parameters. For example, check all places where events go to DSP and see if they need to be faded (e.g. using `[$1 5]` > `[line]`).
+* Make sure there can be no audio clicks when changing parameters. For example, check all places where events go to DSP and see if they need to be faded (e.g. using `[$1 5]` > `[line~]`).
 * Persistent ids are only used when necessary, so only when storing a mapping. Turn them off for all `[live.object]`s and `[live.observer]`s that are just intermediates, among others because this prevents creating unnecessary undos.
 * [Any logic related to UI updates doesn't happen in the scheduler thread](no-ui-updates-in-scheduler/).
 * For polyphonic patches, `[poly~]`s only contain the calculations that are different per voice, e.g. conversions and smoothing that are the same for all voices can be done outside. This doesn't apply when `[poly~]` is used for different purposes, e.g. to resample parts of the audio chain or muting DSP.
