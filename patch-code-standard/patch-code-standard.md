@@ -65,7 +65,7 @@ Below is the approach we use to format and structure Max patches consistently:
 * Persistent ids are only used when necessary, so only when storing a mapping. Turn them off for all `[live.object]`s and `[live.observer]`s that are just intermediates, among others because this prevents creating unnecessary undos.
 * [Any logic related to UI updates doesn't happen in the scheduler thread](no-ui-updates-in-scheduler/).
 * For polyphonic patches, `[poly~]`s only contain the calculations that are different per voice, e.g. conversions and smoothing that are the same for all voices can be done outside. This doesn't apply when `[poly~]` is used for different purposes, e.g. to resample parts of the audio chain or muting DSP.
-* For muting parts of DSP processing, when there are no other demands, using `[poly~]` is preferable over `[mute~]` or using `[pcontrol]`. Even though using `[mute~]` would be easier to read, `[poly~]` is has Cycling '74's preference.
+* For muting parts of DSP processing, when there are no other demands, using `[poly~]` is preferable over `[mute~]` or using `[pcontrol]`. Even though using `[mute~]` would be easier to read, `[poly~]` has Cycling '74's preference.
 * For multichannel/polyphonic processing, if it is possible to use the `[mc.x]` features, this is preferable over using `[poly~ ]`.
 * Going from DSP to events is only done when there is no way things can stay in DSP.
 * Be aware that if there are parameters in repeated abstractions, including in bpatchers, those parameters are auto-renamed by Max. This can be taken addressed in the View -> Parameters window.
