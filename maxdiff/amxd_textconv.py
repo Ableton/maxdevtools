@@ -3,6 +3,7 @@ import sys
 import json
 import argparse
 from patch_printer import print_patcher
+from print_unicode import print_unicode_string
 
 
 def parse(path: str) -> str:
@@ -96,7 +97,7 @@ def main():
 
     try:
         result = parse(args.file)
-        print(result)
+        print_unicode_string(result)
     except RuntimeError as err:
         print("Error: ", *err.args)
         sys.exit(2)

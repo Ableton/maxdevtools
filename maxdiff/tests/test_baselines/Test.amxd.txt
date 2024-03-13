@@ -1,6 +1,6 @@
 MIDI Effect Device
 -------------------
-appversion: 8.5.5-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 parameter_overrides:
 	obj-17::obj-1 ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
 	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
@@ -11,7 +11,6 @@ dependency_cache:
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
-	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 
@@ -21,6 +20,7 @@ project:
 		data:
 			collContent.txt
 ----------- objects -----------
+[message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
 [AbstractionWithParameter] 
 [print] 
@@ -29,7 +29,7 @@ project:
 [t 2] 
 [button] 
 [gen @t exponent] 
-	appversion: 8.5.5-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
 		//============================================================
@@ -71,7 +71,7 @@ project:
 	[codebox] (0) => (0) [out 1]
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
-	appversion: 8.5.5-x64-1 | rect: [474, 238, 640, 480]
+	rect: [474, 238, 640, 480]
 	----------- objects -----------
 	[t b b] 
 [loadbang] 
