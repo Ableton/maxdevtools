@@ -210,7 +210,7 @@ If the parameters are not mappable, it may be that you are not using `[live.*]` 
 
 ### Push Support 
 
-Device parametes can be mapped to Push by using the `[live.banks]` system. See the `[live.banks]` help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.banks) for more information.
+Device parameters can be mapped to Push by using the `[live.banks]` system. See the `[live.banks]` help patcher or [reference](https://docs.cycling74.com/max8/refpages/live.banks) for more information.
 
 For example it may require some work to make the parameters of a device appear in the same order as they appear in the GUI.
 
