@@ -333,6 +333,14 @@ Open the AMXD file in Live, right-click on the device’s title bar and choose *
 
 *'Open Max Window' to view the Max Console without opening the Max for Live Editor.*
 
+### Initialization
+
+If your patch is initialized with `[loadbang]` and / or `[live.thisdevice]`, you might get to a point where you need to build a fix for an issue resulting from objects not getting initalized in the right order. The fix for this is usually **not** to use `[delay]` or `[deferlow]` objects to change the order. Rather, use the `[trigger]` object, which keeps initialization synchronous.
+
+In the rare occasion that initialization involves an asynchronous process (such as waiting for a file to load from disk), whatever performs the asyncronous operation will likely have a way to report that the process is complete. You can then use this event to continue any initialization that depends on the asynchronous process to be completed.
+
+One example of an issue that can arise from using a `[delay]` to initialize in a certain order is that time-sensitive operations (such as delaying with a set amount of time) are not executed when Live's audio engine is off. So with audio off, with a `[loadbang]` => [`delay 1000`] => `[print]` patch, the `[loadbang]` does fire when the device loads but the `[print]` only happens a second after audio is turned on.
+
 ### Undo History
 
 Some Max for Live devices that use internal modulations may create a very large number of Undo events, rendering Live’s Undo function useless as a result. This can of course be frustrating for any Live user.
