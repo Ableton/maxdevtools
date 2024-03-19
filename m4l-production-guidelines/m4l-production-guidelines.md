@@ -335,7 +335,7 @@ Open the AMXD file in Live, right-click on the device’s title bar and choose *
 
 ### Initialization
 
-If your patch is initialized with `[loadbang]` and / or `[live.thisdevice]`, you might get to a point where you need to build a fix for an issue resulting from objects not getting initalized in the right order. The fix for this is usually **not** to use `[delay]` or `[deferlow]` objects to change the order. Rather, use the `[trigger]` object, which keeps initialization synchronous.
+If your patch is initialized with `[loadbang]` and / or `[live.thisdevice]`, you might get to a point where you need to build a fix for an issue resulting from objects not getting initalized in the right order. The fix for this is usually **not** to use time- or stack-based objects like `[delay]` or `[deferlow]` to change the order. Rather, use the `[trigger]` object, which keeps initialization synchronous.
 
 In the rare occasion that initialization involves an asynchronous process (such as waiting for a file to load from disk), whatever performs the asyncronous operation will likely have a way to report that the process is complete. You can then use this event to continue any initialization that depends on the asynchronous process to be completed.
 
