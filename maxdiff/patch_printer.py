@@ -165,9 +165,9 @@ def print_patcher_summary_recursive(
                         to_name = f"[{ids_to_names[val2[0]]}]"
                         to_inlet = f"({val2[1]})"
                     else:
-                        more_info += concat(more_info, f"{key2}: {val2}")
+                        more_info = concat(more_info, f"{key2}: {val2}")
             else:
-                more_info += concat(more_info, f"{key}: {value}")
+                more_info = concat(more_info, f"{key}: {value}")
 
         display_text = f"{from_name} {from_outlet} => {to_inlet} {to_name}"
         if more_info != "":
