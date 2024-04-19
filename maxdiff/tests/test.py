@@ -55,7 +55,9 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_als_zipped(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/Zipped.als.txt")
+        expected_file_path = get_test_path_file(
+            "test_baselines/Test Project/Zipped.als.txt"
+        )
         test_file_path = get_test_path_file("test_files/Test Project/Zipped.als")
 
         with open(expected_file_path, mode="r") as expected_file:
@@ -67,7 +69,9 @@ class TestStringMethods(unittest.TestCase):
         self.maxDiff = None
 
         # result of an unzipped set should be same as a zipped set
-        expected_file_path = get_test_path_file("test_baselines/Test.als.txt")
+        expected_file_path = get_test_path_file(
+            "test_baselines/Test Project/Test.als.txt"
+        )
         test_file_path = get_test_path_file("test_files/Test Project/Test.als")
 
         with open(expected_file_path, mode="r") as expected_file:
