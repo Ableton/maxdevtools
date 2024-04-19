@@ -332,12 +332,12 @@ def get_parameters_string_block(parameters: dict) -> str:
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
 
+        parameters_string += f"\t{key} {value}"
+
         if (
             "parameter_overrides" in parameters
             and key in parameters["parameter_overrides"]
         ):
-            parameters_string += f"\t{key} {value}"
-
             override = parameters["parameter_overrides"][key]
             override_print = [
                 override.get("parameter_longname", "-"),
@@ -354,7 +354,8 @@ def get_parameters_string_block(parameters: dict) -> str:
                     continue
                 override_print.append(f"{key2}: {value2}")
 
-            parameters_string += f" > override > {str(override_print)}\n"
+            parameters_string += f" > override > {str(override_print)}"
+        parameters_string += "\n"
 
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
@@ -365,7 +366,7 @@ def get_parameters_string_block(parameters: dict) -> str:
                 + f": {value['parameters']}"
             )
 
-    return f"parameter_overrides:\n{parameters_string}\n"
+    return f"parameters:\n{parameters_string}\n"
 
 
 def get_dependency_cache_string_block(dependency_cache: list):

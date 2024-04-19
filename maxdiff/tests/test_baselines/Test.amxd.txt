@@ -1,8 +1,14 @@
 MIDI Effect Device
 -------------------
-parameter_overrides:
+parameters:
+	obj-15::obj-1 ['InsideBpatcher', 'live.dial', 0]
+	obj-16::obj-1 ['MyParameter', 'MyParameter', 0]
 	obj-17::obj-1 ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
 	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
+	obj-26 ['Time Mode', 'Time Mode', 0]
+	obj-4 ['live.dial', 'live.dial', 0]
+	obj-8 ['live.dial[1]', 'live.dial', 0]
+	inherited_shortname 1
 banks:
 	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
 dependency_cache:
