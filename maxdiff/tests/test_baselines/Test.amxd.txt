@@ -1,6 +1,5 @@
 MIDI Effect Device
 -------------------
-rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 parameter_overrides:
 	obj-17::obj-1 ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
 	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
@@ -19,6 +18,9 @@ project:
 	contents:
 		data:
 			collContent.txt
+
+----------- patcher -----------
+rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
@@ -29,6 +31,7 @@ project:
 [t 2] 
 [button] 
 [gen @t exponent] 
+	----------- patcher -----------
 	classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
@@ -71,6 +74,7 @@ project:
 	[codebox] (0) => (0) [out 1]
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
+	----------- patcher -----------
 	rect: [474, 238, 640, 480]
 	----------- objects -----------
 	[t b b] 
