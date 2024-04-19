@@ -39,7 +39,7 @@ def print_top_patcher_summary(patcher_dict: dict) -> str:
     summary_string = ""
 
     if "parameters" in patcher:
-        summary_string += get_parameters_string_block(patcher["parameters"])
+        summary_string += get_parameters_string_block(patcher)
 
     if "dependency_cache" in patcher:
         summary_string += get_dependency_cache_string_block(patcher["dependency_cache"])
@@ -217,6 +217,40 @@ def get_box_text(box: dict) -> str:
     return boxtext
 
 
+def get_object_names_from_ids_recursive(id_hierarchy: list, boxes: dict, indent: int = 0):
+    """Translates an object id hierarchy string in the form of "obj-n::obj-m:: etc" to a string
+    in the form of "<objectname1>/<objectname2/ etc", replacing the object ids with the textual
+    representation of these objects.
+
+    If an object id cannot be found in the patch, for instance because it refers to an object
+    inside an abstraction, the object id is used instead.
+    """
+
+    # every entry of "boxes" has a single item "box"
+    boxes = list(map(lambda val: val["box"], boxes))
+
+    id_to_check = id_hierarchy[0] if isinstance(id_hierarchy, list) else id_hierarchy
+    name = ""
+    for box in boxes:
+        if "id" in box:
+            if id_to_check == box["id"]:
+                name = f"[{get_box_text(box)}]"
+
+                if isinstance(id_hierarchy, list) and len(id_hierarchy) > 1:
+                    id_hierarchy.pop(0)
+                    if "patcher" in box:
+                        subpatcher_boxes = box["patcher"]["boxes"]
+                        name += f"/{get_object_names_from_ids_recursive(id_hierarchy, subpatcher_boxes, indent + 1)}"
+                    else:
+                        for id_level in id_hierarchy:
+                            name += f"/[{id_level}]"
+
+    if name == "":
+        name = f"[{id_to_check}]"
+
+    return name
+
+
 def get_properties_to_print(
     box_or_patcher: dict, default: dict, skip_properties: list[str]
 ) -> dict:
@@ -323,16 +357,23 @@ def get_saved_object_attributes(value: dict) -> dict:
     return result
 
 
-def get_parameters_string_block(parameters: dict) -> str:
+def get_parameters_string_block(patcher: dict) -> str:
     """Produce a string that lists overridden parameters in a patcher.
     Non-overridden parameter attributes are already shown with the parameter objects.
     """
+    parameters = patcher["parameters"]
+    boxes = patcher["boxes"]
     parameters_string = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
 
-        parameters_string += f"\t{key} {value}"
+        parsed_key = key
+        if key.startswith("obj"):
+            id_tokens = key.split("::")
+            parsed_key = get_object_names_from_ids_recursive(id_tokens, boxes)
+
+        parameters_string += f"\t{parsed_key}: {value}"
 
         if (
             "parameter_overrides" in parameters
