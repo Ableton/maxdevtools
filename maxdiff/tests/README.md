@@ -8,6 +8,8 @@ From the `maxdiff` folder, run `python3 tests/test.py`
 
 ## Changing the script
 
-Whenever adding something to the patch printer script, ideally this new case is included in the `Test.amxd` device. After checking that the resulting patch summary differs only in the expected way, the new result from the script should then be saved as `Test.txt`.
+Whenever adding something to the patch printer script, ideally this change is covered by the test files, such as `test_files/Test.amxd`. After checking that the resulting patch summary differs only in the expected way, the new result from the script should then be saved in their baselines in `test_baselines/`. 
 
-Every commit to this repository that changes the output of the scripts should be accompanied by a change in `Test.txt` so that the test script is successful in every commit. Note that `Test.txt` should always end with a new line.
+To rewrite all test baselines automatically, you can run `python3 ./maxdiff/tests/test_rewrite_baselines.py` from the repo root.
+
+Every commit to this repository that changes the output of the scripts should be accompanied by a change in `Test.txt` so that the test script is successful in every commit.

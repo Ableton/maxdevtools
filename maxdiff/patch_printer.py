@@ -22,11 +22,38 @@ def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
             name = get_box_text(box)
             known_objects_map[name] = box
 
+        display_text = print_top_patcher_summary(patcher_dict)
+        display_text += print_patcher_summary_recursive(patcher_dict, known_objects_map)
+        return display_text
+
         return print_patcher_summary_recursive(patcher_dict, known_objects_map)
     else:
         import json
 
         return json.dumps(patcher_dict, indent=4, sort_keys=True)
+
+
+def print_top_patcher_summary(patcher_dict: dict) -> str:
+    patcher = patcher_dict["patcher"]
+
+    summary_string = ""
+
+    if "parameters" in patcher:
+        summary_string += get_parameters_string_block(patcher)
+
+    if "dependency_cache" in patcher:
+        summary_string += get_dependency_cache_string_block(patcher["dependency_cache"])
+
+    if "project" in patcher:
+        summary_string += get_project_string_block(patcher["project"])
+
+    if "styles" in patcher:
+        summary_string += get_styles_string_block(patcher["styles"])
+
+    if summary_string != "":
+        return f"{summary_string}\n"
+    else:
+        return ""
 
 
 def print_patcher_summary_recursive(
@@ -40,7 +67,7 @@ def print_patcher_summary_recursive(
     ):
         return ""
 
-    summary_string = ""
+    summary_string = create_indented_text("----------- patcher -----------\n", indent)
 
     patcher = patcher_dict["patcher"]
 
@@ -66,18 +93,6 @@ def print_patcher_summary_recursive(
             continue
 
         display_text = concat(display_text, f"{key}: {get_property_string(value)}")
-
-    if "parameters" in patcher:
-        display_text += get_parameters_string_block(patcher["parameters"])
-
-    if "dependency_cache" in patcher:
-        display_text += get_dependency_cache_string_block(patcher["dependency_cache"])
-
-    if "project" in patcher:
-        display_text += get_project_string_block(patcher["project"])
-
-    if "styles" in patcher:
-        display_text += get_styles_string_block(patcher["styles"], indent)
 
     if display_text != "":
         summary_string += create_indented_text(f"{display_text}\n", indent)
@@ -202,6 +217,40 @@ def get_box_text(box: dict) -> str:
     return boxtext
 
 
+def get_object_names_from_ids_recursive(id_hierarchy: list, boxes: dict, indent: int = 0):
+    """Translates an object id hierarchy string in the form of "obj-n::obj-m:: etc" to a string
+    in the form of "<objectname1>/<objectname2/ etc", replacing the object ids with the textual
+    representation of these objects.
+
+    If an object id cannot be found in the patch, for instance because it refers to an object
+    inside an abstraction, the object id is used instead.
+    """
+
+    # every entry of "boxes" has a single item "box"
+    boxes = list(map(lambda val: val["box"], boxes))
+
+    id_to_check = id_hierarchy[0] if isinstance(id_hierarchy, list) else id_hierarchy
+    name = ""
+    for box in boxes:
+        if "id" in box:
+            if id_to_check == box["id"]:
+                name = f"[{get_box_text(box)}]"
+
+                if isinstance(id_hierarchy, list) and len(id_hierarchy) > 1:
+                    id_hierarchy.pop(0)
+                    if "patcher" in box:
+                        subpatcher_boxes = box["patcher"]["boxes"]
+                        name += f"/{get_object_names_from_ids_recursive(id_hierarchy, subpatcher_boxes, indent + 1)}"
+                    else:
+                        for id_level in id_hierarchy:
+                            name += f"/[{id_level}]"
+
+    if name == "":
+        name = f"[{id_to_check}]"
+
+    return name
+
+
 def get_properties_to_print(
     box_or_patcher: dict, default: dict, skip_properties: list[str]
 ) -> dict:
@@ -308,21 +357,28 @@ def get_saved_object_attributes(value: dict) -> dict:
     return result
 
 
-def get_parameters_string_block(parameters: dict) -> str:
+def get_parameters_string_block(patcher: dict) -> str:
     """Produce a string that lists overridden parameters in a patcher.
     Non-overridden parameter attributes are already shown with the parameter objects.
     """
+    parameters = patcher["parameters"]
+    boxes = patcher["boxes"]
     parameters_string = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
             continue
 
+        parsed_key = key
+        if key.startswith("obj"):
+            id_tokens = key.split("::")
+            parsed_key = get_object_names_from_ids_recursive(id_tokens, boxes)
+
+        parameters_string += f"\t{parsed_key}: {value}"
+
         if (
             "parameter_overrides" in parameters
             and key in parameters["parameter_overrides"]
         ):
-            parameters_string += f"\t{key} {value}"
-
             override = parameters["parameter_overrides"][key]
             override_print = [
                 override.get("parameter_longname", "-"),
@@ -339,7 +395,8 @@ def get_parameters_string_block(parameters: dict) -> str:
                     continue
                 override_print.append(f"{key2}: {value2}")
 
-            parameters_string += f" > override > {str(override_print)}\n"
+            parameters_string += f" > override > {str(override_print)}"
+        parameters_string += "\n"
 
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
@@ -350,7 +407,7 @@ def get_parameters_string_block(parameters: dict) -> str:
                 + f": {value['parameters']}"
             )
 
-    return f"\nparameter_overrides:\n{parameters_string}"
+    return f"parameters:\n{parameters_string}\n"
 
 
 def get_dependency_cache_string_block(dependency_cache: list):
@@ -363,7 +420,7 @@ def get_dependency_cache_string_block(dependency_cache: list):
         dependency_cache_string += f"\t{dependency}\n"
 
     return (
-        f"\ndependency_cache:\n{dependency_cache_string}"
+        f"dependency_cache:\n{dependency_cache_string}\n"
         if dependency_cache_string != ""
         else ""
     )
@@ -393,7 +450,7 @@ def get_project_string_block(project: dict):
         if contents_string != "":
             project_string += f"\n\tcontents:{contents_string}"
 
-    return f"\nproject:\n\t{project_string}"
+    return f"project:\n\t{project_string}\n"
 
 
 def get_styles_string_block(styles: Any, indent: int) -> str:

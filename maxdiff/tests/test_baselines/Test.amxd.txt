@@ -1,9 +1,15 @@
 MIDI Effect Device
 -------------------
-rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
-parameter_overrides:
-	obj-17::obj-1 ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
-	obj-20::obj-1 ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
+parameters:
+	[p MySubpatcher]/[live.dial]: ['In a subpatcher', 'live.dial', 0]
+	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['InsideBpatcher', 'live.dial', 0]
+	[AbstractionWithParameter]/[obj-1]: ['MyParameter', 'MyParameter', 0]
+	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
+	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
+	[live.tab]: ['Time Mode', 'Time Mode', 0]
+	[live.dial]: ['live.dial', 'live.dial', 0]
+	[live.dial]: ['live.dial[1]', 'live.dial', 0]
+	inherited_shortname: 1
 banks:
 	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
 dependency_cache:
@@ -11,6 +17,7 @@ dependency_cache:
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 
@@ -19,6 +26,9 @@ project:
 	contents:
 		data:
 			collContent.txt
+
+----------- patcher -----------
+rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
@@ -29,6 +39,7 @@ project:
 [t 2] 
 [button] 
 [gen @t exponent] 
+	----------- patcher -----------
 	classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
@@ -71,8 +82,10 @@ project:
 	[codebox] (0) => (0) [out 1]
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
-	rect: [474, 238, 640, 480]
+	----------- patcher -----------
+	rect: [805, 282, 271, 250]
 	----------- objects -----------
+	[live.dial] parameter: <longname: In a subpatcher | shortname: live.dial | type: 0 | unitstyle: 0>
 	[t b b] 
 [loadbang] 
 [message read collContent.txt] 
