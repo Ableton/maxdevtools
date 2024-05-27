@@ -1,8 +1,9 @@
 import datetime
+from typing import Optional
 
 
-def print_frozen_device(data):
-    """Parses a frozen device and returns a textual representation of it."""
+def print_frozen_device(data: bytes) -> str:
+    """Parses a frozen device represented as bytes and returns a string representation of it."""
     dependency_data_size = int.from_bytes(
         data[8:16], byteorder="big"
     )  # data size int is 64 bit
@@ -21,10 +22,10 @@ def print_frozen_device(data):
     return frozen_string
 
 
-def parse_footer(data):
-    """Parses the footer data of a frozen device and returns an array of
+def parse_footer(data: bytes) -> list[str]:
+    """Parses the footer byte data of a frozen device and returns an array of
     string representations of the frozen dependencies."""
-    dependencies = []
+    dependencies: list[str] = []
     while data[:4].decode("ascii") == "dire":
         size = int.from_bytes(data[4:8], byteorder="big")
         fields = get_fields(data[8 : 8 + size])
@@ -36,7 +37,7 @@ def parse_footer(data):
     return dependencies
 
 
-def get_fields(data):
+def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime]:
     """Parses the data for a frozen dependency and returns a dict of its fields and their contents."""
     fields = {}
     while len(data) > 12:
@@ -49,7 +50,7 @@ def get_fields(data):
     return fields
 
 
-def parse_field_data(field_type, data):
+def parse_field_data(field_type: str, data: bytes) -> Optional[str | int | datetime.datetime]:
     """Parses the data of a field. Depending on the field type, returns its data as the correct type"""
     match field_type:
         case "type":
@@ -71,18 +72,10 @@ def parse_field_data(field_type, data):
 
 def remove_trailing_zeros(data: bytes) -> bytes:
     """Remove trailing zeros from a zero-padded byte representation of a string"""
-    first_trailing_zero = -1
-    for i in range(len(data) - 1, -1, -1):
-        if data[i] != 0:
-            first_trailing_zero = i + 1
-            break
-
-    if first_trailing_zero != -1:
-        return data[:first_trailing_zero]
-    return data
+    return data.rstrip(b'\x00')
 
 
-def get_hfs_date(data):
+def get_hfs_date(data: bytes) -> datetime.datetime:
     """Converts a byte sequence that represents a HFS+ date to a Python datetime object"""
     seconds_offset_from_unix = 2082844800  # Mac HFS+ is time since 1 Jan 1904 while Unix time is since 1 Jan 1970
     seconds_in_hfs_plus = int.from_bytes(data, byteorder="big")
