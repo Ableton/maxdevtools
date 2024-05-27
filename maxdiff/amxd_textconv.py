@@ -4,6 +4,7 @@ import json
 import argparse
 from patch_printer import print_patcher
 from print_unicode import print_unicode_string
+from frozen_device_printer import print_frozen_device
 
 
 def parse(path: str) -> str:
@@ -78,7 +79,7 @@ def handle_ciph(datasize: int, data: bytes, device_types: dict) -> str:
 def handle_ptch(datasize: int, data: bytes, device_types: dict) -> dict | str:
     """Handle the ptch field."""
     if data[:4].decode("ascii") == "mx@c":
-        return "Device is frozen"
+        return print_frozen_device(data)
     else:
         if data[datasize - 1] == 0:
             patcher_dict = json.loads(data[: datasize - 1].decode("utf-8"))
