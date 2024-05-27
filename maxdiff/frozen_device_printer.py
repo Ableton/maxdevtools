@@ -16,13 +16,13 @@ def print_frozen_device(data: bytes) -> str:
         return "Error parsing footer data; recorded size does not match actual size"
 
     frozen_string = "Device is frozen\n----- Contents -----\n"
-    dependencies = parse_footer(footer_data[8:])
+    dependencies = parse_footer(footer_data[8:], data)
     for dependency in dependencies:
         frozen_string += dependency + "\n"
     return frozen_string
 
 
-def parse_footer(footer_data: bytes) -> list[str]:
+def parse_footer(footer_data: bytes, data: bytes) -> list[str]:
     """Parses the footer byte data of a frozen device and returns an array of
     string representations of the frozen dependencies."""
     dependencies: list[str] = []
@@ -30,9 +30,22 @@ def parse_footer(footer_data: bytes) -> list[str]:
         size = int.from_bytes(footer_data[4:8], byteorder="big")
         fields = get_fields(footer_data[8 : 8 + size])
         if "fnam" in fields and "sz32" in fields and "mdat" in fields:
-            dependencies.append(
-                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")}'
+            dependency_data = data[fields["of32"] : fields["of32"] + fields["sz32"]]
+            print(
+                fields["of32"],
+                fields["sz32"],
+                len(dependency_data),
+                len(footer_data[fields["of32"] :]),
             )
+            dependency_text = ""
+            try:
+                dependency_text = f'--\n{dependency_data.decode("utf-8")}\n--'
+            except:
+                dependency_text = "-- No text data --"
+            dependencies.append(
+                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")}\n{dependency_text}'
+            )
+
         footer_data = footer_data[size:]
     return dependencies
 
@@ -50,7 +63,9 @@ def get_fields(dependency_data: bytes) -> dict[str, str | int | datetime.datetim
     return fields
 
 
-def parse_field_data(field_type: str, data: bytes) -> Optional[str | int | datetime.datetime]:
+def parse_field_data(
+    field_type: str, data: bytes
+) -> Optional[str | int | datetime.datetime]:
     """Parses the data of a field. Depending on the field type, returns its data as the correct type"""
     match field_type:
         case "type":
