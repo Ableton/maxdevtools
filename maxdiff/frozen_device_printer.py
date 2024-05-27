@@ -22,31 +22,31 @@ def print_frozen_device(data: bytes) -> str:
     return frozen_string
 
 
-def parse_footer(data: bytes) -> list[str]:
+def parse_footer(footer_data: bytes) -> list[str]:
     """Parses the footer byte data of a frozen device and returns an array of
     string representations of the frozen dependencies."""
     dependencies: list[str] = []
-    while data[:4].decode("ascii") == "dire":
-        size = int.from_bytes(data[4:8], byteorder="big")
-        fields = get_fields(data[8 : 8 + size])
+    while footer_data[:4].decode("ascii") == "dire":
+        size = int.from_bytes(footer_data[4:8], byteorder="big")
+        fields = get_fields(footer_data[8 : 8 + size])
         if "fnam" in fields and "sz32" in fields and "mdat" in fields:
             dependencies.append(
                 f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")}'
             )
-        data = data[size:]
+        footer_data = footer_data[size:]
     return dependencies
 
 
-def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime]:
+def get_fields(dependency_data: bytes) -> dict[str, str | int | datetime.datetime]:
     """Parses the data for a frozen dependency and returns a dict of its fields and their contents."""
     fields = {}
-    while len(data) > 12:
-        field_type = data[:4].decode("ascii")
-        field_size = int.from_bytes(data[4:8], byteorder="big")
-        field_data = data[8:field_size]
+    while len(dependency_data) > 12:
+        field_type = dependency_data[:4].decode("ascii")
+        field_size = int.from_bytes(dependency_data[4:8], byteorder="big")
+        field_data = dependency_data[8:field_size]
         fields[field_type] = parse_field_data(field_type, field_data)
 
-        data = data[field_size:]
+        dependency_data = dependency_data[field_size:]
     return fields
 
 
@@ -72,7 +72,7 @@ def parse_field_data(field_type: str, data: bytes) -> Optional[str | int | datet
 
 def remove_trailing_zeros(data: bytes) -> bytes:
     """Remove trailing zeros from a zero-padded byte representation of a string"""
-    return data.rstrip(b'\x00')
+    return data.rstrip(b"\x00")
 
 
 def get_hfs_date(data: bytes) -> datetime.datetime:
