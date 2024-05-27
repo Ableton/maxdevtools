@@ -32,6 +32,17 @@ class TestStringMethods(unittest.TestCase):
             actual = parse(test_file_path)
             self.assertEqual(expected, actual)
 
+    def test_parse_frozen_device(self):
+        self.maxDiff = None
+
+        expected_file_path = get_test_path_file("test_baselines/FrozenTest.amxd.txt")
+        test_file_path = get_test_path_file("test_files/FrozenTest.amxd")
+
+        with open(expected_file_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_file_path)
+            self.assertEqual(expected, actual)
+
     def test_parse_maxpat(self):
         self.maxDiff = None
 

@@ -18,7 +18,7 @@ Removing the comments from the new MIDI Effect:
 
 For `.amxd` files:
 * The scripts will also tell you what device type it is. 
-* If a device is frozen, you will only see a notice saying that the device is frozen, the content will not be shown. We aim never to commit frozen devices to a git repo, instead we include the dependencies as separate files.
+* If a device is frozen, you will see an overview of the content frozen into the deivce. NOTE: We recommend never to commit frozen devices to a git repo, instead to include the dependencies as separate files.
 
 ### Why?
 
