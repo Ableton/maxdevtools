@@ -6,7 +6,7 @@ The CPU Reporter is a small device that gives you more insight into a Live Set's
 
 <img width=412 alt="The CPU Reporter" src="images/CpuReporter.png">
 
-After recording the CPU usage for a chosen amount of time, this device shows a histogram of the reported average and peak values during the recording time, as well as the averages of those values within that time frame.
+After recording the CPU usage for a chosen amount of time, this device shows the reported average and peak values during the recording time. It also shows the total average of the average values and the maximum of the peak values within that time frame.
 
 ## Using the CPU Reporter ##
 
@@ -20,4 +20,4 @@ After recording the CPU usage for a chosen amount of time, this device shows a h
 
 The CPU Recorder device only reports Live's CPU usage for audio signal processing calculations, which can make your audio click or stutter when it goes over 100%. The device does not give you insight in how many of your CPU Live uses for other tasks, such as redrawing the interface.
 
-Measuring non-audio CPU usage can be done with the Activity Monitor (macOS) or Task Manager (Windows).
+Measuring the overall CPU usage of Live can be done with the Activity Monitor (macOS) or Task Manager (Windows).
