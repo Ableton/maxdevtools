@@ -10,10 +10,11 @@ After recording the CPU usage for a chosen amount of time, this device shows the
 
 ## Using the CPU Reporter ##
 
-* Create a Live Set with the device to test. Create a typical usage scenario, or an extreme scneario if that is what you want to test.
+* Create a Live Set with the device to test. Create a typical usage scenario, or an extreme scenario if that is what you want to test.
 * Duplicate the device or the track with the device multiple times until Live's CPU Load Meter is around 50%.
 * Add the CPU Reporter device to any track of your Set.
 * Play the Set. When the CPU Load Meter stays at a relatively steady value, press Record.
+* Without changing the Set, compare the reported values before and after changing the device you want to test.
 * For some extra insight, repeat this with different Buffer Size settings (to be found in Live in Preferences / Audio, under Latency).
 
 ## Monitoring other CPU usage ## 
