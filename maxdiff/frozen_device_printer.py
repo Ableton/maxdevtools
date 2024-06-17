@@ -31,7 +31,7 @@ def parse_footer(data: bytes) -> list[str]:
         fields = get_fields(data[8 : 8 + size])
         if "fnam" in fields and "sz32" in fields and "mdat" in fields:
             dependencies.append(
-                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")}'
+                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")} UTC'
             )
         data = data[size:]
     return dependencies
@@ -80,5 +80,5 @@ def get_hfs_date(data: bytes) -> datetime.datetime:
     seconds_offset_from_unix = 2082844800  # Mac HFS+ is time since 1 Jan 1904 while Unix time is since 1 Jan 1970
     seconds_in_hfs_plus = int.from_bytes(data, byteorder="big")
     return datetime.datetime.fromtimestamp(
-        seconds_in_hfs_plus - seconds_offset_from_unix
+        seconds_in_hfs_plus - seconds_offset_from_unix, datetime.UTC
     )
