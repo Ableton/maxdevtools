@@ -53,9 +53,6 @@ class TestStringMethods(unittest.TestCase):
             expected = expected_file.read()
             actual = parse(test_file_path)
 
-            # print ("expected: " + expected)
-            # print ("actual: " + actual)
-
             self.assertEqual(expected, actual)
 
     def test_parse_als_zipped(self):
