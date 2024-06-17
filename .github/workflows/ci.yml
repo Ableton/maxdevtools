@@ -1,8 +1,7 @@
 name: test
 on:
   push:
-  pull_request:
-  workflow_dispatch:
+  pull_request_target:
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,6 +13,3 @@ jobs:
       - run: |
          cd maxdiff
          python3 tests/test.py
-      - run: pip install --upgrade pip wheel
-      - run: pip install pytest
-      - run: pytest maxdiff/tests/test.py
