@@ -73,6 +73,28 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(expected, actual)
 
 
+    def test_parse_malformed_maxpat(self):
+        self.maxDiff = None
+
+        expected_path, test_path = get_test_path_files("MalFormedJsonTest.maxpat")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+            self.assertEqual(expected, actual)
+
+
+    def test_parse_maxpat_with_merge_conficts(self):
+        self.maxDiff = None
+
+        expected_path, test_path = get_test_path_files("ConflictMarkerTest.maxpat")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+            self.assertEqual(expected, actual)
+
+
 def get_test_path_files(file_name):
     expected = get_test_path_file(f"test_baselines/{file_name}.txt")
     test = get_test_path_file(f"test_files/{file_name}")

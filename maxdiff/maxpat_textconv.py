@@ -10,7 +10,20 @@ from print_unicode import print_unicode_string
 def parse(path: str) -> dict | str:
     """Parse a file and returns a textual representation of it."""
     with open(path, "r", encoding="utf-8") as file_obj:
-        patcher_dict = json.load(file_obj)
+        try:
+            patcher_dict = json.load(file_obj)
+        except Exception as e:
+            file_obj.seek(0)
+            file_string = file_obj.read()
+            if (
+                "=======" in file_string
+                or "<<<<<<<" in file_string
+                or ">>>>>>>" in file_string
+            ):
+                return "Patch file contains merge conflict markers. Please make sure to resolve merge conflicts."
+            else:
+                return f"Error parsing patch: {e}"
+
         return print_patcher(patcher_dict)
 
 
