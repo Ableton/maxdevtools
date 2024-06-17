@@ -2,10 +2,10 @@ MIDI Effect Device
 -------------------
 Device is frozen
 ----- Contents -----
-Test.amxd: 21093 bytes, modified at 2024/05/27 09:52:44
-ParamAbstraction.maxpat: 1570 bytes, modified at 2024/05/24 15:59:36
-MyAbstraction.maxpat: 1625 bytes, modified at 2024/05/24 15:59:36
-AbstractionWithParameter.maxpat: 1569 bytes, modified at 2024/05/24 15:59:36
-hz-icon.svg: 484 bytes, modified at 2024/05/24 15:59:36
-beat-icon.svg: 533 bytes, modified at 2024/05/24 15:59:36
-fpic.png: 7094 bytes, modified at 2024/05/24 15:59:36
+Test.amxd: 21093 bytes, modified at 2024/05/27 07:52:44 UTC
+ParamAbstraction.maxpat: 1570 bytes, modified at 2024/05/24 13:59:36 UTC
+MyAbstraction.maxpat: 1625 bytes, modified at 2024/05/24 13:59:36 UTC
+AbstractionWithParameter.maxpat: 1569 bytes, modified at 2024/05/24 13:59:36 UTC
+hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC
+beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC
+fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC
