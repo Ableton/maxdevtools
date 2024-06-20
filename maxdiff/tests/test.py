@@ -13,77 +13,93 @@ class TestStringMethods(unittest.TestCase):
     def test_parse_device(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/EncryptedTest.amxd.txt")
-        test_file_path = get_test_path_file("test_files/EncryptedTest.amxd")
+        expected_path, test_path = get_test_path_files("EncryptedTest.amxd")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
+            actual = parse(test_path)
             self.assertEqual(expected, actual)
 
     def test_parse_encrypted_device(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/Test.amxd.txt")
-        test_file_path = get_test_path_file("test_files/Test.amxd")
+        expected_path, test_path = get_test_path_files("Test.amxd")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
+            actual = parse(test_path)
             self.assertEqual(expected, actual)
 
     def test_parse_frozen_device(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/FrozenTest.amxd.txt")
-        test_file_path = get_test_path_file("test_files/FrozenTest.amxd")
+        expected_path, test_path = get_test_path_files("FrozenTest.amxd")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
+            actual = parse(test_path)
             self.assertEqual(expected, actual)
 
     def test_parse_maxpat(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file("test_baselines/Test.maxpat.txt")
-        test_file_path = get_test_path_file("test_files/Test.maxpat")
+        expected_path, test_path = get_test_path_files("Test.maxpat")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
-
-            # print ("expected: " + expected)
-            # print ("actual: " + actual)
+            actual = parse(test_path)
 
             self.assertEqual(expected, actual)
 
     def test_parse_als_zipped(self):
         self.maxDiff = None
 
-        expected_file_path = get_test_path_file(
-            "test_baselines/Test Project/Zipped.als.txt"
-        )
-        test_file_path = get_test_path_file("test_files/Test Project/Zipped.als")
+        expected_path, test_path = get_test_path_files("/Test Project/Zipped.als")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
+            actual = parse(test_path)
             self.assertEqual(expected, actual)
 
     def test_parse_als_unzipped(self):
         self.maxDiff = None
 
         # result of an unzipped set should be same as a zipped set
-        expected_file_path = get_test_path_file(
-            "test_baselines/Test Project/Test.als.txt"
-        )
-        test_file_path = get_test_path_file("test_files/Test Project/Test.als")
+        expected_path, test_path = get_test_path_files("/Test Project/Test.als")
 
-        with open(expected_file_path, mode="r") as expected_file:
+        with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_file_path)
+            actual = parse(test_path)
             self.assertEqual(expected, actual)
+
+
+    def test_parse_malformed_maxpat(self):
+        self.maxDiff = None
+
+        expected_path, test_path = get_test_path_files("MalFormedJsonTest.maxpat")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+            self.assertEqual(expected, actual)
+
+
+    def test_parse_maxpat_with_merge_conficts(self):
+        self.maxDiff = None
+
+        expected_path, test_path = get_test_path_files("ConflictMarkerTest.maxpat")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+            self.assertEqual(expected, actual)
+
+
+def get_test_path_files(file_name):
+    expected = get_test_path_file(f"test_baselines/{file_name}.txt")
+    test = get_test_path_file(f"test_files/{file_name}")
+
+    return (expected, test)
 
 
 def get_test_path_file(file_name):

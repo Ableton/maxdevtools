@@ -17,6 +17,8 @@ def run():
     rewrite_file("Test.maxpat")
     rewrite_file("Test Project/Zipped.als")
     rewrite_file("Test Project/Test.als")
+    rewrite_file("MalFormedJsonTest.maxpat")
+    rewrite_file("ConflictMarkerTest.maxpat")
 
 
 def rewrite_file(name: str):
