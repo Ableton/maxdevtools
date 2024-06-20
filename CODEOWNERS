@@ -1,0 +1,8 @@
+# This file uses a pattern that follows the same rules used in gitignore
+# files. The pattern is followed by one or more GitHub usernames or team
+# names using the standard @username or @org/team-name format.
+
+# Later entries take precedence over earlier entries. See
+# https://help.github.com/articles/about-codeowners/ for details.
+
+@MattijsKneppers @jby-abeton
