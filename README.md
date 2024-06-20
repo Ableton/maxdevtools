@@ -14,3 +14,4 @@ These are aimed primarily at experienced Max for Live builders. To get started w
 ## Maintainers
 
 * [@MattijsKneppers](https://github.com/MattijsKneppers)
+* [@jby-ableton](https://github.com/jby-ableton)
