@@ -25,8 +25,6 @@ def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
         display_text = print_top_patcher_summary(patcher_dict)
         display_text += print_patcher_summary_recursive(patcher_dict, known_objects_map)
         return display_text
-
-        return print_patcher_summary_recursive(patcher_dict, known_objects_map)
     else:
         import json
 
