@@ -3,10 +3,10 @@ from freezing_utils import *
 
 def print_frozen_device(data: bytes) -> str:
     """Parses a frozen device represented as bytes and returns a string representation of it."""
-    dependency_data_size = int.from_bytes(
+    footer_data_size = int.from_bytes(
         data[8:16], byteorder="big"
     )  # data size int is 64 bit
-    footer_data = data[dependency_data_size:]
+    footer_data = data[footer_data_size:]
 
     if footer_data[:4].decode("ascii") != "dlst":
         return "Error parsing footer data; footer data does not start with 'dlst'"
@@ -21,13 +21,13 @@ def print_frozen_device(data: bytes) -> str:
     return frozen_string
 
 
-def parse_footer(data: bytes) -> list[str]:
+def parse_footer(footer_data: bytes) -> list[str]:
     """Parses the footer byte data of a frozen device and returns an array of
     string representations of the frozen dependencies."""
     dependencies: list[str] = []
-    while data[:4].decode("ascii") == "dire":
-        size = int.from_bytes(data[4:8], byteorder="big")
-        fields = get_fields(data[8 : 8 + size])
+    while footer_data[:4].decode("ascii") == "dire":
+        size = int.from_bytes(footer_data[4:8], byteorder="big")
+        fields = get_fields(footer_data[8 : 8 + size])
         if "fnam" in fields and "sz32" in fields and "mdat" in fields:
             name_field = fields["fnam"]
             size_field = fields["sz32"]
@@ -41,5 +41,5 @@ def parse_footer(data: bytes) -> list[str]:
             dependencies.append(
                 f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {date_field.strftime("%Y/%m/%d %T")} UTC'
             )
-        data = data[size:]
+        footer_data = footer_data[size:]
     return dependencies
