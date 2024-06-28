@@ -72,7 +72,6 @@ class TestStringMethods(unittest.TestCase):
             actual = parse(test_path)
             self.assertEqual(expected, actual)
 
-
     def test_parse_malformed_maxpat(self):
         self.maxDiff = None
 
@@ -82,7 +81,6 @@ class TestStringMethods(unittest.TestCase):
             expected = expected_file.read()
             actual = parse(test_path)
             self.assertEqual(expected, actual)
-
 
     def test_parse_maxpat_with_merge_conficts(self):
         self.maxDiff = None

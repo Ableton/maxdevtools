@@ -50,7 +50,9 @@ def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime]:
     return fields
 
 
-def parse_field_data(field_type: str, data: bytes) -> Optional[str | int | datetime.datetime]:
+def parse_field_data(
+    field_type: str, data: bytes
+) -> Optional[str | int | datetime.datetime]:
     """Parses the data of a field. Depending on the field type, returns its data as the correct type"""
     match field_type:
         case "type":
@@ -72,7 +74,7 @@ def parse_field_data(field_type: str, data: bytes) -> Optional[str | int | datet
 
 def remove_trailing_zeros(data: bytes) -> bytes:
     """Remove trailing zeros from a zero-padded byte representation of a string"""
-    return data.rstrip(b'\x00')
+    return data.rstrip(b"\x00")
 
 
 def get_hfs_date(data: bytes) -> datetime.datetime:

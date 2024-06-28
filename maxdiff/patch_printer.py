@@ -272,9 +272,9 @@ def get_properties_to_print(
                 attributes, default, skip_properties
             )
             for new_key, new_value in attributes_to_print.items():
-                properties[
-                    new_key
-                ] = new_value  # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
+                properties[new_key] = (
+                    new_value  # this may overwrite existing value-based colors. This is ok, we want dynamic color values instead.
+                )
             continue
 
         if key == "saved_object_attributes":

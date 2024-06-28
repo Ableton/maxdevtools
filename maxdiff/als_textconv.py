@@ -1,4 +1,5 @@
 """Module to convert an ALS file to a textual representation that can then be diffed."""
+
 import sys
 import gzip
 import argparse
