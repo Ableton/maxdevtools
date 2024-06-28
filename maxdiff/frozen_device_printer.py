@@ -40,7 +40,7 @@ def parse_footer(data: bytes) -> list[str]:
 def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime]:
     """Parses the data for a frozen dependency and returns a dict of its fields and their contents."""
     fields = {}
-    while len(data) > 12:
+    while len(data) >= 12:
         field_type = data[:4].decode("ascii")
         field_size = int.from_bytes(data[4:8], byteorder="big")
         field_data = data[8:field_size]
