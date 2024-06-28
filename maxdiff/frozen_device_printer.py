@@ -15,22 +15,33 @@ def print_frozen_device(data: bytes) -> str:
         return "Error parsing footer data; recorded size does not match actual size"
 
     frozen_string = "Device is frozen\n----- Contents -----\n"
-    dependencies = parse_footer(footer_data[8:])
-    for dependency in dependencies:
-        frozen_string += dependency + "\n"
+
+    footer_entries = parse_footer(footer_data[8:])
+    device_entries = get_device_entries(data, footer_entries)
+    for entry in device_entries:
+        frozen_string += entry["description"] + "\n"
     return frozen_string
 
 
-def parse_footer(footer_data: bytes) -> list[str]:
-    """Parses the footer byte data of a frozen device and returns an array of
-    string representations of the frozen dependencies."""
-    dependencies: list[str] = []
-    while footer_data[:4].decode("ascii") == "dire":
-        size = int.from_bytes(footer_data[4:8], byteorder="big")
-        fields = get_fields(footer_data[8 : 8 + size])
-        if "fnam" in fields and "sz32" in fields and "mdat" in fields:
-            dependencies.append(
-                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")} UTC'
-            )
-        footer_data = footer_data[size:]
-    return dependencies
+def get_device_entries(
+    data: bytes, footer_entries: list[footer_entry]
+) -> list[footer_entry_with_data]:
+    """Converts footer entries to dict containing footer entry information and data."""
+    entries: list[footer_entry_with_data] = []
+
+    for fields in footer_entries:
+        if (
+            "fnam" in fields
+            and "of32" in fields
+            and "sz32" in fields
+            and "mdat" in fields
+        ):
+            description = f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")} UTC'
+            entry_data = data[fields["of32"] : fields["of32"] + fields["sz32"]]
+            entry = {
+                "file_name": fields["fnam"],
+                "description": description,
+                "data": entry_data,
+            }
+            entries.append(entry)
+    return entries
