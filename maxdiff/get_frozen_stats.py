@@ -79,7 +79,8 @@ def count(patcher, entries: list[dict], file_names: list[str]) -> tuple[int, int
 
         if "text" in box and box["text"].startswith("poly~"):
             # get poly abstraction count
-            voice_count = int(box["text"].split(" ")[2])
+            tokens = box["text"].split(" ")
+            voice_count = int(tokens[2]) if len(tokens) > 2 else 1
             object_count += o * voice_count
             line_count += l * voice_count
         else:
