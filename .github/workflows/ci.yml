@@ -11,5 +11,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: |
-         cd maxdiff
-         python3 tests/test.py
+          pip install black
+      - run: |
+          black --check .
+      - run: |
+          cd maxdiff
+          python3 tests/test.py
