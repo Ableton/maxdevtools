@@ -15,5 +15,5 @@ Total - Counting every abstraction instance - Indicates loading time
     Object instances: 44
     Connections: 14
 Unique - Counting abstractions once - Indicates maintainability
-    Object instances:
-    Connections:
+    Object instances: 40
+    Connections: 13
