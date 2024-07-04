@@ -20,6 +20,8 @@ Code is formatted using black:
 * Install [black](https://pypi.org/project/black/)
 * Run `black .` in the repo root
 
+Black formatting will be checked as a GitHub action for Pull Requests.
+
 ### Typing and using mypy in development
 
 This codebase uses the optional [typing](https://docs.python.org/3/library/typing.html) available in Python. This makes it so other tooling such as [mypy](https://mypy-lang.org/) can statically analyse your code for errors before you've even run a test. This synergy of types and tooling is useful in an automated context and for doing holistic evaluation, but also the types themselves can provide useful information to people reading and extending the codebase.
@@ -29,3 +31,5 @@ This codebase uses the optional [typing](https://docs.python.org/3/library/typin
 ### Testing
 
 Whenever making a change, we test that the previous functionality still works as before. For more info, see the [tests](tests/) folder.
+
+These tests will run as a GitHub action for Pull Requests.
