@@ -13,7 +13,7 @@ collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC
 
 Total - Counting every abstraction instance - Indicates loading time
     Object instances: 49
-    Connections:
+    Connections: 16
 Unique - Counting abstractions once - Indicates maintainability
     Object instances:
     Connections:
