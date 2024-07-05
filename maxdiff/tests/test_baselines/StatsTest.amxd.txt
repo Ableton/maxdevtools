@@ -7,7 +7,7 @@ MyAbstraction.maxpat: 2015 bytes, modified at 2024/06/24 07:11:15 UTC
 
 Total - Counting every abstraction instance - Indicates loading time
     Object instances: 27
-    Connections:
+    Connections: 15
 Unique - Counting abstractions once - Indicates maintainability
     Object instances:
     Connections:
