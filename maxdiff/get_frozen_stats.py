@@ -15,35 +15,40 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
     file_names = [str(item["file_name"]) for item in abstractions]
 
     patch = get_patcher_dict(device_data)
-    object_count = count_objects(patch, abstractions, file_names)
+    object_count, line_count = count_recursive(patch, abstractions, file_names)
 
     summary = "\n"
     summary += "Total - Counting every abstraction instance - Indicates loading time\n"
     summary += f"    Object instances: {object_count}\n"
-    summary += "    Connections:\n"
+    summary += f"    Connections: {line_count}\n"
     summary += "Unique - Counting abstractions once - Indicates maintainability\n"
     summary += "    Object instances:\n"
     summary += "    Connections:\n"
     return summary
 
 
-def count_objects(patcher, entries: list[dict], file_names: list[str]):
-    """Recursively counts all object instances in this patcher,
+def count_recursive(
+    patcher, entries: list[dict], file_names: list[str]
+) -> tuple[int, int]:
+    """Recursively counts all object instances and connections in this patcher,
     inluding in every instance of its dependencies"""
     boxes = patcher["boxes"]
-    count = 0
+    lines = patcher["lines"]
+    object_count = len(boxes)
+    line_count = len(lines)
+
     for box_entry in boxes:
         box = box_entry["box"]
-        count += 1
 
         if "patcher" in box:
             patch = box["patcher"]
-            if box.get("maxclass") == "bpatcher" and box.get("embed") == 1:
-                # get embedded bpatcher count
-                count += count_objects(patch, entries, file_names)
-            else:
-                # get subpatcher count
-                count += count_objects(patch, entries, file_names)
+            if box.get("maxclass") != "bpatcher" or (
+                box.get("maxclass") == "bpatcher" and box.get("embed") == 1
+            ):
+                # get subpatcher or embedded bpatcher count
+                o, l = count_recursive(patch, entries, file_names)
+                object_count += o
+                line_count += l
         else:
             abstraction_name = get_abstraction_name(box, file_names)
             if abstraction_name is None:
@@ -52,19 +57,20 @@ def count_objects(patcher, entries: list[dict], file_names: list[str]):
             abstraction = [
                 item for item in entries if item["file_name"] == abstraction_name
             ][0]
-            abstraction_data = abstraction["data"]
-            abstraction_patch = get_patcher_dict(abstraction_data)
-            abstraction_count = count_objects(abstraction_patch, entries, file_names)
+            abstraction_patch = get_patcher_dict(abstraction["data"])
+            o, l = count_recursive(abstraction_patch, entries, file_names)
 
             if "text" in box and box["text"].startswith("poly~"):
                 # get poly abstraction count
                 voice_count = int(box["text"].split(" ")[2])
-                count += abstraction_count * voice_count
+                object_count += o * voice_count
+                line_count += l * voice_count
             else:
                 # get abstraction count
-                count += abstraction_count
+                object_count += o
+                line_count += l
 
-    return count
+    return (object_count, line_count)
 
 
 def get_abstraction_name(box, file_names: list[str]):
