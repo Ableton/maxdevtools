@@ -51,6 +51,16 @@ class TestStringMethods(unittest.TestCase):
 
             self.assertEqual(expected, actual)
 
+    def test_parse_maxpat_with_styles(self):
+        self.maxDiff = None
+        expected_path, test_path = get_test_path_files("PatcherWithLocalStyles.maxpat")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+
+            self.assertEqual(expected, actual)
+
     def test_parse_als_zipped(self):
         self.maxDiff = None
 

@@ -451,9 +451,17 @@ def get_project_string_block(project: dict):
     return f"project:\n\t{project_string}\n"
 
 
-def get_styles_string_block(styles: Any, indent: int) -> str:
+def get_styles_string_block(styles: Any) -> str:
     """Produce a string representing styles in a patcher."""
-    return "\n" + "\t" * indent + "styles: " + str(styles)
+    styles_string = ""
+
+    if len(styles) <= 0:
+        return styles_string
+
+    for style in styles:
+        styles_string += f"\t{style}\n"
+
+    return f"styles:\n{styles_string}\n"
 
 
 def get_object_parameter_string(parameter: dict) -> str:
