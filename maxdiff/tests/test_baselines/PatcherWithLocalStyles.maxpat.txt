@@ -1,0 +1,9 @@
+styles:
+	{'name': 'max6box', 'default': {'accentcolor': [0.8, 0.839216, 0.709804, 1.0], 'bgcolor': [1.0, 1.0, 1.0, 0.5], 'textcolor_inverse': [0.0, 0.0, 0.0, 1.0]}, 'parentstyle': '', 'multi': 0}
+	{'name': 'max6inlet', 'default': {'color': [0.423529, 0.372549, 0.27451, 1.0]}, 'parentstyle': '', 'multi': 0}
+
+
+----------- patcher -----------
+appversion: 9.0.0-x64-1 | rect: [1067, 692, 640, 480] | style: max6box | autosave: 0
+----------- objects -----------
+[coll] 
