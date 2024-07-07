@@ -30,14 +30,23 @@ def parse_footer(data: bytes) -> list[str]:
         size = int.from_bytes(data[4:8], byteorder="big")
         fields = get_fields(data[8 : 8 + size])
         if "fnam" in fields and "sz32" in fields and "mdat" in fields:
+            name_field = fields["fnam"]
+            size_field = fields["sz32"]
+            date_field = fields["mdat"]
+            if not (
+                isinstance(name_field, str)
+                and isinstance(size_field, int)
+                and isinstance(date_field, datetime.datetime)
+            ):
+                raise Exception("Incorrect type for parsed footer fields")
             dependencies.append(
-                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {fields["mdat"].strftime("%Y/%m/%d %T")} UTC'
+                f'{fields["fnam"]}: {fields["sz32"]} bytes, modified at {date_field.strftime("%Y/%m/%d %T")} UTC'
             )
         data = data[size:]
     return dependencies
 
 
-def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime]:
+def get_fields(data: bytes) -> dict[str, str | int | datetime.datetime | None]:
     """Parses the data for a frozen dependency and returns a dict of its fields and their contents."""
     fields = {}
     while len(data) >= 12:
@@ -69,7 +78,7 @@ def parse_field_data(
             return int.from_bytes(data, byteorder="big")
         case "mdat":
             return get_hfs_date(data)
-    return
+    return None
 
 
 def remove_trailing_zeros(data: bytes) -> bytes:

@@ -160,7 +160,6 @@ def print_patcher_summary_recursive(
         "----------- patch cords -----------\n", indent
     )
 
-    lines = []
     for line in patcher_dict["patcher"]["lines"]:
         from_name = ""
         from_outlet = ""
@@ -215,7 +214,9 @@ def get_box_text(box: dict) -> str:
     return boxtext
 
 
-def get_object_names_from_ids_recursive(id_hierarchy: list, boxes: dict, indent: int = 0):
+def get_object_names_from_ids_recursive(
+    id_hierarchy: list, boxes_parent: list, indent: int = 0
+):
     """Translates an object id hierarchy string in the form of "obj-n::obj-m:: etc" to a string
     in the form of "<objectname1>/<objectname2/ etc", replacing the object ids with the textual
     representation of these objects.
@@ -224,8 +225,8 @@ def get_object_names_from_ids_recursive(id_hierarchy: list, boxes: dict, indent:
     inside an abstraction, the object id is used instead.
     """
 
-    # every entry of "boxes" has a single item "box"
-    boxes = list(map(lambda val: val["box"], boxes))
+    # every entry of "boxes_parent" has a single item "box"
+    boxes = list(map(lambda val: val["box"], boxes_parent))
 
     id_to_check = id_hierarchy[0] if isinstance(id_hierarchy, list) else id_hierarchy
     name = ""
@@ -360,7 +361,6 @@ def get_parameters_string_block(patcher: dict) -> str:
     Non-overridden parameter attributes are already shown with the parameter objects.
     """
     parameters = patcher["parameters"]
-    boxes = patcher["boxes"]
     parameters_string = ""
     for key, value in parameters.items():
         if key in ["parameter_overrides", "parameterbanks"]:
@@ -369,7 +369,7 @@ def get_parameters_string_block(patcher: dict) -> str:
         parsed_key = key
         if key.startswith("obj"):
             id_tokens = key.split("::")
-            parsed_key = get_object_names_from_ids_recursive(id_tokens, boxes)
+            parsed_key = get_object_names_from_ids_recursive(id_tokens, patcher["boxes"])
 
         parameters_string += f"\t{parsed_key}: {value}"
 
