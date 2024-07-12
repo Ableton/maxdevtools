@@ -233,7 +233,10 @@ def get_object_names_from_ids_recursive(
     for box in boxes:
         if "id" in box:
             if id_to_check == box["id"]:
-                name = f"[{get_box_text(box)}]"
+                name = get_box_text(box)
+                if "embed" in box and box["embed"] == 1:
+                    name += " <embedded>"
+                name = f"[{name}]"
 
                 if isinstance(id_hierarchy, list) and len(id_hierarchy) > 1:
                     id_hierarchy.pop(0)
