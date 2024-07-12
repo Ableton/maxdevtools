@@ -7,6 +7,7 @@ parameters:
 	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
 	[live.tab]: ['Time Mode', 'Time Mode', 0]
+	[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat <embedded>]/[live.numbox]: ['EmbeddedParam', 'Embedded', 0]
 	[live.dial]: ['live.dial', 'live.dial', 0]
 	[live.dial]: ['live.dial[1]', 'live.dial', 0]
 	inherited_shortname: 1
@@ -17,6 +18,7 @@ dependency_cache:
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 
@@ -29,6 +31,12 @@ project:
 ----------- patcher -----------
 appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
+[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat] embed: 1
+	----------- patcher -----------
+	appversion: 8.6.2-x64-1 | rect: [927, 431, 640, 480]
+	----------- objects -----------
+	[live.comment Embedded] 
+	[live.numbox] parameter: <longname: EmbeddedParam | modmode: 3 | shortname: Embedded | type: 0 | unitstyle: 0>
 [message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
 [AbstractionWithParameter] 
