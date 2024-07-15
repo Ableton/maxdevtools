@@ -18,7 +18,6 @@ dependency_cache:
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
-	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 
