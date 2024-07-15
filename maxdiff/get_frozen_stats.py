@@ -7,16 +7,16 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
 
     device = entries[0]  # the first entry is always the device file
 
-    abstractions = [
+    abstraction_entries = [
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
     # cache names of known abstractions
-    file_names = [str(item["file_name"]) for item in abstractions]
+    abstraction_file_names = [str(item["file_name"]) for item in abstraction_entries]
 
     device_patch = get_patcher_dict(device)
     object_count_recursive, line_count_recursive = count(
-        device_patch, abstractions, file_names
+        device_patch, abstraction_entries, abstraction_file_names
     )
 
     summary = "\n"
@@ -38,12 +38,16 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
     summary += "Unique - Counting abstractions once - Indicates maintainability\n"
     summary += f"    Object instances: {object_count_once}\n"
     summary += f"    Connections: {line_count_once}\n"
+
     return summary
 
 
-def count(patcher, entries: list[dict], file_names: list[str]) -> tuple[int, int]:
+def count(
+    patcher, abstractions: list[dict], abstraction_file_names: list[str]
+) -> tuple[int, int]:
     """Recursively counts all object instances and connections in this patcher,
-    inluding in every instance of its dependencies"""
+    inluding in every instance of its dependencies that can be found among the
+    files that were passed in"""
     boxes = patcher["boxes"]
     lines = patcher["lines"]
     object_count = len(boxes)
@@ -58,24 +62,24 @@ def count(patcher, entries: list[dict], file_names: list[str]) -> tuple[int, int
                 box.get("maxclass") == "bpatcher" and box.get("embed") == 1
             ):
                 # get subpatcher or embedded bpatcher count
-                o, l = count(patch, entries, file_names)
+                o, l = count(patch, abstractions, abstraction_file_names)
                 object_count += o
                 line_count += l
 
-    if len(file_names) == 0:
+    if len(abstraction_file_names) == 0:
         return (object_count, line_count)
 
     # recurse into abstractions
     for box_entry in boxes:
         box = box_entry["box"]
 
-        file_name = get_abstraction_name(box, file_names)
+        file_name = get_abstraction_name(box, abstraction_file_names)
         if file_name is None:
             continue
 
-        abstraction = [item for item in entries if item["file_name"] == file_name][0]
+        abstraction = [item for item in abstractions if item["file_name"] == file_name][0]
         abstraction_patch = get_patcher_dict(abstraction)
-        o, l = count(abstraction_patch, entries, file_names)
+        o, l = count(abstraction_patch, abstractions, abstraction_file_names)
 
         if "text" in box and box["text"].startswith("poly~"):
             # get poly abstraction count
@@ -91,7 +95,7 @@ def count(patcher, entries: list[dict], file_names: list[str]) -> tuple[int, int
     return (object_count, line_count)
 
 
-def get_abstraction_name(box, file_names: list[str]):
+def get_abstraction_name(box, abstraction_file_names: list[str]):
     """
     Checks if this box is an abstraction and if so, return the name of the abstraction file.
     - returns None if this is not an abstraction
@@ -100,7 +104,7 @@ def get_abstraction_name(box, file_names: list[str]):
     if "text" in box:
         if box["text"].startswith("poly~"):
             name = box["text"].split(" ")[1] + ".maxpat"
-            if name in file_names:
+            if name in abstraction_file_names:
                 return name
             else:
                 raise ValueError(
@@ -108,11 +112,11 @@ def get_abstraction_name(box, file_names: list[str]):
                 )
         else:
             name = box["text"].split(" ")[0] + ".maxpat"
-            if name in file_names:
+            if name in abstraction_file_names:
                 return name
 
     if box.get("maxclass") == "bpatcher" and box.get("embed") != 1:
-        if box.get("name") in file_names:
+        if box.get("name") in abstraction_file_names:
             return box["name"]
         else:
             raise ValueError(
