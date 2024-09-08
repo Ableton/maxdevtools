@@ -16,7 +16,7 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
 
     device_patch = get_patcher_dict(device)
     object_count_recursive, line_count_recursive = count(
-        device_patch, abstraction_entries, abstraction_file_names
+        device_patch, abstraction_entries, abstraction_file_names # do recurse into abstractions
     )
 
     summary = "\n"
@@ -31,7 +31,7 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
             continue
 
         entry_patch = get_patcher_dict(entry)
-        o, l = count(entry_patch, [], [])  # don't recurse into abstractions
+        o, l = count(entry_patch, [], []) # don't recurse into abstractions
         object_count_once += o
         line_count_once += l
 
