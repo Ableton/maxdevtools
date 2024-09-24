@@ -402,12 +402,14 @@ def get_parameters_string_block(patcher: dict) -> str:
 
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
+        parameter_strings = []
         for key, value in parameters["parameterbanks"].items():
-            parameters_string += (
+            parameter_strings.append(
                 f"\t{value['index']}"
                 + (f" ({value['name']})" if value["name"] != "" else "")
                 + f": {value['parameters']}"
             )
+        parameters_string += "\n".join(parameter_strings)
 
     return f"parameters:\n{parameters_string}\n"
 

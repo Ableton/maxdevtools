@@ -37,6 +37,7 @@ parameters:
 	inherited_shortname: 1
 banks:
 	0 (MyBank): ['Dial 1', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
+	1 (MyBank2): ['Dial 2', 'In a subpatcher', '-', '-', '-', '-', '-', '-']
 dependency_cache:
 	{'name': 'AbstractionWithParameter.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
@@ -53,7 +54,7 @@ project:
 			collContent.txt
 
 ----------- patcher -----------
-appversion: 8.6.2-x64-1 | rect: [246, 585, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+appversion: 8.6.5-x64-1 | rect: [246, 585, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | external_mpe_tuning_enabled: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
@@ -65,7 +66,7 @@ appversion: 8.6.2-x64-1 | rect: [246, 585, 927, 289] | openrect: [0, 0, 0, 169] 
 [button] 
 [gen @t exponent] 
 	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	appversion: 8.6.5-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
 		//============================================================
@@ -108,7 +109,7 @@ appversion: 8.6.2-x64-1 | rect: [246, 585, 927, 289] | openrect: [0, 0, 0, 169] 
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
 	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | rect: [805, 282, 271, 250]
+	appversion: 8.6.5-x64-1 | rect: [805, 282, 271, 250]
 	----------- objects -----------
 	[live.dial] parameter: <longname: In a subpatcher | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 	[t b b] 
