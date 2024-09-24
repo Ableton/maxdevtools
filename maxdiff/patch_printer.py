@@ -406,7 +406,7 @@ def get_parameters_string_block(patcher: dict) -> str:
             parameters_string += (
                 f"\t{value['index']}"
                 + (f" ({value['name']})" if value["name"] != "" else "")
-                + f": {value['parameters']}"
+                + f": {value['parameters']}\n"
             )
 
     return f"parameters:\n{parameters_string}\n"
