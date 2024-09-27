@@ -437,6 +437,7 @@ Here is a checklist to recap the topics of this guide that can be tested, which 
 - [ ] MPE: MIDI devices support MPE (`is_mpe` is set to active).
 - [ ] Latency: The device plays in sync with the rest of the Live Set.
 - [ ] MIDI Mapping: The main device parameters can be mapped to a MIDI controller.
+- [ ] MIDI Tools: Random number generators (e.g. `random` objects) in between `live.miditool.in` and `live.miditool.out` must be reset using a seed value before being triggered. The seed value used should only change as a result of user input. This ensures a deterministic output when `live.miditool.in` is repeatedly triggered by Live.
 
 **UI**
 
