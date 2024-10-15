@@ -2,12 +2,13 @@ Audio Effect Device
 -------------------
 Device is frozen
 ----- Contents -----
-StatsTest.amxd: 6475 bytes, modified at 2024/10/15 13:54:31 UTC
-MyAbstraction.maxpat: 2015 bytes, modified at 2024/10/15 13:54:08 UTC
+StatsTest.amxd: 9344 bytes, modified at 2024/10/15 13:55:42 UTC <= Device 
+MyAbstraction.maxpat: 2015 bytes, modified at 2024/10/15 13:54:08 UTC, 7 instances
+UnusedAbstraction.maxpat: 2015 bytes, modified at 2024/10/15 13:54:59 UTC, NOT FOUND IN PATCH
 
 Total - Counting every abstraction instance - Indicates loading time
-    Object instances: 27
-    Connections: 15
+    Object instances: 33
+    Connections: 17
 Unique - Counting abstractions once - Indicates maintainability
-    Object instances: 12
-    Connections: 5
+    Object instances: 18
+    Connections: 7
