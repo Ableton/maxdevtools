@@ -21,7 +21,12 @@ def get_stats(entries: list[device_entry_with_data]):
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
-    device_patch = get_patcher_dict(device)
+    json_dict = get_json_dict(device)
+    if json_dict == {} or not "patcher" in json_dict:
+        return "Error parsing device file"
+
+    device_patch = json_dict["patcher"]
+
     count_processor = CountProcessor()
     process_patch_recursive(
         device_patch,
@@ -42,7 +47,12 @@ def get_stats(entries: list[device_entry_with_data]):
         if entry["type"] != "JSON":
             continue
 
-        entry_patch = get_patcher_dict(entry)
+        json_dict = get_json_dict(entry)
+        if json_dict == {} or not "patcher" in json_dict:
+            continue  # this might be an included json file
+
+        entry_patch = json_dict["patcher"]
+
         count_processor = CountProcessor()
         # don't recurse into abstractions
         process_patch_recursive(entry_patch, [], count_processor)
@@ -64,7 +74,12 @@ def get_used_files(entries: list[device_entry_with_data]) -> dict[str, int]:
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
-    device_patch = get_patcher_dict(device)
+    json_dict = get_json_dict(device)
+    if json_dict == {} or not "patcher" in json_dict:
+        return {}
+
+    device_patch = json_dict["patcher"]
+
     abstractions_processor = FileNamesProcessor()
     process_patch_recursive(device_patch, abstraction_entries, abstractions_processor)
     return abstractions_processor.get_results()
@@ -112,7 +127,11 @@ def process_patch_recursive(
         abstraction = [
             item for item in abstraction_entries if item["file_name"] == file_name
         ][0]
-        patch = get_patcher_dict(abstraction)
+        json_dict = get_json_dict(abstraction)
+        if json_dict == {} or not "patcher" in json_dict:
+            continue  # something went wrong when parsing the abstraction
+
+        patch = json_dict["patcher"]
 
         voice_count = 1
         if "text" in box and box["text"].startswith("poly~"):
@@ -164,15 +183,15 @@ def get_abstraction_name(box, abstraction_entries: list[dict]):
     return None
 
 
-def get_patcher_dict(entry: device_entry_with_data):
+def get_json_dict(entry: device_entry_with_data):
     """Returns the dict that represents the given patcher data.
     Prints errors if parsing fails"""
 
     if not "data" in entry:
         return {}
 
-    patch_data = entry["data"]
-    if not isinstance(patch_data, bytes):
+    data = entry["data"]
+    if not isinstance(data, bytes):
         return {}
 
     if not "file_name" in entry:
@@ -182,27 +201,21 @@ def get_patcher_dict(entry: device_entry_with_data):
     if not isinstance(name, str):
         return {}
 
-    device_data_text = ""
+    data_text = ""
     try:
-        if patch_data[len(patch_data) - 1] == 0:
-            device_data_text = patch_data[: len(patch_data) - 1].decode("utf-8")
+        if data[len(data) - 1] == 0:
+            data_text = data[: len(data) - 1].decode("utf-8")
         else:
-            device_data_text = patch_data.decode("utf-8")
+            data_text = data.decode("utf-8")
     except Exception as e:
-        print(f"Error getting patch data as text for entry {name}: {e}")
+        print(f"Error getting json data as text for entry {name}: {e}")
         return {}
 
     try:
-        patcher_dict = json.loads(device_data_text)
+        json_dict = json.loads(data_text)
+        return json_dict
     except ValueError as e:
-        print(f"Error parsing device patch data as json for entry {name}: {e}")
-        return {}
-
-    try:
-        patcher = patcher_dict["patcher"]
-        return patcher
-    except:
-        print(f"Content of entry {name} does not seem to be a patcher")
+        print(f"Error getting dict from json data for entry {name}: {e}")
         return {}
 
 
@@ -227,7 +240,9 @@ class FileNamesProcessor(Processor):
         self.found_filenames = {}
 
     def process_elements(self, patcher, voice_count: int, abstraction_name=""):
-        """If this patcher is an abstraction, i.e. when an abstraction_name is passed in, increment the entry in the dict"""
+        """If this patcher is an abstraction, i.e. when an abstraction_name is passed in, increment the entry in the dict.
+        For other patchers, scan them for objects that use files.
+        """
 
         filenames = get_filenames(patcher)
         if abstraction_name != "":
