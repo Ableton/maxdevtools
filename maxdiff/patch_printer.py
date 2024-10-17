@@ -109,7 +109,6 @@ def print_patcher_summary_recursive(
         "maxclass",  # used in box name
         "text",  # shown in box name
         "id",  # used only for lines
-        "name",  # shown in box name
         "patching_rect",  # different every time
         "numinlets",  # cached from inlet objects
         "numoutlets",  # cached from outlet objects
@@ -261,6 +260,9 @@ def get_properties_to_print(
     for key, value in box_or_patcher.items():
         if key in skip_properties:
             continue
+
+        if key == "name" and box_or_patcher.get("maxclass") == "bpatcher":
+            continue  # special case: bpatcher name is already in the box text
 
         if key in default and default[key] == value:
             continue
