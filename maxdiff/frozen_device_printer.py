@@ -34,7 +34,21 @@ def print_frozen_device(data: bytes) -> str:
                 else:
                     frozen_string += f"{description}, NOT FOUND IN PATCH\n"
         i += 1
-    frozen_string += get_stats(device_entries)
+
+    [object_count_total, line_count_total, object_count_unique, line_count_unique] = (
+        get_stats(device_entries)
+    )
+
+    frozen_string += "\n"
+    frozen_string += (
+        "Total - Counting every abstraction instance - Indicates loading time\n"
+    )
+    frozen_string += f"    Object instances: {object_count_total}\n"
+    frozen_string += f"    Connections: {line_count_total}\n"
+    frozen_string += "Unique - Counting abstractions once - Indicates maintainability\n"
+    frozen_string += f"    Object instances: {object_count_unique}\n"
+    frozen_string += f"    Connections: {line_count_unique}\n"
+
     return frozen_string
 
 

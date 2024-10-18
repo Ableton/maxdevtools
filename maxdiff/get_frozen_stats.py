@@ -8,12 +8,52 @@ class Processor:
         """Processes patchers."""
 
     def get_results(self):
-        """Returns the current counts."""
+        """Returns the current results."""
         return None
 
 
-def get_stats(entries: list[device_entry_with_data]):
-    """Returns statistics for this device"""
+class CountProcessor(Processor):
+    def __init__(self):
+        self.object_count = 0
+        self.line_count = 0
+
+    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
+        """Counts objects and lines in the given patcher."""
+        self.object_count += len(patcher.get("boxes", [])) * voice_count
+        self.line_count += len(patcher.get("lines", [])) * voice_count
+
+    def get_results(self):
+        """Returns the current counts."""
+        return self.object_count, self.line_count
+
+
+# TODO: extend with dependencies that might be included in the frozen device, like pictures
+class FileNamesProcessor(Processor):
+    def __init__(self):
+        self.found_filenames = {}
+
+    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
+        """If this patcher is an abstraction, i.e. when an abstraction_name is passed in, increment the entry in the dict.
+        For other patchers, scan them for objects that use files.
+        """
+
+        filenames = get_filenames(patcher)
+        if abstraction_name != "":
+            filenames.append(abstraction_name)
+
+        for filename in filenames:
+            if filename in self.found_filenames:
+                self.found_filenames[filename] += voice_count
+            else:
+                self.found_filenames[filename] = voice_count
+
+    def get_results(self):
+        """Returns a dict of used abstractions mapped to how oftern they are used."""
+        return self.found_filenames
+
+
+def get_stats(entries: list[device_entry_with_data]) -> tuple[int, int, int, int]:
+    """Returns statistics for the passed list of entries found in a frozen device"""
 
     device = entries[0]  # the first entry is always the device file
 
@@ -23,48 +63,42 @@ def get_stats(entries: list[device_entry_with_data]):
 
     json_dict = get_json_dict(device)
     if json_dict == {} or not "patcher" in json_dict:
-        return "Error parsing device file"
+        return 0, 0, 0, 0
 
+    # get total counts: parse every instance of every abstraction
     device_patch = json_dict["patcher"]
 
     count_processor = CountProcessor()
     process_patch_recursive(
-        device_patch,
-        abstraction_entries,
-        count_processor,  # do recurse into abstractions
+        device_patch, abstraction_entries, count_processor  # do recurse into abstractions
     )
 
-    object_count_recursive, line_count_recursive = count_processor.get_results()
+    object_count_total, line_count_total = count_processor.get_results()
 
-    summary = "\n"
-    summary += "Total - Counting every abstraction instance - Indicates loading time\n"
-    summary += f"    Object instances: {object_count_recursive}\n"
-    summary += f"    Connections: {line_count_recursive}\n"
-
-    object_count_once = 0
-    line_count_once = 0
+    # get unique counts: parse every entry included in the frozen device once
+    object_count_unique = 0
+    line_count_unique = 0
     for entry in entries:
-        if entry["type"] != "JSON":
+        filename = str(entry["file_name"])
+        if not (filename.endswith(".amxd") or filename.endswith(".maxpat")):
             continue
 
         json_dict = get_json_dict(entry)
         if json_dict == {} or not "patcher" in json_dict:
-            continue  # this might be an included json file
+            continue
 
         entry_patch = json_dict["patcher"]
 
         count_processor = CountProcessor()
-        # don't recurse into abstractions
-        process_patch_recursive(entry_patch, [], count_processor)
+
+        process_patch_recursive(
+            entry_patch, [], count_processor  # don't recurse into abstractions
+        )
         o, l = count_processor.get_results()
-        object_count_once += o
-        line_count_once += l
+        object_count_unique += o
+        line_count_unique += l
 
-    summary += "Unique - Counting abstractions once - Indicates maintainability\n"
-    summary += f"    Object instances: {object_count_once}\n"
-    summary += f"    Connections: {line_count_once}\n"
-
-    return summary
+    return object_count_total, line_count_total, object_count_unique, line_count_unique
 
 
 def get_used_files(entries: list[device_entry_with_data]) -> dict[str, int]:
@@ -219,46 +253,6 @@ def get_json_dict(entry: device_entry_with_data):
         return {}
 
 
-class CountProcessor(Processor):
-    def __init__(self):
-        self.object_count = 0
-        self.line_count = 0
-
-    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
-        """Counts objects and lines in the given patcher."""
-        self.object_count += len(patcher.get("boxes", [])) * voice_count
-        self.line_count += len(patcher.get("lines", [])) * voice_count
-
-    def get_results(self):
-        """Returns the current counts."""
-        return self.object_count, self.line_count
-
-
-# TODO: extend with dependencies that might be included in the frozen device, like pictures
-class FileNamesProcessor(Processor):
-    def __init__(self):
-        self.found_filenames = {}
-
-    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
-        """If this patcher is an abstraction, i.e. when an abstraction_name is passed in, increment the entry in the dict.
-        For other patchers, scan them for objects that use files.
-        """
-
-        filenames = get_filenames(patcher)
-        if abstraction_name != "":
-            filenames.append(abstraction_name)
-
-        for filename in filenames:
-            if filename in self.found_filenames:
-                self.found_filenames[filename] += voice_count
-            else:
-                self.found_filenames[filename] = voice_count
-
-    def get_results(self):
-        """Returns a dict of used abstractions mapped to how oftern they are used."""
-        return self.found_filenames
-
-
 def get_filenames(patcher):
     filenames = []
     for box_entry in patcher["boxes"]:
@@ -356,7 +350,4 @@ def get_max_attribute(box, attribute_name):
 
 
 def add_if_needed(s, ext):
-    if not s.endswith(ext):
-        return s + ext
-    else:
-        return s
+    return s + ext if not s.endswith(ext) else s
