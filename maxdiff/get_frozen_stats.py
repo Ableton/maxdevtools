@@ -61,13 +61,11 @@ def get_stats(entries: list[device_entry_with_data]) -> tuple[int, int, int, int
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
-    json_dict = get_json_dict(device)
-    if json_dict == {} or not "patcher" in json_dict:
+    device_patch = get_patcher_dict(device)
+    if device_patch == {}:
         return 0, 0, 0, 0
 
     # get total counts: parse every instance of every abstraction
-    device_patch = json_dict["patcher"]
-
     count_processor = CountProcessor()
     process_patch_recursive(
         device_patch, abstraction_entries, count_processor  # do recurse into abstractions
@@ -83,11 +81,9 @@ def get_stats(entries: list[device_entry_with_data]) -> tuple[int, int, int, int
         if not (filename.endswith(".amxd") or filename.endswith(".maxpat")):
             continue
 
-        json_dict = get_json_dict(entry)
-        if json_dict == {} or not "patcher" in json_dict:
+        entry_patch = get_patcher_dict(entry)
+        if entry_patch == {}:
             continue
-
-        entry_patch = json_dict["patcher"]
 
         count_processor = CountProcessor()
 
@@ -108,11 +104,9 @@ def get_used_files(entries: list[device_entry_with_data]) -> dict[str, int]:
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
-    json_dict = get_json_dict(device)
-    if json_dict == {} or not "patcher" in json_dict:
+    device_patch = get_patcher_dict(device)
+    if device_patch == {}:
         return {}
-
-    device_patch = json_dict["patcher"]
 
     abstractions_processor = FileNamesProcessor()
     process_patch_recursive(device_patch, abstraction_entries, abstractions_processor)
@@ -161,11 +155,9 @@ def process_patch_recursive(
         abstraction = [
             item for item in abstraction_entries if item["file_name"] == file_name
         ][0]
-        json_dict = get_json_dict(abstraction)
-        if json_dict == {} or not "patcher" in json_dict:
+        patch = get_patcher_dict(abstraction)
+        if patch == {}:
             continue  # something went wrong when parsing the abstraction
-
-        patch = json_dict["patcher"]
 
         voice_count = 1
         if "text" in box and box["text"].startswith("poly~"):
@@ -217,7 +209,7 @@ def get_abstraction_name(box, abstraction_entries: list[dict]):
     return None
 
 
-def get_json_dict(entry: device_entry_with_data):
+def get_patcher_dict(entry: device_entry_with_data):
     """Returns the dict that represents the given patcher data.
     Prints errors if parsing fails"""
 
@@ -247,9 +239,15 @@ def get_json_dict(entry: device_entry_with_data):
 
     try:
         json_dict = json.loads(data_text)
-        return json_dict
     except ValueError as e:
         print(f"Error getting dict from json data for entry {name}: {e}")
+        return {}
+
+    try:
+        patcher = json_dict["patcher"]
+        return patcher
+    except:
+        print(f"Content of entry {name} does not seem to be a patcher")
         return {}
 
 
