@@ -18,7 +18,7 @@ Removing the comments from the new MIDI Effect:
 
 For `.amxd` files:
 * The scripts will also tell you what device type it is. 
-* If a device is frozen, you will see an overview of the content frozen into the deivce. NOTE: We recommend never to commit frozen devices to a git repo, instead to include the dependencies as separate files.
+* If a device is frozen, you will see an overview of the content frozen into the deivce. NOTE: We recommend never to commit frozen devices to a git repository, instead to include the dependencies as separate files.
 
 ### Why?
 
@@ -44,14 +44,14 @@ brew install python
 
 ### Setup
 
-1. In a `.gitattributes` file in the root of your repo, apply diff attributes for `.maxpat`, `.amxd` and `.als` files:
+1. In a `.gitattributes` file in the root of your repository, apply diff attributes for `.maxpat`, `.amxd` and `.als` files:
 ```text
 *.maxpat              text diff=maxpat
 *.amxd                binary diff=amxd
 *.als                 binary diff=als
 ```
 
-2. To make the repository use the custom text converter scripts, add them to your local git configuration: in your `.git` folder, you'll find the `config` file. Assuming this repo is checked out in your home folder, you can add these lines:
+2. To make the repository use the custom text converter scripts, add them to your local git configuration: in your `.git` folder, you'll find the `config` file. Assuming this repository is checked out in your home folder, you can add these lines:
 
    ```text
    [diff "maxpat"]
@@ -70,8 +70,8 @@ brew install python
 
 If you see or know that a file is modified but your git interface does not show any diff, there might be an error in a maxdiff script. To verify this, you can get a summary outside of git:
 
-* Open Terminal / Command Prompt, navigate to this repo.
-* From the repo root, run the appropriate python script with your file as an argument:
+* Open Terminal / Command Prompt, navigate to this repository.
+* From the repository root, run the appropriate python script with your file as an argument:
   * `python3 ./maxdiff/amxd_textconv.py <path/to/your/device.amxd>` for a device, or
   * `python3 ./maxdiff/maxpat_textconv.py <path/to/your/patch.maxpat>` for an abstraction.
 * If this doesn't print a patch summary, or if this throws an error, please [get in touch](CONTRIBUTING.md).
