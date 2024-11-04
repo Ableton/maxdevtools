@@ -126,7 +126,7 @@ Below is the approach we use to format and structure Max patches consistently:
 * Devices are only frozen when distributing, because of the risk involved in unfreezing.
 * Frozen devices do not contain externals or abstractions that are bundled with Max.
 * Unfreezing a device does not result in a `discarded` folder.
-* Ideally it should never be necessary to unfreeze a device while developing, instead you should work on the unfrozen source in the git repo.
+* Ideally it should never be necessary to unfreeze a device while developing, instead you should work on the unfrozen source in the git repository.
 * Whenever it's necessary to unfreeze something, after you're done, make sure to remove everything from the `~/Documents/Max 8/Max for Live Devices/` folder to reduce the risk of editing the wrong dependency.
 * Don't include any dependencies in the device projects. It has a risk of leaving files in the device that it no longer uses. Since everything is in the same repository, and the source folder is in the Max search path, Max should be able to find only one copy of every dependency in all of its search paths.
 * For embedded bpatchers, make sure the original abstractions used before the embed are deleted to prevent the risk from these obsolete abstractions being edited instead of the embedded ones.
