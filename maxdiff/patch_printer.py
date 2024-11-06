@@ -22,7 +22,8 @@ def print_patcher(patcher_dict: dict, summarize: bool = True) -> dict | str:
             name = get_box_text(box)
             known_objects_map[name] = box
 
-        display_text = print_top_patcher_summary(patcher_dict)
+        display_text = print_parameter_info_texts(patcher_dict)
+        display_text += print_top_patcher_summary(patcher_dict)
         display_text += print_patcher_summary_recursive(patcher_dict, known_objects_map)
         return display_text
     else:
@@ -407,7 +408,7 @@ def get_parameters_string_block(patcher: dict) -> str:
             parameters_string += (
                 f"\t{value['index']}"
                 + (f" ({value['name']})" if value["name"] != "" else "")
-                + f": {value['parameters']}"
+                + f": {value['parameters']}\n"
             )
 
     return f"parameters:\n{parameters_string}\n"
@@ -479,6 +480,115 @@ def get_object_parameter_string(parameter: dict) -> str:
         )
 
     return parameter_string
+
+
+def print_parameter_info_texts(patcher_dict: dict) -> str:
+    patcher = patcher_dict["patcher"]
+    display_text = get_parameters_string(patcher)
+    if display_text != "":
+        display_text = f"parameter texts:\n{display_text}"
+
+    return display_text
+
+
+def get_parameters_string(patcher: dict) -> str:
+    """Recursively scans this patcher for parameters and returns a string representation"""
+    boxes = patcher["boxes"]
+    parameter_string = ""
+
+    for box_entry in boxes:
+        box = box_entry["box"]
+
+        if "patcher" in box:
+            patch = box["patcher"]
+            if box.get("maxclass") != "bpatcher" or (
+                box.get("maxclass") == "bpatcher" and box.get("embed") == 1
+            ):
+                # get subpatcher or embedded bpatcher string
+                parameter_string += get_parameters_string(patch)
+
+        param_info = get_param_info(box)
+
+        if param_info == None:
+            continue
+
+        parameter_string += f'### {param_info["longname"]} ###\n'
+
+        extra_messages = []
+
+        if param_info["invisible"] == 1 or param_info["invisible"] == 2:
+            extra_messages.append(" _not automatable_")
+
+        if param_info["invisible"] == 2:
+            extra_messages.append(" _not stored_")
+
+        if param_info["presentation"] != 1:
+            extra_messages.append(" _not in interface_")
+
+        if extra_messages:
+            parameter_string += " ".join(extra_messages) + "\n"
+
+        parameter_string += "\n"
+
+        parameter_string += "- "
+        if param_info["infotitle"]:
+            parameter_string += f'{param_info["infotitle"]}\n'
+        else:
+            parameter_string += f'_no info title_ => {param_info["longname"]}\n'
+
+        parameter_string += "- "
+        if param_info["infotext"]:
+            parameter_string += f'{param_info["infotext"]}\n'
+        else:
+            parameter_string += "_no info text_\n"
+
+        parameter_string += "\n"
+
+    return parameter_string
+
+
+def get_param_info(box: dict):
+    param_info = {
+        "longname": None,
+        "shortname": None,
+        "infotitle": None,
+        "infotext": None,
+        "invisible": None,
+        "presentation": None,
+    }
+
+    for key, value in box.items():
+        if key == "presentation":
+            param_info["presentation"] = value
+
+        if key == "annotation_name":
+            param_info["infotitle"] = value
+
+        if key == "annotation":
+            param_info["infotext"] = value
+
+        if key == "saved_attribute_attributes":
+            # We take the attributes out or saved_attribute_attributes and present them as properties
+            for attrkey, attrvalue in value.items():
+                if attrvalue == "":
+                    continue
+
+                if attrkey == "valueof":
+                    if "parameter_longname" in attrvalue:
+                        param_info["longname"] = attrvalue["parameter_longname"]
+                    if "parameter_longname" in attrvalue:
+                        param_info["shortname"] = attrvalue["parameter_longname"]
+                    if "parameter_annotation_name" in attrvalue:
+                        param_info["infotitle"] = attrvalue["parameter_annotation_name"]
+                    if "parameter_info" in attrvalue:
+                        param_info["infotext"] = attrvalue["parameter_info"]
+                    if "parameter_invisible" in attrvalue:
+                        param_info["invisible"] = attrvalue["parameter_invisible"]
+
+    if param_info["longname"] == None:
+        return None
+
+    return param_info
 
 
 def concat(a: str, b: str) -> str:

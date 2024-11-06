@@ -1,5 +1,30 @@
 MIDI Effect Device
 -------------------
+parameter texts:
+### In a subpatcher ###
+ _not in interface_
+
+- In a subpatcher
+- _no info text_
+
+### Time Mode ###
+ _not automatable_ _not stored_ _not in interface_
+
+- Time Mode
+- Toggles between Beat Sync and Free running (Hz).
+
+### Dial 2 ###
+ _not in interface_
+
+- Dial 2
+- _no info text_
+
+### Dial 1 ###
+ _not in interface_
+
+- My Info View Title
+- My Info View Text
+
 parameters:
 	[p MySubpatcher]/[live.dial]: ['In a subpatcher', 'live.dial', 0]
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['InsideBpatcher', 'live.dial', 0]
@@ -7,12 +32,11 @@ parameters:
 	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
 	[live.tab]: ['Time Mode', 'Time Mode', 0]
-	[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat <embedded>]/[live.numbox]: ['EmbeddedParam', 'Embedded', 0]
-	[live.dial]: ['live.dial', 'live.dial', 0]
-	[live.dial]: ['live.dial[1]', 'live.dial', 0]
+	[live.dial]: ['Dial 1', 'Dial 1', 0]
+	[live.dial]: ['Dial 2', 'Dial 2', 0]
 	inherited_shortname: 1
 banks:
-	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
+	0 (MyBank): ['Dial 1', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
 dependency_cache:
 	{'name': 'AbstractionWithParameter.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
@@ -29,14 +53,8 @@ project:
 			collContent.txt
 
 ----------- patcher -----------
-appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+appversion: 8.6.2-x64-1 | rect: [246, 585, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
-[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat] embed: 1
-	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | rect: [927, 431, 640, 480]
-	----------- objects -----------
-	[live.comment Embedded] 
-	[live.numbox] parameter: <longname: EmbeddedParam | modmode: 3 | shortname: Embedded | type: 0 | unitstyle: 0>
 [message 😋] fontsize: 20.0
 [AbstractionWithParameter] 
 [AbstractionWithParameter] 
@@ -102,8 +120,8 @@ appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] |
 [live.banks] 
 [bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
 [bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
-[live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: live.dial[1] | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
-[live.dial] parameter: <longname: live.dial | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
+[live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: Dial 2 | modmode: 0 | shortname: Dial 2 | type: 0 | unitstyle: 0> | varname: live.dial[1]
+[live.dial] annotation: My Info View Text | annotation_name: My Info View Title | parameter: <annotation_name: My Info View Title | info: My Info View Text | longname: Dial 1 | modmode: 0 | shortname: Dial 1 | type: 0 | unitstyle: 0>
 [button] presentation: 1 | presentation_rect: [265, 26, 24, 24]
 [bpatcher MyAbstraction.maxpat] offset: [-4, -12]
 [comment A comment] 
