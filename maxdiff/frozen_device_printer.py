@@ -32,17 +32,20 @@ def get_device_entries(
 
     for fields in footer_entries:
         if (
-            "fnam" in fields
+            "type" in fields
+            and "fnam" in fields
             and "of32" in fields
             and "sz32" in fields
             and "mdat" in fields
         ):
+            type_field = fields["type"]
             name_field = fields["fnam"]
             offset_field = fields["of32"]
             size_field = fields["sz32"]
             date_field = fields["mdat"]
             if not (
-                isinstance(name_field, str)
+                isinstance(type_field, str)
+                and isinstance(name_field, str)
                 and isinstance(offset_field, int)
                 and isinstance(size_field, int)
                 and isinstance(date_field, datetime.datetime)
@@ -54,6 +57,7 @@ def get_device_entries(
             entry: device_entry_with_data = {
                 "file_name": name_field,
                 "description": description,
+                "type": type_field,
                 "data": entry_data,
             }
             entries.append(entry)
