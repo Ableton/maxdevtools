@@ -1,4 +1,5 @@
 from freezing_utils import *
+from get_frozen_stats import get_frozen_stats
 
 
 def print_frozen_device(data: bytes) -> str:
@@ -21,6 +22,7 @@ def print_frozen_device(data: bytes) -> str:
     for entry in device_entries:
         if isinstance(entry["description"], str):
             frozen_string += entry["description"] + "\n"
+    frozen_string += get_frozen_stats(device_entries)
     return frozen_string
 
 

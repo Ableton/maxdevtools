@@ -18,11 +18,31 @@ Removing the comments from the new MIDI Effect:
 
 For `.amxd` files:
 * The scripts will also tell you what device type it is. 
-* If a device is frozen, you will see an overview of the content frozen into the deivce. NOTE: We recommend never to commit frozen devices to a git repository, instead to include the dependencies as separate files.
+* If a device is frozen, you will see an overview and statistics of the content frozen into the device. NOTE: We recommend never to commit frozen devices to a git repository, instead to include the dependencies as separate files.
 
 ### Why?
 
 Readable diffs are very useful for patch code review, or for a sanity check before committing (did I really change nothing else expect removing all my debug messages and prints?).
+
+### Using the frozen device statistics
+
+`maxdiff` currently uses two different ways to count object instances and connections:
+
+* Total - Counting every abstraction instance - Indicates loading time
+  * This recursively counts the contents of all subpatchers and abstraction instances
+* Unique - Counting abstractions once - Indicates maintainability
+  * This counts the contents once of every dependency frozen into the device.
+
+This feature can be used in a way comparable to [`git diff --numstats`](https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---numstat) to indicate the amount of change in a commit.
+
+Note that we typically don't commit frozen devices to a repo, so the typical way to use this feature is:
+
+1. Commit the device and its dependencies in **un**frozen state.
+2. Temporarily freeze the device.
+3. Run `python3 ./maxdiff/amxd_textconv.py <path/to/device.amxd>` to get the statistics or view the file in your git client.
+4. Discard the freezing.
+
+Note: the reason this only works with frozen devices is that these unambiguously capture all dependencies.
 
 ### What does not work
 

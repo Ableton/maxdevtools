@@ -29,11 +29,14 @@ project:
 			collContent.txt
 
 ----------- patcher -----------
-appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+appversion: 8.6.4-x64-1 | rect: [65, 399, 1244, 429] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
+[comment NOTE: after any changes to this device, also update FrozenTest.amxd] 
+[poly~ MyAbstraction] 
+[poly~ MyAbstraction 3] 
 [bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat] embed: 1
 	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | rect: [927, 431, 640, 480]
+	appversion: 8.6.4-x64-1 | rect: [927, 431, 640, 480]
 	----------- objects -----------
 	[live.comment Embedded] 
 	[live.numbox] parameter: <longname: EmbeddedParam | modmode: 3 | shortname: Embedded | type: 0 | unitstyle: 0>
@@ -47,7 +50,7 @@ appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] |
 [button] 
 [gen @t exponent] 
 	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	appversion: 8.6.4-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
 		//============================================================
@@ -90,7 +93,7 @@ appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] |
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
 	----------- patcher -----------
-	appversion: 8.6.2-x64-1 | rect: [805, 282, 271, 250]
+	appversion: 8.6.4-x64-1 | rect: [805, 282, 271, 250]
 	----------- objects -----------
 	[live.dial] parameter: <longname: In a subpatcher | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 	[t b b] 
@@ -105,7 +108,7 @@ appversion: 8.6.2-x64-1 | rect: [65, 399, 927, 289] | openrect: [0, 0, 0, 169] |
 [live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: live.dial[1] | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
 [live.dial] parameter: <longname: live.dial | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 [button] presentation: 1 | presentation_rect: [265, 26, 24, 24]
-[bpatcher MyAbstraction.maxpat] offset: [-4, -12]
+[bpatcher MyAbstraction.maxpat] offset: [-29, -19]
 [comment A comment] 
 [live.comment A live.comment] 
 [midiout] fontname: Arial Bold | fontsize: 10.0
