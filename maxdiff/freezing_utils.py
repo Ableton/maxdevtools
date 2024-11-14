@@ -2,6 +2,18 @@ import datetime
 from typing import Optional
 
 footer_entry = dict[str, str | int | datetime.datetime | None]
+device_entry_with_data = dict[str, str | bytes]
+
+
+def parse_footer(data: bytes) -> list[footer_entry]:
+    """Parses the byte data of a frozen device footer and returns a list of frozen dependencies."""
+    footer_entries: list[footer_entry] = []
+    while data[:4].decode("ascii") == "dire":
+        size = int.from_bytes(data[4:8], byteorder="big")
+        fields = get_fields(data[8 : 8 + size])
+        footer_entries.append(fields)
+        data = data[size:]
+    return footer_entries
 
 
 def get_fields(data: bytes) -> footer_entry:
