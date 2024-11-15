@@ -1,8 +1,8 @@
 from freezing_utils import device_entry_with_data, get_patcher_dict
 
 
-def get_frozen_stats(entries: list[device_entry_with_data]):
-    """Returns statistics for this device"""
+def get_frozen_stats(entries: list[device_entry_with_data]) -> tuple[int, int, int, int]:
+    """Returns statistics for the passed list of entries found in a frozen device"""
 
     device = entries[0]  # the first entry is always the device file
 
@@ -14,16 +14,14 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
     abstraction_filenames = [str(item["file_name"]) for item in abstraction_entries]
 
     device_patch = get_patcher_dict(device)
+    if device_patch == {}:
+        return 0, 0, 0, 0
+
     object_count_recursive, line_count_recursive = count(
         device_patch,
         abstraction_entries,
         abstraction_filenames,  # do recurse into abstractions
     )
-
-    summary = "\n"
-    summary += "Total - Counting every abstraction instance - Indicates loading time\n"
-    summary += f"    Object instances: {object_count_recursive}\n"
-    summary += f"    Connections: {line_count_recursive}\n"
 
     object_count_once = 0
     line_count_once = 0
@@ -36,11 +34,12 @@ def get_frozen_stats(entries: list[device_entry_with_data]):
         object_count_once += o
         line_count_once += l
 
-    summary += "Unique - Counting abstractions once - Indicates maintainability\n"
-    summary += f"    Object instances: {object_count_once}\n"
-    summary += f"    Connections: {line_count_once}\n"
-
-    return summary
+    return (
+        object_count_recursive,
+        line_count_recursive,
+        object_count_once,
+        line_count_once,
+    )
 
 
 def count(

@@ -22,7 +22,21 @@ def print_frozen_device(data: bytes) -> str:
     for entry in device_entries:
         if isinstance(entry["description"], str):
             frozen_string += entry["description"] + "\n"
-    frozen_string += get_frozen_stats(device_entries)
+
+    [object_count_total, line_count_total, object_count_unique, line_count_unique] = (
+        get_frozen_stats(device_entries)
+    )
+
+    frozen_string += "\n"
+    frozen_string += (
+        "Total - Counting every abstraction instance - Indicates loading time\n"
+    )
+    frozen_string += f"    Object instances: {object_count_total}\n"
+    frozen_string += f"    Connections: {line_count_total}\n"
+    frozen_string += "Unique - Counting abstractions once - Indicates maintainability\n"
+    frozen_string += f"    Object instances: {object_count_unique}\n"
+    frozen_string += f"    Connections: {line_count_unique}\n"
+
     return frozen_string
 
 
