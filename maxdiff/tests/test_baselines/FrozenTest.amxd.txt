@@ -2,18 +2,26 @@ MIDI Effect Device
 -------------------
 Device is frozen
 ----- Contents -----
-Test.amxd: 24675 bytes, modified at 2024/10/21 12:19:47 UTC <= Device 
+Test.amxd: 39511 bytes, modified at 2024/10/21 12:50:20 UTC <= Device 
 ParamAbstraction.maxpat: 1570 bytes, modified at 2024/05/24 13:59:36 UTC, 2 instances
 MyAbstraction.maxpat: 2015 bytes, modified at 2024/10/21 12:18:20 UTC, 6 instances
 AbstractionWithParameter.maxpat: 1569 bytes, modified at 2024/05/24 13:59:36 UTC, 2 instances
-hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
-beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
-fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
+hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
+beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
+fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC, 5 instances
+shakerkicksnare.aif: 352854 bytes, modified at 2024/10/21 12:21:12 UTC, 2 instances
+VisibleBang.js: 317 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
+my-maxnode-basic.js: 464 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
+times3.gendsp: 2047 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
+myxfade.genjit: 3156 bytes, modified at 2024/10/21 12:21:12 UTC, 2 instances
+mystorage.json: 239 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
+myTestTable: 410 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
+TestScript.js: 87 bytes, modified at 2024/10/21 12:21:12 UTC, 1 instance
 collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC, NOT FOUND IN PATCH
 
 Total - Counting every abstraction instance - Indicates loading time
-    Object instances: 64
-    Connections: 24
+    Object instances: 90
+    Connections: 26
 Unique - Counting abstractions once - Indicates maintainability
-    Object instances: 47
-    Connections: 14
+    Object instances: 73
+    Connections: 16

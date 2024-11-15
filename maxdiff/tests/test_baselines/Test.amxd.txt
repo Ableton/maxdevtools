@@ -5,8 +5,10 @@ parameters:
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['InsideBpatcher', 'live.dial', 0]
 	[AbstractionWithParameter]/[obj-1]: ['MyParameter', 'MyParameter', 0]
 	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
+	[p ImplicitDependencies]/[live.tab]: ['Time Mode', 'Time Mode', 0]
+	[p ImplicitDependencies]/[live.text]: ['live.text', 'live.text', 0]
+	[p ImplicitDependencies]/[live.menu]: ['live.menu', 'live.menu', 0]
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
-	[live.tab]: ['Time Mode', 'Time Mode', 0]
 	[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat <embedded>]/[live.numbox]: ['EmbeddedParam', 'Embedded', 0]
 	[live.dial]: ['live.dial', 'live.dial', 0]
 	[live.dial]: ['live.dial[1]', 'live.dial', 0]
@@ -17,10 +19,18 @@ dependency_cache:
 	{'name': 'AbstractionWithParameter.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'ParamAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
+	{'name': 'TestScript.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
+	{'name': 'VisibleBang.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+	{'name': 'my-maxnode-basic.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
+	{'name': 'myTestTable', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
+	{'name': 'mystorage.json', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
+	{'name': 'myxfade.genjit', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'gJIT', 'implicit': 1}
+	{'name': 'shakerkicksnare.aif', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'AIFF', 'implicit': 1}
+	{'name': 'times3.gendsp', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'gDSP', 'implicit': 1}
 
 project:
 	version: 1 | creationdate: 3590052786 | modificationdate: 3590052786 | viewrect: [25, 106, 300, 500] | autoorganize: 1 | hideprojectwindow: 1 | showdependencies: 1 | autolocalize: 0 | layout: {} | searchpath: {} | detailsvisible: 0 | amxdtype: 1835887981 | readonly: 0 | devpathtype: 0 | devpath: . | sortmode: 0 | viewmode: 0 | includepackages: 0
@@ -29,11 +39,48 @@ project:
 			collContent.txt
 
 ----------- patcher -----------
-appversion: 8.6.4-x64-1 | rect: [65, 399, 1244, 429] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [comment NOTE: after any changes to this device, also update FrozenTest.amxd] 
 [poly~ MyAbstraction] 
 [poly~ MyAbstraction 3] 
+[comment Explicit dependency (included in project)] bubble: 1 | linecount: 2
+[loadbang] 
+[message read collContent.txt] 
+[coll] 
+[p ImplicitDependencies] varname: ImplicitDependencies
+	----------- patcher -----------
+	appversion: 8.6.4-x64-1 | rect: [60, 130, 639, 710]
+	----------- objects -----------
+	[js TestScript] filename: TestScript | parameter_enable: 0
+	[comment We would expect implicit dependencies for these but they don't seem to be added.] bubble: 1 | bubbleside: 2 | linecount: 2
+	[jit.movie @moviefile ChoppedBipBop.m4v @autostart 0] 
+	[jit.gen @gen myxfade] 
+	[imovie] 
+	[message read myTestTable] fontname: Arial | fontsize: 13.0
+	[table myTestTable] name: myTestTable | parameter_enable: 0 | parameter_mappable: 0 | range: 128 | size: 128
+	[matrixctrl] bkgndpict: fpic.png | cellpict: fpic.png | columns: 2 | rows: 2
+	[nodes] displayknob: 2 | knobpict: fpic.png
+	[number] varname: number
+	[pattr test] restore: [1337] | varname: test
+	[pattrstorage mystorage @savemode 0] client_rect: [4, 44, 358, 172] | parameter_enable: 0 | parameter_mappable: 0 | storage_rect: [583, 69, 1034, 197] | varname: mystorage
+	[jit.pix @gen myxfade] 
+	[buffer~ test shakerkicksnare.aif] 
+	[gen~ @gen times3.gendsp] 
+	[sfplay~ @audiofile shakerkicksnare.aif] 
+	[node.script my-maxnode-basic.js] autostart: 0 | defer: 0 | watch: 0
+	[comment JSUI using script file] bubble: 1
+	[jsui] filename: VisibleBang.js
+	[live.menu] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <enum: [one, two, three] | longname: live.menu | mmax: 2 | modmode: 0 | shortname: live.menu | type: 2> | usepicture: 1 | usesvgviewbox: 1
+	[live.text] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <enum: [val1, val2] | longname: live.text | mmax: 1 | modmode: 0 | shortname: live.text | type: 2> | usepicture: 1 | usesvgviewbox: 1
+	[playlist~] basictuning: 440 | clipheight: 28.0 | data: {'clips': [{'absolutepath': 'shakerkicksnare.aif', 'filename': 'shakerkicksnare.aif', 'filekind': 'audiofile', 'id': 'u400003311', 'loop': 1, 'content_state': {'loop': 1}}]} | mode: basic | originallength: [0, ticks] | originaltempo: 120.0 | quality: basic
+	[pictslider] bkgndpict: fpic.png | clickedimage: 0 | knobpict: fpic.png
+	[pictctrl] name: fpic.png
+	[fpic] pic: fpic.png
+	[live.tab] annotation: Toggles between Beat Sync and Free running (Hz). | annotation_name: Time Mode | fontsize: 9.0 | livemode: 1 | num_lines_patching: 2 | num_lines_presentation: 2 | pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <annotation_name: Time Mode | enum: [Free, Sync] | invisible: 2 | linknames: 1 | longname: Time Mode | mmax: 1 | modmode: 0 | shortname: Time Mode | type: 2 | unitstyle: 9> | usepicture: 1 | usesvgviewbox: 1 | varname: Time Mode
+	----------- patch cords -----------
+	[pattr test] (1) => (0) [number]
+	[message read myTestTable] (0) => (0) [table myTestTable]
 [bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat] embed: 1
 	----------- patcher -----------
 	appversion: 8.6.4-x64-1 | rect: [927, 431, 640, 480]
@@ -97,18 +144,13 @@ appversion: 8.6.4-x64-1 | rect: [65, 399, 1244, 429] | openrect: [0, 0, 0, 169] 
 	----------- objects -----------
 	[live.dial] parameter: <longname: In a subpatcher | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 	[t b b] 
-[loadbang] 
-[message read collContent.txt] 
-[coll] 
-[fpic] pic: fpic.png
-[live.tab] annotation: Toggles between Beat Sync and Free running (Hz). | annotation_name: Time Mode | fontsize: 9.0 | livemode: 1 | num_lines_patching: 2 | num_lines_presentation: 2 | pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <annotation_name: Time Mode | enum: [Free, Sync] | invisible: 2 | linknames: 1 | longname: Time Mode | mmax: 1 | modmode: 0 | shortname: Time Mode | type: 2 | unitstyle: 9> | usepicture: 1 | usesvgviewbox: 1 | varname: Time Mode
 [live.banks] 
 [bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
 [bpatcher ParamAbstraction.maxpat] offset: [-73, -62]
-[live.dial] activefgdialcolor: live_display_handle_two | parameter: <longname: live.dial[1] | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
-[live.dial] parameter: <longname: live.dial | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
+[live.dial] activefgdialcolor: live_display_handle_two | appearance: 1 | parameter: <longname: live.dial[1] | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0> | varname: live.dial[1]
+[live.dial] appearance: 1 | parameter: <longname: live.dial | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 [button] presentation: 1 | presentation_rect: [265, 26, 24, 24]
-[bpatcher MyAbstraction.maxpat] offset: [-29, -19]
+[bpatcher MyAbstraction.maxpat] offset: [-4, -12]
 [comment A comment] 
 [live.comment A live.comment] 
 [midiout] fontname: Arial Bold | fontsize: 10.0
