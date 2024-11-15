@@ -1,5 +1,5 @@
 from freezing_utils import *
-from get_frozen_stats import get_frozen_stats
+from get_frozen_stats import get_frozen_stats, get_used_files
 
 
 def print_frozen_device(data: bytes) -> str:
@@ -19,9 +19,21 @@ def print_frozen_device(data: bytes) -> str:
 
     footer_entries = parse_footer(footer_data[8:])
     device_entries = get_device_entries(data, footer_entries)
+    used_files = get_used_files(device_entries)
+
+    i = 0
     for entry in device_entries:
-        if isinstance(entry["description"], str):
-            frozen_string += entry["description"] + "\n"
+        description = entry["description"]
+        if isinstance(description, str):
+            file_name = str(entry["file_name"])
+            if i == 0:
+                frozen_string += f"{description} <= Device \n"
+            else:
+                if file_name in used_files:
+                    frozen_string += f"{description}, {used_files[file_name]} instance{'s' if used_files[file_name] > 1 else ''}\n"
+                else:
+                    frozen_string += f"{description}, NOT FOUND IN PATCH\n"
+        i += 1
 
     [object_count_total, line_count_total, object_count_unique, line_count_unique] = (
         get_frozen_stats(device_entries)

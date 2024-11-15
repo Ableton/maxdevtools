@@ -1,6 +1,15 @@
 from freezing_utils import get_patcher_dict
 
 
+class Processor:
+    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
+        """Processes patchers."""
+
+    def get_results(self):
+        """Returns the current results."""
+        return None
+
+
 def process_patch(patcher, abstraction_entries: list[dict], processor: Processor):
     process_patch_recursive(patcher, abstraction_entries, processor, 1, "")
 
@@ -99,12 +108,3 @@ def get_abstraction_name(box, abstraction_entries: list[dict]):
             )
 
     return None
-
-
-class Processor:
-    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
-        """Processes patchers."""
-
-    def get_results(self):
-        """Returns the current results."""
-        return None

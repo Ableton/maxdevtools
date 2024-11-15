@@ -2,14 +2,14 @@ MIDI Effect Device
 -------------------
 Device is frozen
 ----- Contents -----
-Test.amxd: 24675 bytes, modified at 2024/10/21 12:19:47 UTC
-ParamAbstraction.maxpat: 1570 bytes, modified at 2024/05/24 13:59:36 UTC
-MyAbstraction.maxpat: 2015 bytes, modified at 2024/10/21 12:18:20 UTC
-AbstractionWithParameter.maxpat: 1569 bytes, modified at 2024/05/24 13:59:36 UTC
-hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC
-beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC
-fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC
-collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC
+Test.amxd: 24675 bytes, modified at 2024/10/21 12:19:47 UTC <= Device 
+ParamAbstraction.maxpat: 1570 bytes, modified at 2024/05/24 13:59:36 UTC, 2 instances
+MyAbstraction.maxpat: 2015 bytes, modified at 2024/10/21 12:18:20 UTC, 6 instances
+AbstractionWithParameter.maxpat: 1569 bytes, modified at 2024/05/24 13:59:36 UTC, 2 instances
+hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
+beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
+fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC, 1 instance
+collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC, NOT FOUND IN PATCH
 
 Total - Counting every abstraction instance - Indicates loading time
     Object instances: 64
