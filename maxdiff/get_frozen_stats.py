@@ -1,5 +1,4 @@
-import json
-from freezing_utils import device_entry_with_data
+from freezing_utils import device_entry_with_data, get_patcher_dict
 
 
 def get_frozen_stats(entries: list[device_entry_with_data]):
@@ -127,45 +126,3 @@ def get_abstraction_name(box, abstraction_filenames: list[str]):
             )
 
     return None
-
-
-def get_patcher_dict(entry: device_entry_with_data):
-    """Returns the dict that represents the given patcher data.
-    Prints errors if parsing fails"""
-
-    if not "data" in entry:
-        return {}
-
-    patch_data = entry["data"]
-    if not isinstance(patch_data, bytes):
-        return {}
-
-    if not "file_name" in entry:
-        return {}
-
-    name = entry["file_name"]
-    if not isinstance(name, str):
-        return {}
-
-    device_data_text = ""
-    try:
-        if patch_data[len(patch_data) - 1] == 0:
-            device_data_text = patch_data[: len(patch_data) - 1].decode("utf-8")
-        else:
-            device_data_text = patch_data.decode("utf-8")
-    except Exception as e:
-        print(f"Error getting patch data as text for entry {name}: {e}")
-        return {}
-
-    try:
-        patcher_dict = json.loads(device_data_text)
-    except ValueError as e:
-        print(f"Error parsing device patch data as json for entry {name}: {e}")
-        return {}
-
-    try:
-        patcher = patcher_dict["patcher"]
-        return patcher
-    except:
-        print(f"Content of entry {name} does not seem to be a patcher")
-        return {}
