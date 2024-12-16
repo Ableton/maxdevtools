@@ -18,11 +18,33 @@ Removing the comments from the new MIDI Effect:
 
 For `.amxd` files:
 * The scripts will also tell you what device type it is. 
-* If a device is frozen, you will see an overview of the content frozen into the deivce. NOTE: We recommend never to commit frozen devices to a git repository, instead to include the dependencies as separate files.
+* If a device is frozen, you will see an overview and statistics of the content frozen into the device. NOTE: We recommend never to commit frozen devices to a git repository, instead to include the dependencies as separate files.
 
 ### Why?
 
 Readable diffs are very useful for patch code review, or for a sanity check before committing (did I really change nothing else expect removing all my debug messages and prints?).
+
+### Using the frozen device statistics
+
+For frozen devices, `maxdiff` reports statistics. This feature can compared to [`git diff --stat`](https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---statltwidthgtltname-widthgtltcountgt) to indicate the amount of change in a commit.
+
+Currently, it reports the number of object instances and connections of a device in two different ways:
+
+* Total - Counting every abstraction instance - Indicates loading time
+  * This recursively counts the contents of all subpatchers and abstraction instances
+* Unique - Counting abstractions once - Indicates maintainability
+  * This counts the contents once of every dependency frozen into the device.
+
+Apart from that it reports the amount of times dependencies are used.
+
+We typically don't commit frozen devices to a repo, so the typical way to use this feature is:
+
+1. Commit the device and its dependencies in **un**frozen state.
+2. Temporarily freeze the device.
+3. Run `python3 ./maxdiff/amxd_textconv.py <path/to/device.amxd>` to get the statistics or view the file in your git client.
+4. Discard the freezing.
+
+The reason this only works with frozen devices is that frozen devices unambiguously capture all dependencies.
 
 ### What does not work
 
