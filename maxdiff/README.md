@@ -68,9 +68,9 @@ brew install python
 
 1. In a `.gitattributes` file in the root of your repository, apply diff attributes for `.maxpat`, `.amxd` and `.als` files:
 ```text
-*.maxpat              text diff=maxpat
-*.amxd                binary diff=amxd
-*.als                 binary diff=als
+*.maxpat              diff=maxpat
+*.amxd                diff=amxd
+*.als                 diff=als
 ```
 
 2. To make the repository use the custom text converter scripts, add them to your local git configuration: in your `.git` folder, you'll find the `config` file. Assuming this repository is checked out in your home folder, you can add these lines:
