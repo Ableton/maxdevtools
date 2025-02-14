@@ -1,6 +1,6 @@
 """
-Module that shares a function to gracefully handle printing unicode characters 
-if the user has the PYTHONIOENCODING environment vairable set to 'ascii'. 
+Module that shares a function to gracefully handle printing unicode characters
+if the user has the PYTHONIOENCODING environment vairable set to 'ascii'.
 In that case, replace any characters that can't be encoded with ?.
 """
 
