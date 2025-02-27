@@ -274,6 +274,59 @@ If you find that your device takes up too much horizontal space to your liking, 
 
 For each of these cited example devices, you can open the Max for Live Editor to see how this has been implemented.
 
+### Custom Device Width
+
+There are two ways to set a device to load with a custom width:
+
+* Using **Fixed Initial Window Location**
+	* Open the device for editing.
+	* In Max, go to the [Patcher Inspector](https://docs.cycling74.com/userguide/inspector/#the-patcher-inspector)
+	* Find the Fixed Initial Window Location (openrect) property, for which the value is an array of four numbers.
+	* For the third number, add the custom width of your device in pixels.
+	* Save the device.
+
+* Using **Set Device Width** 
+	* Open the device for editing.
+	* Make the patcher window width the same as the device's initial width.
+	* In the menu go to View and choose [Set Device Width](https://docs.cycling74.com/userguide/m4l/live_userinterfaces/#defining-a-fixed-device-width).
+	* Save the device.
+
+	The patch below can help you set a device's patcher window to an exact width:
+
+	```
+	<pre><code>
+	----------begin_max5_patcher----------
+	1082.3ocyXssiaaCD8Y6uhAJOztntFhT2aep.IEn.EEHHAoOTrXgrDqMSsHE
+	jnVamf7uGdSar2U1VxVNn6BHYRQxgmyYlQC0mmNwYAeKo1A9E3efIS97zISz
+	co5Xhs8DmhzsYqSq0CyIiWTPXBmYlmIHaE598tC9CFHVQ.4ialAK4ffCefR1
+	.orbHaEmWSf2QDvqIORyHveSyEqlolACpSejnmat9YyaW80TFIi2vzl.a6rr
+	hTK2AoBJm8vAiv2NBVSAuQrlHzaY214kJxVQYKenhjILP1Kbt6L.izWwwpaA
+	34tv81ornYwh0D0XQ1dn4ZzxW7weFgb9l8nrVygNXt0zb87cUc9koSUWlckT
+	86IEk7pzJ55cPFubmj4n0fFdJNeGuoxRjpl0RJ+aTKTS+jt6TntjjQ+WZFrQ
+	oDxqhURVCZpkbjdF5UjT8C0vuS2Rxk5KUPSWKUNVNeC7m7LsF.+HujvTj5cP
+	Yk72UhccqfCWeh72Sf7vpagt6IP6KGtcKGW.wunQH3LmN2sniuaQnH0FD4pu
+	g8au9zt0rLhckDyDbVjxV5zEXhcdxLUoEDAo5ABK05K5NV37XNX36feqrT5c
+	swnzJeFmyF8gGp5h781iuPdQufvNY7W3no2LxF4B9BZP.Kf0c6EfOWNEjqQ9
+	SlGnRsbVmfYfSmNBAN2ZwFcG7FlzACn1vaahBcVAmAGw5GuulFFOLM0e7zzl
+	hEjpAqd3Dq7YdYfq4MCmR9TR2QiiweWhiOh+6mVC0qURI9BchwlDuAA8iE5j
+	APnt0T73gyeR5mkL3r0XjFidQI5aImGiTUdtNgn6sGh3.2g+BIS32X.Q2jaM
+	DKSy9OvU++kHmQ5hC7QlzOg34I6+WD9rNvcC63Ngs+3A6FVKvGbPpAx3DstF
+	F0O0c1oD4Hm++lRxh1P2qOkja3n4LWPpqSWRdAPsUNQ1RxFrqrsBBS0QQ8PW
+	OBJ8t4grUDYk+4cUl3PiaCL0KzdTrK.s3Qy28LZ5R4ReIHs83AFcMw8BQZR7
+	sVVUGmzd1uKs52XbeyIcznzjvSd7Z0mLvtDu5uTKxA6Zv4WUWd0aUWktnldf
+	62ijz1Te9zm88OzKhp+CYtZ4wpyZMoszb.8zNOmTKnL8wh1aLJPHyseemhSe
+	MTrYMNsghGACoChNqoBNXLEz7Rt7MJVRLFoNviehmst+m2v7a+f1eek63fdr
+	e0IBuZtA2KKkX7ItRUHp21Zu.qpboi+Q+RS823I8x3J2M7UBzjd4XOFQPsKx
+	oAk5jJWeLjdUPmk.CGEa41awx6p8Ji6ksviRdnn9vgOC8iVDPTuI0NLN56Ax
+	0FGM9FuWgIs7yUZKuKK327Z6zxxGIU01QqshrzlOx0rP7LcSJyzLT2rh7Hsc
+	7A5dRqjEuHjUtzTo2YNaCMepBmBtjOYMTKkJwmzj5xlXoxhCkGXyLAU0US+x
+	zuxyeimO
+	-----------end_max5_patcher-----------
+	</code></pre>
+	```
+
+When your device has a dynamic width, for example when using a fold-out view, make sure that the initial device width matches the initial state of the device, to prevent a quick size flash upon loading the device.
+
 ### `[live.*]` Objects
 
 There are several settings in the Object Inspector that we recommend for best use of the **`[live.*]` UI objects**.
@@ -448,6 +501,7 @@ Here is a checklist to recap the topics of this guide that can be tested, which 
 - [ ] Font consistency: All UI fonts are set to Live's font.
 - [ ] Tab stops: Comments don't include any tab stops. The result will look different per OS.
 - [ ] Device width: The device does not take up too much of the horizontal space in the Device view.
+- [ ] Device width: If the device can dynamically change its size, make sure the device's custom width setting matches its initial width.
 
 **Parameters**
 
