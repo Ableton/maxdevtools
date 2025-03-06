@@ -78,6 +78,7 @@ def print_patcher_summary_recursive(
         "dependency_cache",  # treated separately
         "project",  # treated separately
         "styles",  # treated separately
+        "originid",  # invalid Max 9 property
     ]
 
     properties = get_properties_to_print(
