@@ -165,6 +165,6 @@ appversion: 9.0.7-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 [button] (0) => (0) [t 3] | order: 1
 [t 2] (0) => (0) [print]
 [message read collContent.txt] (0) => (0) [coll]
-[loadbang] (0) => (0) [message read collContent.txt] | midpoints: [685.5, 84.0, 638.5, 84.0]
+[loadbang] (0) => (0) [message read collContent.txt]
 [t 1] (0) => (0) [print]
 [t 3] (0) => (0) [print]
