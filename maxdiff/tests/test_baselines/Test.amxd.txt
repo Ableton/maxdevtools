@@ -39,7 +39,7 @@ project:
 			collContent.txt
 
 ----------- patcher -----------
-appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | platform_compatibility: 0 | autosave: 0
+appversion: 9.0.7-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | external_mpe_tuning_enabled: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [comment NOTE: after any changes to this device, also update FrozenTest.amxd] 
 [poly~ MyAbstraction] 
@@ -50,7 +50,7 @@ appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 [coll] 
 [p ImplicitDependencies] varname: ImplicitDependencies
 	----------- patcher -----------
-	appversion: 8.6.4-x64-1 | rect: [60, 130, 639, 710]
+	appversion: 9.0.7-x64-1 | rect: [60, 130, 639, 710]
 	----------- objects -----------
 	[js TestScript] filename: TestScript | parameter_enable: 0
 	[comment We would expect implicit dependencies for these but they don't seem to be added.] bubble: 1 | bubbleside: 2 | linecount: 2
@@ -68,7 +68,7 @@ appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 	[buffer~ test shakerkicksnare.aif] 
 	[gen~ @gen times3.gendsp] 
 	[sfplay~ @audiofile shakerkicksnare.aif] 
-	[node.script my-maxnode-basic.js] autostart: 0 | defer: 0 | watch: 0
+	[node.script my-maxnode-basic.js] autostart: 0 | defer: 0 | watch: 0 | textfile: {'filename': 'my-maxnode-basic.js', 'flags': 0, 'embed': 0, 'autowatch': 1}
 	[comment JSUI using script file] bubble: 1
 	[jsui] filename: VisibleBang.js
 	[live.menu] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <enum: [one, two, three] | longname: live.menu | mmax: 2 | modmode: 0 | shortname: live.menu | type: 2> | usepicture: 1 | usesvgviewbox: 1
@@ -83,7 +83,7 @@ appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 	[message read myTestTable] (0) => (0) [table myTestTable]
 [bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat] embed: 1
 	----------- patcher -----------
-	appversion: 8.6.4-x64-1 | rect: [927, 431, 640, 480]
+	appversion: 9.0.7-x64-1 | rect: [927, 431, 640, 480]
 	----------- objects -----------
 	[live.comment Embedded] 
 	[live.numbox] parameter: <longname: EmbeddedParam | modmode: 3 | shortname: Embedded | type: 0 | unitstyle: 0>
@@ -97,7 +97,7 @@ appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 [button] 
 [gen @t exponent] 
 	----------- patcher -----------
-	appversion: 8.6.4-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
+	appversion: 9.0.7-x64-1 | classnamespace: dsp.gen | rect: [84, 144, 653, 641]
 	----------- objects -----------
 	[codebox] 
 		//============================================================
@@ -140,7 +140,7 @@ appversion: 8.6.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] 
 [coll @embed 1] coll_data: {'count': 2, 'data': [{'key': 0, 'value': ['test']}, {'key': 1, 'value': ['another', 'test']}]} | embed: 1 | precision: 6
 [p MySubpatcher] 
 	----------- patcher -----------
-	appversion: 8.6.4-x64-1 | rect: [805, 282, 271, 250]
+	appversion: 9.0.7-x64-1 | rect: [805, 282, 271, 250]
 	----------- objects -----------
 	[live.dial] parameter: <longname: In a subpatcher | modmode: 0 | shortname: live.dial | type: 0 | unitstyle: 0>
 	[t b b] 

@@ -110,7 +110,7 @@ def print_patcher_summary_recursive(
         "maxclass",  # used in box name
         "text",  # shown in box name
         "id",  # used only for lines
-        "patching_rect",  # different every time
+        "patching_rect",  # not relevant for patch diffing (event ordering is shown with "order" property")
         "numinlets",  # cached from inlet objects
         "numoutlets",  # cached from outlet objects
         "outlettype",  # cached from outlet objects
@@ -153,6 +153,10 @@ def print_patcher_summary_recursive(
 
     #### patch cords ####
 
+    skip_line_properties = [
+        "midpoints",  # not relevant for patch diffing (event ordering is captured with "order" property")
+    ]
+
     if len(patcher["lines"]) == 0:
         return summary_string
 
@@ -170,6 +174,8 @@ def print_patcher_summary_recursive(
         for key, val in line.items():
             if key == "patchline":
                 for key2, val2 in val.items():
+                    if key2 in skip_line_properties:
+                        continue
                     if key2 == "source":
                         from_name = f"[{ids_to_names[val2[0]]}]"
                         from_outlet = f"({val2[1]})"
