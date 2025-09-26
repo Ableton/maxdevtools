@@ -157,6 +157,14 @@ The **Custom** Unit Style allows adding a custom unit in the **Custom Units** fi
 
 > If you don't want a parameter's automation lane to show as a grid but you do want its value to display as an integer without decimals _and_ you want to use a percentage sign as its unit, it is possible to set a parameter's **Type** to **Float** while setting its **Unit Style** to **Custom** and its **Custom Units** to `"%.0f %"`.
 
+### Modulation
+
+For Clips in Session Mode, in the Clip View with the Envelopes section active, Automation movements can be drawn in the clip. If a parameter has a modulation mode configured it can additionally be controlled with Modulation. Clip Modulation works both in Session Mode and in Arrangement Mode. Note that in Arrangement Mode, only devices with one or more modulatable parameters will show up in the Clip's Envelopes section. 
+
+By default, modulation is disabled for parameter objects in Max. However, to be feature complete you will want to choose a modulation mode for your parameters, depending on their Parameter Type and their role in your device. 
+
+For parameter objects, you can set the **Clip Modulation Mode** in the Inspector under the **Parameter** properties. At Ableton, we usually choose **Bipolar** mode for Float type parameters and **Absolute** mode for Int type parameters, but you can also choose **Unipolar** or **Additive** modes. For more about modulation modes and how they behave exactly, see [Parameter Modulation](https://docs.cycling74.com/userguide/m4l/live_parameters/#parameter-modulation).
+
 ### Saving Parameters
 
 Usually, users of Max for Live devices expect all devices parameters to be **stored and recalled correctly** with the Live Set or Live preset, otherwise the device is of limited use when customized.
@@ -512,7 +520,7 @@ Note: many of these things can be checked and changed in the View > Parameters w
 - [ ] Automation: The parameter dropdown for a device contains all intended automatable parameters.
 - [ ] Value editing: Parameter Types and Units correspond to the kind of data being represented, taking into account that using the Int type gives users a tall grid automation lane.
 - [ ] Enum labels: Unit / labels of automation for Enum parameters don't have generic values ("val1"/"val2" for buttons).
-- [ ] Modulation: All parameters have modulation active.
+- [ ] Modulation: All parameters have a modulation mode set. Bipolar for Float, Absolute for Int, or different if you prefer.
 - [ ] Defaults: All default parameter values are correct, i.e. the device works well after newly instantiating it.
 - [ ] Save and recall: All parameters are recalled correctly when opening a Live Set that contains the device with non-default values for all parameters.
 - [ ] Push: The parameters show up correctly on Push.
