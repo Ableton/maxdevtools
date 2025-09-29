@@ -159,7 +159,7 @@ The **Custom** Unit Style allows adding a custom unit in the **Custom Units** fi
 
 ### Modulation
 
-For Clips in Session Mode, in the Clip View with the Envelopes section active, Automation movements can be drawn in the clip. If a parameter has a modulation mode configured it can additionally be controlled with Modulation. Clip Modulation works both in Session Mode and in Arrangement Mode. Note that in Arrangement Mode, only devices with one or more modulatable parameters will show up in the Clip's Envelopes section. 
+For Clips in Session View, in the Clip View with the Envelopes section active, Automation movements can be drawn in the clip. If a parameter has a modulation mode configured it can additionally be controlled with Modulation. Clip Modulation works both in Session View and in Arrangement View. Note that in Arrangement View, only devices with one or more modulatable parameters will show up in the Clip's Envelopes section.
 
 By default, modulation is disabled for parameter objects in Max. However, to be feature complete you will want to choose a modulation mode for your parameters, depending on their Parameter Type and their role in your device. 
 
