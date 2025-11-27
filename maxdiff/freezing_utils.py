@@ -88,7 +88,7 @@ def get_patcher_dict(entry: device_entry_with_data):
     try:
         device_data_text = patch_data.decode("utf-8")
 
-        # Past Max versions could write patcher data with a trailing 0 
+        # Past Max versions could write patcher data with a trailing 0
         # or with trailing garbage.
         device_data_text = strip_trailing_nonjson(device_data_text)
     except Exception as e:
