@@ -86,10 +86,11 @@ def get_patcher_dict(entry: device_entry_with_data):
 
     device_data_text = ""
     try:
-        if patch_data[len(patch_data) - 1] == 0:
-            device_data_text = patch_data[: len(patch_data) - 1].decode("utf-8")
-        else:
-            device_data_text = patch_data.decode("utf-8")
+        device_data_text = patch_data.decode("utf-8")
+
+        # Past Max versions could write patcher data with a trailing 0 
+        # or with trailing garbage.
+        device_data_text = strip_trailing_nonjson(device_data_text)
     except Exception as e:
         print(f"Error getting patch data as text for entry {name}: {e}")
         return {}
@@ -106,3 +107,29 @@ def get_patcher_dict(entry: device_entry_with_data):
     except:
         print(f"Content of entry {name} does not seem to be a patcher")
         return {}
+
+
+def strip_trailing_nonjson(device_data_text: str) -> str:
+    """
+    This function returns (possibly trimmed) JSON text to pass to json.loads().
+    """
+    decoder = json.JSONDecoder()
+    try:
+        _, end = decoder.raw_decode(device_data_text)
+        return device_data_text[:end].rstrip()
+    except json.JSONDecodeError:
+        pass
+
+    # find all candidate closing positions for objects/arrays
+    closers = [i for i, ch in enumerate(device_data_text) if ch in ("}", "]")]
+    # try from last to first — prefer the longest valid prefix
+    for pos in reversed(closers):
+        candidate = device_data_text[: pos + 1]
+        try:
+            json.loads(candidate)
+            return candidate
+        except Exception:
+            continue
+
+    # nothing worked; return original so caller can log/handle the parse error
+    return device_data_text

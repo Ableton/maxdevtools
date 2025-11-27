@@ -14,6 +14,7 @@ def run():
     rewrite_file("Test.amxd")
     rewrite_file("EncryptedTest.amxd")
     rewrite_file("FrozenTest.amxd")
+    rewrite_file("WithGarbage.amxd")
     rewrite_file("Test.maxpat")
     rewrite_file("Test Project/Zipped.als")
     rewrite_file("Test Project/Test.als")

@@ -1,0 +1,12 @@
+Audio Effect Device
+-------------------
+Device is frozen
+----- Contents -----
+Livesync Leader.amxd: 88337 bytes, modified at 2020/06/14 09:47:41 UTC <= Device 
+
+Total - Counting every abstraction instance - Indicates loading time
+    Object instances: 130
+    Connections: 151
+Unique - Counting abstractions once - Indicates maintainability
+    Object instances: 130
+    Connections: 151

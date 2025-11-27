@@ -102,6 +102,16 @@ class TestStringMethods(unittest.TestCase):
             actual = parse(test_path)
             self.assertEqual(expected, actual)
 
+    def test_parse_with_garbage(self):
+        self.maxDiff = None
+
+        expected_path, test_path = get_test_path_files("WithGarbage.amxd")
+
+        with open(expected_path, mode="r") as expected_file:
+            expected = expected_file.read()
+            actual = parse(test_path)
+            self.assertEqual(expected, actual)
+
 
 def get_test_path_files(file_name):
     expected = get_test_path_file(f"test_baselines/{file_name}.txt")
