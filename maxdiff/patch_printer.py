@@ -374,50 +374,58 @@ def get_parameters_string_block(patcher: dict) -> str:
     """
     parameters = patcher["parameters"]
     parameters_string = ""
-    for key, value in parameters.items():
-        if key in ["parameter_overrides", "parameterbanks"]:
+    for bankindex, bank in parameters.items():
+        if bankindex in ["parameter_overrides", "parameterbanks"]:
             continue
 
-        parsed_key = key
-        if key.startswith("obj"):
-            id_tokens = key.split("::")
+        parsed_key = bankindex
+        if bankindex.startswith("obj"):
+            id_tokens = bankindex.split("::")
             parsed_key = get_object_names_from_ids_recursive(id_tokens, patcher["boxes"])
 
-        parameters_string += f"\t{parsed_key}: {value}"
+        parameters_string += f"\t{parsed_key}: {bank}"
 
         if (
             "parameter_overrides" in parameters
-            and key in parameters["parameter_overrides"]
+            and bankindex in parameters["parameter_overrides"]
         ):
-            override = parameters["parameter_overrides"][key]
+            override = parameters["parameter_overrides"][bankindex]
             override_print = [
                 override.get("parameter_longname", "-"),
                 override.get("parameter_shortname", "-"),
                 str(override.get("parameter_linknames", "-")),
             ]
 
-            for key2, value2 in override.items():
-                if key2 in [
+            for key, value in override.items():
+                if key in [
                     "parameter_longname",
                     "parameter_shortname",
                     "parameter_linknames",
                 ]:
                     continue
-                override_print.append(f"{key2}: {value2}")
+                override_print.append(f"{key}: {value}")
 
             parameters_string += f" > override > {str(override_print)}"
         parameters_string += "\n"
 
     if "parameterbanks" in parameters:
         parameters_string += "banks:\n"
-        for key, value in parameters["parameterbanks"].items():
-            parameters_string += (
-                f"\t{value['index']}"
-                + (f" ({value['name']})" if value["name"] != "" else "")
-                + f": {value['parameters']}"
-            )
+        for bankindex, bank in parameters["parameterbanks"].items():
+            for key, value in bank.items():
+                parameters_string += "\t"
+                if key == "index":
+                    parameters_string += f"{value}:"
+                elif key == "name":
+                    parameters_string += f"({value})" if value != "" else ""
+                elif key == "parameters":
+                    parameters_string += f"encoders: {bank['parameters']}"
+                elif key == "buttons":
+                    parameters_string += f"buttons: {bank['buttons']}"
+                else:
+                    parameters_string += f"{value}"
+            parameters_string += "\n"
 
-    return f"parameters:\n{parameters_string}\n"
+    return f"parameters:\n{parameters_string}"
 
 
 def get_dependency_cache_string_block(dependency_cache: list):
