@@ -14,7 +14,7 @@ parameters:
 	[live.dial]: ['live.dial[1]', 'live.dial', 0]
 	inherited_shortname: 1
 banks:
-	0 (MyBank): ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']
+	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
 dependency_cache:
 	{'name': 'AbstractionWithParameter.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'MyAbstraction.maxpat', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
@@ -22,10 +22,12 @@ dependency_cache:
 	{'name': 'TestScript.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'VisibleBang.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'beat-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
+	{'name': 'collContent.txt', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'fpic.png', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'PNG', 'implicit': 1}
 	{'name': 'hz-icon.svg', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'svg', 'implicit': 1}
 	{'name': 'my-maxnode-basic.js', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
 	{'name': 'myTestTable', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'TEXT', 'implicit': 1}
+	{'name': 'mystorage.json', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'JSON', 'implicit': 1}
 	{'name': 'myxfade.genjit', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'gJIT', 'implicit': 1}
 	{'name': 'shakerkicksnare.aif', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'AIFF', 'implicit': 1}
 	{'name': 'times3.gendsp', 'bootpath': '~/maxdevtools/maxdiff/tests/test_files', 'type': 'gDSP', 'implicit': 1}
@@ -69,8 +71,8 @@ appversion: 9.0.10-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169]
 	[node.script my-maxnode-basic.js] autostart: 0 | defer: 0 | watch: 0 | textfile: {'filename': 'my-maxnode-basic.js', 'flags': 0, 'embed': 0, 'autowatch': 1}
 	[comment JSUI using script file] bubble: 1
 	[jsui] filename: VisibleBang.js
-	[live.menu] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <enum: [one, two, three] | longname: live.menu | mmax: 2 | modmode: 0 | shortname: live.menu | type: 2> | usepicture: 1 | usesvgviewbox: 1
-	[live.text] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <enum: [val1, val2] | longname: live.text | mmax: 1 | modmode: 0 | shortname: live.text | type: 2> | usepicture: 1 | usesvgviewbox: 1
+	[live.menu] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <button_mode: Cycle | enum: [one, two, three] | longname: live.menu | mmax: 2 | modmode: 0 | shortname: live.menu | type: 2> | usepicture: 1 | usesvgviewbox: 1
+	[live.text] pictures: [hz-icon.svg, beat-icon.svg] | remapsvgcolors: 1 | parameter: <button_mode: Momentary | enum: [val1, val2] | longname: live.text | mmax: 1 | modmode: 0 | shortname: live.text | type: 2> | usepicture: 1 | usesvgviewbox: 1
 	[playlist~] basictuning: 440 | clipheight: 28.0 | data: {'clips': [{'absolutepath': 'shakerkicksnare.aif', 'filename': 'shakerkicksnare.aif', 'filekind': 'audiofile', 'id': 'u400003311', 'loop': 1, 'content_state': {'loop': 1}}]} | mode: basic | originallength: [0, ticks] | originaltempo: 120.0 | quality: basic
 	[pictslider] bkgndpict: fpic.png | clickedimage: 0 | knobpict: fpic.png
 	[pictctrl] name: fpic.png
