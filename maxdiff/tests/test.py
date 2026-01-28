@@ -1,123 +1,42 @@
-# Tests if the content of the test scripts is equal to the result of the conversion scripts.
+# Tests if the contents of the stored textual representations (the baselines)
+# are still equal to the results of the maxdiff conversion script.
 # If not, displays the diff between the two.
 
-import sys
 import unittest
-from io import StringIO
 from unittest.mock import patch
 import os.path
 from test_parse import parse
 
 
 class TestStringMethods(unittest.TestCase):
-    def test_parse_device(self):
+    def test_all_parsing(self):
         self.maxDiff = None
 
-        expected_path, test_path = get_test_path_files("EncryptedTest.amxd")
+        files = [
+            "Test.amxd",
+            "EncryptedTest.amxd",
+            "FrozenTest.amxd",
+            "Test.maxpat",
+            "PatcherWithLocalStyles.maxpat",
+            "/Test Project/Zipped.als",
+            "/Test Project/Test.als",
+            "MalFormedJsonTest.maxpat",
+            "ConflictMarkerTest.maxpat",
+            "WithGarbage.amxd",
+        ]
+
+        for file_name in files:
+            with self.subTest(file=file_name):
+                self.assertDiffsEqual(file_name)
+
+    def assertDiffsEqual(self, file_name):
+        test_path = get_test_path_file(f"test_files/{file_name}")
+        expected_path = get_test_path_file(f"test_baselines/{file_name}.txt")
 
         with open(expected_path, mode="r") as expected_file:
             expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_encrypted_device(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("Test.amxd")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_frozen_device(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("FrozenTest.amxd")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_maxpat(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("Test.maxpat")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-
-            self.assertEqual(expected, actual)
-
-    def test_parse_maxpat_with_styles(self):
-        self.maxDiff = None
-        expected_path, test_path = get_test_path_files("PatcherWithLocalStyles.maxpat")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-
-            self.assertEqual(expected, actual)
-
-    def test_parse_als_zipped(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("/Test Project/Zipped.als")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_als_unzipped(self):
-        self.maxDiff = None
-
-        # result of an unzipped set should be same as a zipped set
-        expected_path, test_path = get_test_path_files("/Test Project/Test.als")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_malformed_maxpat(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("MalFormedJsonTest.maxpat")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_maxpat_with_merge_conficts(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("ConflictMarkerTest.maxpat")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-    def test_parse_with_garbage(self):
-        self.maxDiff = None
-
-        expected_path, test_path = get_test_path_files("WithGarbage.amxd")
-
-        with open(expected_path, mode="r") as expected_file:
-            expected = expected_file.read()
-            actual = parse(test_path)
-            self.assertEqual(expected, actual)
-
-
-def get_test_path_files(file_name):
-    expected = get_test_path_file(f"test_baselines/{file_name}.txt")
-    test = get_test_path_file(f"test_files/{file_name}")
-
-    return (expected, test)
+        actual = parse(test_path)
+        self.assertEqual(expected, actual)
 
 
 def get_test_path_file(file_name):
