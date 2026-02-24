@@ -13,6 +13,8 @@
         "boxes": [
             {
                 "box": {
+                    "annotation": "Just another live.dial. Let's test if we can override this.",
+                    "annotation_name": "Just a live.dial",
                     "id": "obj-1",
                     "maxclass": "live.dial",
                     "numinlets": 1,

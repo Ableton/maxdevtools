@@ -255,6 +255,66 @@ def get_object_names_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
     return name
 
 
+def get_param_properties_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
+    """Travels an object id hierarchy string in the form of "obj-n::obj-m:: etc" and finds properties
+    contained in valueof in saved_attribute_attributes.
+
+    If an object id cannot be found in the patch, for instance because it refers to an object
+    inside an abstraction, returns an empty object.
+    """
+
+    # every entry of "boxes_parent" has a single item "box"
+    boxes = list(map(lambda val: val["box"], boxes_parent))
+
+    for box in boxes:
+        if "id" in box and id_hierarchy[0] == box["id"]:
+            if len(id_hierarchy) > 1:
+                if "patcher" in box:
+                    subpatcher_boxes = box["patcher"]["boxes"]
+                    return get_param_properties_from_ids_recursive(
+                        id_hierarchy[1:], subpatcher_boxes
+                    )
+                else:
+                    return {}  # can't traverse into abstraction
+            else:
+                saved_attrs = box.get("saved_attribute_attributes", {})
+                return saved_attrs.get("valueof", {})
+
+    return {}  # object not found
+
+
+def get_param_annotations_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
+    """Travels an object id hierarchy string in the form of "obj-n::obj-m:: etc" and finds the
+    parameter's annotations saved as box properties
+
+    If an object id cannot be found in the patch, for instance because it refers to an object
+    inside an abstraction, returns an empty object.
+    """
+
+    # every entry of "boxes_parent" has a single item "box"
+    boxes = list(map(lambda val: val["box"], boxes_parent))
+
+    for box in boxes:
+        if "id" in box and id_hierarchy[0] == box["id"]:
+            if len(id_hierarchy) > 1:
+                if "patcher" in box:
+                    subpatcher_boxes = box["patcher"]["boxes"]
+                    return get_param_annotations_from_ids_recursive(
+                        id_hierarchy[1:], subpatcher_boxes
+                    )
+                else:
+                    return {}  # can't traverse into abstraction
+            else:
+                annotation = box.get("annotation", {})
+                annotation_name = box.get("annotation_name", {})
+                return {
+                    "annotation": annotation,
+                    "annotation_name": annotation_name,
+                }
+
+    return {}  # object not found
+
+
 def get_properties_to_print(
     box_or_patcher: dict, default: dict, skip_properties: list[str]
 ) -> dict:
@@ -381,33 +441,51 @@ def get_parameters_string_block(patcher: dict) -> str:
         if index in ["parameter_overrides", "parameterbanks"]:
             continue
 
-        object_names = index
         if index.startswith("obj"):
             id_tokens = index.split("::")
             object_names = get_object_names_from_ids_recursive(
                 id_tokens, patcher["boxes"]
             )
+            parameters_string += f"\t{object_names}: {item}"
 
-        parameters_string += f"\t{object_names}: {item}"
+            param_properties = get_param_properties_from_ids_recursive(
+                id_tokens, patcher["boxes"]
+            )
+            for key, value in param_properties.items():
+                key_text = (
+                    key[len("parameter_") :] if key.startswith("parameter_") else key
+                )
+                parameters_string += f"\n\t\t{key_text}: {value}"
+
+            param_annotations = get_param_annotations_from_ids_recursive(
+                id_tokens, patcher["boxes"]
+            )
+            if param_annotations != {}:
+                parameters_string += "\n\t\t____Info____"
+                parameters_string += f"\n\t\t{param_annotations['annotation_name'] if 'annotation_name' in param_annotations and param_annotations['annotation_name'] != {} else '<no info title>'}"
+                if (
+                    "annotation" in param_annotations
+                    and param_annotations["annotation"] != {}
+                ):
+                    value_text = "\n\t\t".join(
+                        str(param_annotations["annotation"]).splitlines()
+                    )
+                    parameters_string += f"\n\t\t{value_text}"
+                else:
+                    parameters_string += "\n\t\t<no info text>"
+        else:
+            parameters_string += f"\t{index}: {item}"
 
         if index in param_overrides:
             param_override = param_overrides[index]
-            override_print = [
-                param_override.get("parameter_longname", "-"),
-                param_override.get("parameter_shortname", "-"),
-                str(param_override.get("parameter_linknames", "-")),
-            ]
 
+            parameters_string += f"\n\toverrides:"
             for key, value in param_override.items():
-                if key in [
-                    "parameter_longname",
-                    "parameter_shortname",
-                    "parameter_linknames",
-                ]:
-                    continue
-                override_print.append(f"{key}: {value}")
+                key_text = (
+                    key[len("parameter_") :] if key.startswith("parameter_") else key
+                )
+                parameters_string += f"\n\t\t{key_text}: {value}"
 
-            parameters_string += f" > override > {str(override_print)}"
         parameters_string += "\n"
 
     if param_banks != {}:

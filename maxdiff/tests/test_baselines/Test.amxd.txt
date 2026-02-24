@@ -2,16 +2,90 @@ MIDI Effect Device
 -------------------
 parameters:
 	[p MySubpatcher]/[live.dial]: ['In a subpatcher', 'live.dial', 0]
+		longname: In a subpatcher
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
 	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['InsideBpatcher', 'live.dial', 0]
 	[AbstractionWithParameter]/[obj-1]: ['MyParameter', 'MyParameter', 0]
-	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0] > override > ['MyParameter[1]', '-', '-']
+	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0]
+	overrides:
+		longname: MyParameter[1]
 	[p ImplicitDependencies]/[live.tab]: ['Time Mode', 'Time Mode', 0]
+		enum: ['Free', 'Sync']
+		invisible: 2
+		linknames: 1
+		longname: Time Mode
+		mmax: 1
+		modmode: 0
+		shortname: Time Mode
+		type: 2
+		unitstyle: 9
+		____Info____
+		Time Mode
+		Toggles between Beat Sync and Free running (Hz).
 	[p ImplicitDependencies]/[live.text]: ['live.text', 'live.text', 0]
+		button_mode: Momentary
+		enum: ['val1', 'val2']
+		longname: live.text
+		mmax: 1
+		modmode: 0
+		shortname: live.text
+		type: 2
+		____Info____
+		<no info title>
+		<no info text>
 	[p ImplicitDependencies]/[live.menu]: ['live.menu', 'live.menu', 0]
-	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0] > override > ['OverruledParamLongName', 'OverruledParamShortName', '-']
+		button_mode: Cycle
+		enum: ['one', 'two', 'three']
+		longname: live.menu
+		mmax: 2
+		modmode: 0
+		shortname: live.menu
+		type: 2
+		____Info____
+		<no info title>
+		<no info text>
+	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0]
+	overrides:
+		invisible: 0
+		longname: OverruledParamLongName
+		modmode: 0
+		range: [0, 127]
+		shortname: OverruledParamShortName
+		type: 1
+		unitstyle: 0
 	[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat <embedded>]/[live.numbox]: ['EmbeddedParam', 'Embedded', 0]
+		longname: EmbeddedParam
+		modmode: 3
+		shortname: Embedded
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
 	[live.dial]: ['live.dial', 'live.dial', 0]
+		longname: live.dial
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
 	[live.dial]: ['live.dial[1]', 'live.dial', 0]
+		longname: live.dial[1]
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
 	inherited_shortname: 1
 banks:
 	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
