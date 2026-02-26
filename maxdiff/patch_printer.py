@@ -220,9 +220,7 @@ def get_box_text(box: dict) -> str:
     return boxtext
 
 
-def get_object_names_from_ids_recursive(
-    id_hierarchy: list, boxes_parent: list, indent: int = 0
-):
+def get_object_names_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
     """Translates an object id hierarchy string in the form of "obj-n::obj-m:: etc" to a string
     in the form of "<objectname1>/<objectname2/ etc", replacing the object ids with the textual
     representation of these objects.
@@ -234,27 +232,25 @@ def get_object_names_from_ids_recursive(
     # every entry of "boxes_parent" has a single item "box"
     boxes = list(map(lambda val: val["box"], boxes_parent))
 
-    id_to_check = id_hierarchy[0] if isinstance(id_hierarchy, list) else id_hierarchy
     name = ""
     for box in boxes:
         if "id" in box:
-            if id_to_check == box["id"]:
+            if id_hierarchy[0] == box["id"]:
                 name = get_box_text(box)
                 if "embed" in box and box["embed"] == 1:
                     name += " <embedded>"
                 name = f"[{name}]"
 
-                if isinstance(id_hierarchy, list) and len(id_hierarchy) > 1:
-                    id_hierarchy.pop(0)
+                if len(id_hierarchy) > 1:
                     if "patcher" in box:
                         subpatcher_boxes = box["patcher"]["boxes"]
-                        name += f"/{get_object_names_from_ids_recursive(id_hierarchy, subpatcher_boxes, indent + 1)}"
+                        name += f"/{get_object_names_from_ids_recursive(id_hierarchy[1:], subpatcher_boxes)}"
                     else:
-                        for id_level in id_hierarchy:
+                        for id_level in id_hierarchy[1:]:
                             name += f"/[{id_level}]"
 
     if name == "":
-        name = f"[{id_to_check}]"
+        name = f"[{id_hierarchy[0]}]"
 
     return name
 
@@ -279,7 +275,7 @@ def get_properties_to_print(
             continue
 
         if key == "saved_attribute_attributes":
-            # We take the attributes out or saved_attribute_attributes and present them as properties
+            # We take the attributes out of saved_attribute_attributes and present them as properties
             attributes = get_saved_attribute_attributes(value)
             attributes_to_print = get_properties_to_print(
                 attributes, default, skip_properties
@@ -291,7 +287,7 @@ def get_properties_to_print(
             continue
 
         if key == "saved_object_attributes":
-            # We take the attributes out or saved_object_attributes and present them as properties
+            # We take the attributes out of saved_object_attributes and present them as properties
             attributes = get_saved_object_attributes(value)
             attributes_to_print = get_properties_to_print(
                 attributes, default, skip_properties
@@ -373,30 +369,36 @@ def get_parameters_string_block(patcher: dict) -> str:
     Non-overridden parameter attributes are already shown with the parameter objects.
     """
     parameters = patcher["parameters"]
+
+    param_overrides = (
+        parameters["parameter_overrides"] if "parameter_overrides" in parameters else {}
+    )
+
+    param_banks = parameters["parameterbanks"] if "parameterbanks" in parameters else {}
+
     parameters_string = ""
-    for bankindex, bank in parameters.items():
-        if bankindex in ["parameter_overrides", "parameterbanks"]:
+    for index, item in parameters.items():
+        if index in ["parameter_overrides", "parameterbanks"]:
             continue
 
-        parsed_key = bankindex
-        if bankindex.startswith("obj"):
-            id_tokens = bankindex.split("::")
-            parsed_key = get_object_names_from_ids_recursive(id_tokens, patcher["boxes"])
+        object_names = index
+        if index.startswith("obj"):
+            id_tokens = index.split("::")
+            object_names = get_object_names_from_ids_recursive(
+                id_tokens, patcher["boxes"]
+            )
 
-        parameters_string += f"\t{parsed_key}: {bank}"
+        parameters_string += f"\t{object_names}: {item}"
 
-        if (
-            "parameter_overrides" in parameters
-            and bankindex in parameters["parameter_overrides"]
-        ):
-            override = parameters["parameter_overrides"][bankindex]
+        if index in param_overrides:
+            param_override = param_overrides[index]
             override_print = [
-                override.get("parameter_longname", "-"),
-                override.get("parameter_shortname", "-"),
-                str(override.get("parameter_linknames", "-")),
+                param_override.get("parameter_longname", "-"),
+                param_override.get("parameter_shortname", "-"),
+                str(param_override.get("parameter_linknames", "-")),
             ]
 
-            for key, value in override.items():
+            for key, value in param_override.items():
                 if key in [
                     "parameter_longname",
                     "parameter_shortname",
@@ -408,19 +410,19 @@ def get_parameters_string_block(patcher: dict) -> str:
             parameters_string += f" > override > {str(override_print)}"
         parameters_string += "\n"
 
-    if "parameterbanks" in parameters:
+    if param_banks != {}:
         parameters_string += "banks:\n"
-        for bankindex, bank in parameters["parameterbanks"].items():
-            for key, value in bank.items():
+        for index, item in param_banks.items():
+            for key, value in item.items():
                 parameters_string += "\t"
                 if key == "index":
                     parameters_string += f"{value}:"
                 elif key == "name":
                     parameters_string += f"({value})" if value != "" else ""
                 elif key == "parameters":
-                    parameters_string += f"encoders: {bank['parameters']}"
+                    parameters_string += f"encoders: {item['parameters']}"
                 elif key == "buttons":
-                    parameters_string += f"buttons: {bank['buttons']}"
+                    parameters_string += f"buttons: {item['buttons']}"
                 else:
                     parameters_string += f"{value}"
             parameters_string += "\n"
