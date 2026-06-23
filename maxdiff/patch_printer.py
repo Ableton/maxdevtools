@@ -255,12 +255,16 @@ def get_object_names_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
     return name
 
 
-def get_param_properties_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
+def get_param_properties_from_ids_recursive(
+    id_hierarchy: list, boxes_parent: list, bundled_patchers: dict = {}
+):
     """Travels an object id hierarchy string in the form of "obj-n::obj-m:: etc" and finds properties
     contained in valueof in saved_attribute_attributes.
 
     If an object id cannot be found in the patch, for instance because it refers to an object
     inside an abstraction, returns an empty object.
+    bundled_patchers maps abstraction filenames to their parsed patcher dicts, allowing traversal
+    into non-embedded bpatchers when the source files are available.
     """
 
     # every entry of "boxes_parent" has a single item "box"
@@ -272,9 +276,17 @@ def get_param_properties_from_ids_recursive(id_hierarchy: list, boxes_parent: li
                 if "patcher" in box:
                     subpatcher_boxes = box["patcher"]["boxes"]
                     return get_param_properties_from_ids_recursive(
-                        id_hierarchy[1:], subpatcher_boxes
+                        id_hierarchy[1:], subpatcher_boxes, bundled_patchers
                     )
                 else:
+                    abstraction_file = box.get("name") or (get_box_text(box) + ".maxpat")
+                    if bundled_patchers and abstraction_file in bundled_patchers:
+                        bundled_boxes = bundled_patchers[abstraction_file].get(
+                            "boxes", []
+                        )
+                        return get_param_properties_from_ids_recursive(
+                            id_hierarchy[1:], bundled_boxes, bundled_patchers
+                        )
                     return {}  # can't traverse into abstraction
             else:
                 saved_attrs = box.get("saved_attribute_attributes", {})
@@ -283,12 +295,16 @@ def get_param_properties_from_ids_recursive(id_hierarchy: list, boxes_parent: li
     return {}  # object not found
 
 
-def get_param_annotations_from_ids_recursive(id_hierarchy: list, boxes_parent: list):
+def get_param_annotations_from_ids_recursive(
+    id_hierarchy: list, boxes_parent: list, bundled_patchers: dict = {}
+):
     """Travels an object id hierarchy string in the form of "obj-n::obj-m:: etc" and finds the
     parameter's annotations saved as box properties
 
     If an object id cannot be found in the patch, for instance because it refers to an object
-    inside an abstraction, returns an empty object.
+    inside an abstraction, we look in the bundled_patchers dict (only available when parsing
+    a frozen device). This dict maps abstraction filenames to their parsed patcher dicts, allowing
+    traversal into external abstractions.
     """
 
     # every entry of "boxes_parent" has a single item "box"
@@ -300,10 +316,18 @@ def get_param_annotations_from_ids_recursive(id_hierarchy: list, boxes_parent: l
                 if "patcher" in box:
                     subpatcher_boxes = box["patcher"]["boxes"]
                     return get_param_annotations_from_ids_recursive(
-                        id_hierarchy[1:], subpatcher_boxes
+                        id_hierarchy[1:], subpatcher_boxes, bundled_patchers
                     )
                 else:
-                    return {}  # can't traverse into abstraction
+                    abstraction_file = box.get("name") or (get_box_text(box) + ".maxpat")
+                    if bundled_patchers and abstraction_file in bundled_patchers:
+                        bundled_boxes = bundled_patchers[abstraction_file].get(
+                            "boxes", []
+                        )
+                        return get_param_annotations_from_ids_recursive(
+                            id_hierarchy[1:], bundled_boxes, bundled_patchers
+                        )
+                    return {}  # abstraction file not found in available bundled_patchers
             else:
                 annotation = box.get("annotation", {})
                 annotation_name = box.get("annotation_name", {})
@@ -424,9 +448,11 @@ def get_saved_object_attributes(value: dict) -> dict:
     return result
 
 
-def get_parameters_string_block(patcher: dict) -> str:
+def get_parameters_string_block(patcher: dict, bundled_patchers: dict = {}) -> str:
     """Produce a string that lists overridden parameters in a patcher.
     Non-overridden parameter attributes are already shown with the parameter objects.
+    bundled_patchers maps abstraction filenames to their parsed patcher dicts; when provided,
+    properties and annotations for bpatcher parameters are resolved from the bundled files.
     """
     parameters = patcher["parameters"]
 
@@ -449,7 +475,7 @@ def get_parameters_string_block(patcher: dict) -> str:
             parameters_string += f"\t{object_names}: {item}"
 
             param_properties = get_param_properties_from_ids_recursive(
-                id_tokens, patcher["boxes"]
+                id_tokens, patcher["boxes"], bundled_patchers
             )
             for key, value in param_properties.items():
                 key_text = (
@@ -458,7 +484,7 @@ def get_parameters_string_block(patcher: dict) -> str:
                 parameters_string += f"\n\t\t{key_text}: {value}"
 
             param_annotations = get_param_annotations_from_ids_recursive(
-                id_tokens, patcher["boxes"]
+                id_tokens, patcher["boxes"], bundled_patchers
             )
             if param_annotations != {}:
                 parameters_string += "\n\t\t____Info____"

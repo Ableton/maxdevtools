@@ -2,6 +2,127 @@ MIDI Effect Device
 -------------------
 Device is frozen
 ----- Contents -----
+parameters:
+	[p MySubpatcher]/[live.dial]: ['In a subpatcher', 'live.dial', 0]
+		longname: In a subpatcher
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['InsideBpatcher', 'live.dial', 0]
+		longname: InsideBpatcher
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		Just a live.dial
+		Just another live.dial. Let's test if we can override this.
+	[AbstractionWithParameter]/[obj-1]: ['MyParameter', 'MyParameter', 0]
+		longname: MyParameter
+		modmode: 0
+		shortname: MyParameter
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	[AbstractionWithParameter]/[obj-1]: ['MyParameter[1]', 'MyParameter', 0]
+		longname: MyParameter
+		modmode: 0
+		shortname: MyParameter
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	overrides:
+		longname: MyParameter[1]
+	[p ImplicitDependencies]/[live.tab]: ['Time Mode', 'Time Mode', 0]
+		enum: ['Free', 'Sync']
+		invisible: 2
+		linknames: 1
+		longname: Time Mode
+		mmax: 1
+		modmode: 0
+		shortname: Time Mode
+		type: 2
+		unitstyle: 9
+		____Info____
+		Time Mode
+		Toggles between Beat Sync and Free running (Hz).
+	[p ImplicitDependencies]/[live.text]: ['live.text', 'live.text', 0]
+		button_mode: Momentary
+		enum: ['val1', 'val2']
+		longname: live.text
+		mmax: 1
+		modmode: 0
+		shortname: live.text
+		type: 2
+		____Info____
+		<no info title>
+		<no info text>
+	[p ImplicitDependencies]/[live.menu]: ['live.menu', 'live.menu', 0]
+		button_mode: Cycle
+		enum: ['one', 'two', 'three']
+		longname: live.menu
+		mmax: 2
+		modmode: 0
+		shortname: live.menu
+		type: 2
+		____Info____
+		<no info title>
+		<no info text>
+	[bpatcher ParamAbstraction.maxpat]/[obj-1]: ['OverruledParamLongName', 'OverruledParamShortName', 0]
+		longname: InsideBpatcher
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		Just a live.dial
+		Just another live.dial. Let's test if we can override this.
+	overrides:
+		invisible: 0
+		longname: OverruledParamLongName
+		modmode: 0
+		range: [0, 127]
+		shortname: OverruledParamShortName
+		type: 1
+		unitstyle: 0
+	[bpatcher ThisWasAnAbstractionBeforeEmbeddingIt.maxpat <embedded>]/[live.numbox]: ['EmbeddedParam', 'Embedded', 0]
+		longname: EmbeddedParam
+		modmode: 3
+		shortname: Embedded
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	[live.dial]: ['live.dial', 'live.dial', 0]
+		longname: live.dial
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	[live.dial]: ['live.dial[1]', 'live.dial', 0]
+		longname: live.dial[1]
+		modmode: 0
+		shortname: live.dial
+		type: 0
+		unitstyle: 0
+		____Info____
+		<no info title>
+		<no info text>
+	inherited_shortname: 1
+banks:
+	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
 Test.amxd: 57392 bytes, modified at 2026/02/26 15:45:49 UTC <= Device 
 MyAbstraction.maxpat: 2027 bytes, modified at 2026/02/26 15:38:57 UTC, 6 instances
 ParamAbstraction.maxpat: 1491 bytes, modified at 2026/02/26 15:40:50 UTC, 2 instances
