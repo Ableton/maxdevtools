@@ -1,5 +1,6 @@
 from freezing_utils import *
 from get_frozen_stats import get_frozen_stats, get_used_files
+from patch_printer import get_parameters_string_block
 
 
 def print_frozen_device(data: bytes) -> str:
@@ -15,10 +16,24 @@ def print_frozen_device(data: bytes) -> str:
     if footer_size != len(footer_data):
         return "Error parsing footer data; recorded size does not match actual size"
 
-    frozen_string = "Device is frozen\n----- Contents -----\n"
+    frozen_string = "Device is frozen\n"
+    frozen_string += "----- Contents -----\n"
 
     footer_entries = parse_footer(footer_data[8:])
     device_entries = get_device_entries(data, footer_entries)
+
+    bundled_patchers = {}
+    for entry in device_entries[1:]:
+        file_name = str(entry.get("file_name", ""))
+        if file_name.endswith(".maxpat"):
+            patcher = get_patcher_dict(entry)
+            if patcher:
+                bundled_patchers[file_name] = patcher
+
+    main_patcher = get_patcher_dict(device_entries[0])
+    if "parameters" in main_patcher:
+        frozen_string += get_parameters_string_block(main_patcher, bundled_patchers)
+
     used_files = get_used_files(device_entries)
 
     i = 0
