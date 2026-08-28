@@ -7,7 +7,7 @@ The Load Time Tester is the combination of a Max device and a small patch that g
 <img width=157 alt="The DoneLoading device" src="images/DoneLoading.png">
 <img width=491 alt="The Load Time Tester" src="images/LoadTimeTester.png">
 
-To measure the loading time of a device, you can include the device in a Live Set and use the patch to launch a specific version of Live with the Set to measure how long it takes for this Live Set to be loaded.
+To measure the loading time of a device, you can include (multiple copies of) your device and the `DoneLoading.amxd` device in a Live Set and use the `Load Time Tester.maxpat` patch to launch a specific version of Live with the Set to measure how long it takes for this Live Set to be loaded.
 
 ## Using the Load Time Tester ##
 
@@ -24,3 +24,7 @@ To measure the loading time of a device, you can include the device in a Live Se
 * Press LOAD in the Load Time Tester.
 * Wait for the Live application to launch and for the application to load the Live Set.
 * Find the loading time in the number box in the Load Time Tester.
+
+## Another way to compare loading times
+
+Often, the loading time of a device is directly related to the amount of object instances in its patch. To count the total amount of object instances, and to compare this count with previous versions of a device, you can [use maxdiff on frozen devices](../maxdiff/README.md#using-the-frozen-device-statistics).
