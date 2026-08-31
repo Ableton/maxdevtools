@@ -123,21 +123,22 @@ parameters:
 	inherited_shortname: 1
 banks:
 	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
-Test.amxd: 57392 bytes, modified at 2026/02/26 15:45:49 UTC <= Device 
-MyAbstraction.maxpat: 2027 bytes, modified at 2026/02/26 15:38:57 UTC, 6 instances
-ParamAbstraction.maxpat: 1491 bytes, modified at 2026/02/26 15:40:50 UTC, 2 instances
-AbstractionWithParameter.maxpat: 1334 bytes, modified at 2026/02/26 15:38:57 UTC, 2 instances
+	1:		encoders: ['-', '-', 'live.dial', 'MyParameter', 'live.dial', 'live.dial[1]', '-', '-']	buttons: ['-', '-', '-', '-', '-', 'live.text', 'live.menu', '-']
+Test.amxd: 57703 bytes, modified at 2026/08/31 09:52:24 UTC <= Device 
+MyAbstraction.maxpat: 2027 bytes, modified at 2026/08/31 09:51:02 UTC, 6 instances
+ParamAbstraction.maxpat: 1491 bytes, modified at 2026/08/31 09:51:02 UTC, 2 instances
+AbstractionWithParameter.maxpat: 1334 bytes, modified at 2026/08/31 09:51:02 UTC, 2 instances
 hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
 beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
 fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC, 5 instances
-shakerkicksnare.aif: 352854 bytes, modified at 2025/02/14 11:10:38 UTC, 2 instances
-VisibleBang.js: 317 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
-my-maxnode-basic.js: 464 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
-times3.gendsp: 2047 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
-myxfade.genjit: 3156 bytes, modified at 2025/02/14 11:10:38 UTC, 2 instances
-mystorage.json: 239 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
-myTestTable: 410 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
-TestScript.js: 87 bytes, modified at 2025/02/14 11:10:38 UTC, 1 instance
+shakerkicksnare.aif: 352854 bytes, modified at 2026/08/27 14:58:36 UTC, 2 instances
+VisibleBang.js: 317 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
+my-maxnode-basic.js: 464 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
+times3.gendsp: 2047 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
+myxfade.genjit: 3156 bytes, modified at 2026/08/27 14:58:36 UTC, 2 instances
+mystorage.json: 239 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
+myTestTable: 410 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
+TestScript.js: 87 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
 collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC, NOT FOUND IN PATCH
 
 Total - Counting every abstraction instance - Indicates loading time
