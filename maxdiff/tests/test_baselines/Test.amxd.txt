@@ -89,6 +89,7 @@ parameters:
 	inherited_shortname: 1
 banks:
 	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
+	1:		encoders: ['-', '-', 'live.dial', 'MyParameter', 'live.dial', 'live.dial[1]', '-', '-']	buttons: ['-', '-', '-', '-', '-', 'live.text', 'live.menu', '-']
 project:
 	version: 1 | creationdate: 3590052786 | modificationdate: 3590052786 | viewrect: [25, 106, 300, 500] | autoorganize: 1 | hideprojectwindow: 1 | showdependencies: 1 | autolocalize: 0 | layout: {} | searchpath: {} | detailsvisible: 0 | amxdtype: 1835887981 | readonly: 0 | devpathtype: 0 | devpath: . | sortmode: 0 | viewmode: 0 | includepackages: 0
 	contents:

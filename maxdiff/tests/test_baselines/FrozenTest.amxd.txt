@@ -123,10 +123,11 @@ parameters:
 	inherited_shortname: 1
 banks:
 	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
-Test.amxd: 57513 bytes, modified at 2026/08/31 09:49:58 UTC <= Device 
-MyAbstraction.maxpat: 2027 bytes, modified at 2026/08/31 09:49:21 UTC, 6 instances
-ParamAbstraction.maxpat: 1491 bytes, modified at 2026/08/31 09:49:43 UTC, 2 instances
-AbstractionWithParameter.maxpat: 1334 bytes, modified at 2026/08/31 09:49:24 UTC, 2 instances
+	1:		encoders: ['-', '-', 'live.dial', 'MyParameter', 'live.dial', 'live.dial[1]', '-', '-']	buttons: ['-', '-', '-', '-', '-', 'live.text', 'live.menu', '-']
+Test.amxd: 57703 bytes, modified at 2026/08/31 09:52:24 UTC <= Device 
+MyAbstraction.maxpat: 2027 bytes, modified at 2026/08/31 09:51:02 UTC, 6 instances
+ParamAbstraction.maxpat: 1491 bytes, modified at 2026/08/31 09:51:02 UTC, 2 instances
+AbstractionWithParameter.maxpat: 1334 bytes, modified at 2026/08/31 09:51:02 UTC, 2 instances
 hz-icon.svg: 484 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
 beat-icon.svg: 533 bytes, modified at 2024/05/24 13:59:36 UTC, 3 instances
 fpic.png: 7094 bytes, modified at 2024/05/24 13:59:36 UTC, 5 instances
