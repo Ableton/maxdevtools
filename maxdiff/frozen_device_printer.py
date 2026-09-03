@@ -1,5 +1,5 @@
 from freezing_utils import *
-from get_frozen_stats import get_frozen_stats, get_used_files
+from get_frozen_stats import get_frozen_stats, get_frozen_file_usage, get_external_name
 from patch_printer import get_parameters_string_block
 
 
@@ -34,7 +34,7 @@ def print_frozen_device(data: bytes) -> str:
     if "parameters" in main_patcher:
         frozen_string += get_parameters_string_block(main_patcher, bundled_patchers)
 
-    used_files = get_used_files(device_entries)
+    frozen_file_usage = get_frozen_file_usage(device_entries)
 
     i = 0
     for entry in device_entries:
@@ -44,10 +44,15 @@ def print_frozen_device(data: bytes) -> str:
             if i == 0:
                 frozen_string += f"{description} <= Device \n"
             else:
-                if file_name in used_files:
-                    frozen_string += f"{description}, {used_files[file_name]} instance{'s' if used_files[file_name] > 1 else ''}\n"
+                if file_name in frozen_file_usage:
+                    frozen_string += f"{description}, {frozen_file_usage[file_name]} instance{'s' if frozen_file_usage[file_name] > 1 else ''}\n"
                 else:
-                    frozen_string += f"{description}, NOT FOUND IN PATCH\n"
+                    # this could be an external
+                    external_name = get_external_name(file_name)
+                    if external_name in frozen_file_usage:
+                        frozen_string += f"{description}, {frozen_file_usage[external_name]} instance{'s' if frozen_file_usage[external_name] > 1 else ''}\n"
+                    else:
+                        frozen_string += f"{description}, NOT FOUND IN PATCH\n"
         i += 1
 
     [object_count_total, line_count_total, object_count_unique, line_count_unique] = (
