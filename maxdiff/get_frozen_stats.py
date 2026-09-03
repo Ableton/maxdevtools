@@ -1,4 +1,4 @@
-from freezing_utils import device_entry_with_data, get_patcher_dict
+from freezing_utils import device_entry_with_data, get_patcher_dict, get_external_name
 from process_patcher import PatcherProcessor, walk_patch
 
 
@@ -65,6 +65,9 @@ def get_frozen_file_usage(entries: list[device_entry_with_data]) -> dict[str, in
 
     It does this by parsing the top patcher and the abstractions found in `entries` recursively
     and finding how many objects match with the file names of the bundled dependencies.
+
+    Externals are included in the dict just by name. These names can be matched later with
+    the actual bundled external files.
     """
     device = entries[0]  # the first entry is always the device file
 
@@ -72,17 +75,26 @@ def get_frozen_file_usage(entries: list[device_entry_with_data]) -> dict[str, in
         item for item in entries if str(item["file_name"]).endswith(".maxpat")
     ]
 
+    external_names = list(
+        dict.fromkeys(
+            get_external_name(item["file_name"])
+            for item in entries
+            if get_external_name(item["file_name"]) != ""
+        )
+    )
+
     device_patch = get_patcher_dict(device)
     if device_patch == {}:
         return {}
 
-    dependency_file_names_processor = DependencyUsageCounter()
+    dependency_file_names_processor = DependencyUsageCounter(external_names)
     walk_patch(device_patch, abstraction_entries, dependency_file_names_processor)
     return dependency_file_names_processor.get_results()
 
 
 class DependencyUsageCounter(PatcherProcessor):
-    def __init__(self):
+    def __init__(self, external_names):
+        self.external_names = external_names
         self.filename_occurrences = {}
 
     def process_patcher(self, patcher, poly_voice_count: int, abstraction_name=""):
@@ -91,6 +103,7 @@ class DependencyUsageCounter(PatcherProcessor):
         """
 
         filenames = get_dependency_filenames(patcher)
+        filenames.extend(get_externals(patcher, self.external_names))
         if abstraction_name != "":
             filenames.append(abstraction_name)
 
@@ -105,8 +118,23 @@ class DependencyUsageCounter(PatcherProcessor):
         return self.filename_occurrences
 
 
+def get_externals(patcher, external_names):
+    """Check all boxes in this patcher (don't recurse into subpatchers) and collect any objects that are externals"""
+    externals = []
+    for box_entry in patcher["boxes"]:
+        box = box_entry["box"]
+        object_type = box["maxclass"]
+        if object_type == "newobj":
+            if "text" in box:
+                boxtext = box["text"]
+                object_name = boxtext.split(" ")[0]
+                if object_name in external_names:
+                    externals.append(object_name)
+    return externals
+
+
 def get_dependency_filenames(patcher):
-    """Check all boxes in this patcher and report any dependencies they might be referring to"""
+    """Check all boxes in this patcher (don't recurse into subpatchers) and collect any dependencies they might be referring to"""
     filenames = []
     for box_entry in patcher["boxes"]:
         box = box_entry["box"]

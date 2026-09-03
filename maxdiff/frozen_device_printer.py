@@ -1,5 +1,5 @@
 from freezing_utils import *
-from get_frozen_stats import get_frozen_stats, get_frozen_file_usage
+from get_frozen_stats import get_frozen_stats, get_frozen_file_usage, get_external_name
 from patch_printer import get_parameters_string_block
 
 
@@ -47,7 +47,12 @@ def print_frozen_device(data: bytes) -> str:
                 if file_name in frozen_file_usage:
                     frozen_string += f"{description}, {frozen_file_usage[file_name]} instance{'s' if frozen_file_usage[file_name] > 1 else ''}\n"
                 else:
-                    frozen_string += f"{description}, NOT FOUND IN PATCH\n"
+                    # this could be an external
+                    external_name = get_external_name(file_name)
+                    if external_name in frozen_file_usage:
+                        frozen_string += f"{description}, {frozen_file_usage[external_name]} instance{'s' if frozen_file_usage[external_name] > 1 else ''}\n"
+                    else:
+                        frozen_string += f"{description}, NOT FOUND IN PATCH\n"
         i += 1
 
     [object_count_total, line_count_total, object_count_unique, line_count_unique] = (

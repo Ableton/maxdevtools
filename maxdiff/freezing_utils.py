@@ -133,3 +133,21 @@ def strip_trailing_nonjson(device_data_text: str) -> str:
 
     # nothing worked; return original so caller can log/handle the parse error
     return device_data_text
+
+
+EXTERNAL_FILE_SUFFIXES = [".mxe64", ".mxo", ".mxe"]
+EXTERNAL_BUNDLE_SEPARATOR = "/"
+
+
+def get_external_name(file_name: str) -> str:
+    """
+    Checks the file name of a bundled entry and returns the name of the external as it appears in the patch
+    """
+    if EXTERNAL_BUNDLE_SEPARATOR in file_name:
+        return file_name.split(EXTERNAL_BUNDLE_SEPARATOR)[0]
+
+    for suffix in EXTERNAL_FILE_SUFFIXES:
+        if file_name.endswith(suffix):
+            return file_name[: -len(suffix)]
+
+    return None
