@@ -1,8 +1,8 @@
 from freezing_utils import get_patcher_dict
 
 
-class Processor:
-    def process_elements(self, patcher, voice_count: int, abstraction_name=""):
+class PatcherProcessor:
+    def process_patcher(self, patcher, poly_voice_count: int, abstraction_name=""):
         """Processes patchers."""
 
     def get_results(self):
@@ -10,29 +10,29 @@ class Processor:
         return None
 
 
-def process_patch(patcher, abstraction_entries: list[dict], processor: Processor):
-    process_patch_recursive(patcher, abstraction_entries, processor, 1, "")
+def walk_patch(patcher, abstraction_entries: list[dict], processor: PatcherProcessor):
+    walk_patch_recursive(patcher, abstraction_entries, processor, 1, "")
 
 
-def process_patch_recursive(
+def walk_patch_recursive(
     patcher,
     abstraction_entries: list[dict],
-    processor: Processor,
-    voice_count: int,
+    processor: PatcherProcessor,
+    poly_voice_count: int,
     abstraction_file_name: str,
 ):
     """Recursively progress through subpatchers, invoking the processor for every patcher
-    inluding every instance of the patch's dependencies that can be found among the
+    including every instance of the patch's dependencies that can be found among the
     abstraction files that were passed in.
 
     Arguments
     patcher: patcher to process
     abstraction_entries: list of abstraction entries in frozen device
     processor: instance of a Processor that is invoked for this patch
-    voice_count: the amount of voices when this patcher occurs in a poly~ in its parent patch
+    poly_voice_count: the amount of voices when this patcher occurs in a poly~ in its parent patch
     abstraction_file_name: the file name of the abstraction this patch is in, if it is in an abstraction
     """
-    processor.process_elements(patcher, voice_count, abstraction_file_name)
+    processor.process_patcher(patcher, poly_voice_count, abstraction_file_name)
 
     for box_entry in patcher["boxes"]:
         box = box_entry["box"]
@@ -42,9 +42,9 @@ def process_patch_recursive(
         ):
             patch = box["patcher"]
             # get subpatcher or embedded bpatcher count
-            process_patch_recursive(patch, abstraction_entries, processor, 1, "")
+            walk_patch_recursive(patch, abstraction_entries, processor, 1, "")
 
-        # if no abstractions were passed in, we assume we don't want to recurse into abstarctions
+        # if no abstractions were passed in, we assume we don't want to recurse into abstractions
         if len(abstraction_entries) == 0:
             continue
 
@@ -60,17 +60,17 @@ def process_patch_recursive(
         if patch == {}:
             continue  # something went wrong when parsing the abstraction
 
-        voice_count = 1
+        poly_voice_count = 1
         if "text" in box and box["text"].startswith("poly~"):
             # get poly abstraction count
             tokens = box["text"].split(" ")
-            voice_count = int(tokens[2]) if len(tokens) > 2 else 1
+            poly_voice_count = int(tokens[2]) if len(tokens) > 2 else 1
 
-        process_patch_recursive(
+        walk_patch_recursive(
             patch,
             abstraction_entries,
             processor,
-            voice_count,
+            poly_voice_count,
             file_name,
         )
 
