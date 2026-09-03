@@ -100,6 +100,7 @@ project:
 appversion: 9.1.4-x64-1 | rect: [91, 153, 1288, 310] | openrect: [0, 0, 0, 169] | openrectmode: 0 | default_fontsize: 10.0 | default_fontname: Arial Bold | gridsize: [8, 8] | boxanimatetime: 500 | latency: 0 | is_mpe: 0 | external_mpe_tuning_enabled: 0 | platform_compatibility: 0 | autosave: 0
 ----------- objects -----------
 [shell] shell: (default)
+[shell dummyArgument] shell: (default)
 [comment NOTE: after any changes to this device, also update FrozenTest.amxd] 
 [poly~ MyAbstraction] 
 [poly~ MyAbstraction 3] 

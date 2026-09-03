@@ -124,7 +124,7 @@ parameters:
 banks:
 	0:	(MyBank)	encoders: ['live.dial', 'InsideBpatcher', '-', '-', '-', '-', '-', '-']	buttons: ['live.text', '-', '-', '-', '-', '-', '-', 'live.menu']
 	1:		encoders: ['-', '-', 'live.dial', 'MyParameter', 'live.dial', 'live.dial[1]', '-', '-']	buttons: ['-', '-', '-', '-', '-', 'live.text', 'live.menu', '-']
-Test.amxd: 58316 bytes, modified at 2026/08/31 11:56:20 UTC <= Device 
+Test.amxd: 58702 bytes, modified at 2026/09/03 12:38:17 UTC <= Device 
 MyAbstraction.maxpat: 2027 bytes, modified at 2026/08/31 10:48:30 UTC, 6 instances
 ParamAbstraction.maxpat: 1491 bytes, modified at 2026/08/31 10:48:30 UTC, 2 instances
 AbstractionWithParameter.maxpat: 1334 bytes, modified at 2026/08/31 10:48:30 UTC, 2 instances
@@ -140,16 +140,16 @@ mystorage.json: 239 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
 myTestTable: 410 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
 TestScript.js: 87 bytes, modified at 2026/08/27 14:58:36 UTC, 1 instance
 collContent.txt: 8 bytes, modified at 2024/05/24 13:59:36 UTC, NOT FOUND IN PATCH
-shell.mxo: 4 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
-shell/zipfile: 28122 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
-shell/executable: 182544 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
-shell/plist: 1441 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
-shell.mxe: 30720 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
-shell.mxe64: 37888 bytes, modified at 2026/08/31 10:47:56 UTC, 1 instance
+shell.mxo: 4 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
+shell/zipfile: 28122 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
+shell/executable: 182544 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
+shell/plist: 1441 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
+shell.mxe: 30720 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
+shell.mxe64: 37888 bytes, modified at 2026/08/31 10:47:56 UTC, 2 instances
 
 Total - Counting every abstraction instance - Indicates loading time
-    Object instances: 91
+    Object instances: 92
     Connections: 26
 Unique - Counting abstractions once - Indicates maintainability
-    Object instances: 74
+    Object instances: 75
     Connections: 16
