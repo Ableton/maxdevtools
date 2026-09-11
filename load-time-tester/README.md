@@ -14,8 +14,10 @@ To measure the loading time of a device, you can include (multiple copies of) yo
 * Create a Live Set you want to test for loading. 
 	* If you want to test the loading time of a single device, you can add mutliple copies of the device to the Set, depending on its typical use.
 	* Make sure to include one copy of the `Done Loading.amxd` device in the Set.
-* Load the `Load Time Tester.maxpat` patch in standalone Max and set its paths:
+* Load the `Load Time Tester.maxpat` patch in standalone Max (or the Max application opened by editing a Max for Live device) and set its paths:
 	* Find the Live application you want to use for testing on your computer and drag the application to the first drop panel in the Load Time Tester.
+		* On macOS, you can commonly find the Ableton Live application in the Applications folder.
+		* On Windows, you can commonly find the Ableton Live application in `C:\ProgramData\Ableton\Live XX\Program`
 	* Find the Live Set and drag it to the second drop panel in the Load Time Tester.
 * Get the system to consume little resources
 	* Launch the selected Live application manually and close it once, to allow the operating system to cache as many of the application launching as possible.
